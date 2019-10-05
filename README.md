@@ -10,6 +10,13 @@ gsf's (Glenn Fowler) serate modifications from: http://gsf.cococlyde.org/downloa
 
 The Java binary can be downloaded from: http://gsf.cococlyde.org/download/sudoku/SudokuExplainer.jar
 
+Changes - 20191005
+
+- updated Reader code to handle most grid formats: grid is 1-9 for given, . or 0 for empty cell
+- added **Undo** based on code from https://github.com/Itsukara/SudokuExplainerPlus
+- fixed mouse click issue in unsolved cell to select potential candidate
+- built using jdk-8u221
+
 ## Usage - GUI
 
   java.exe -jar SudokuExplainer.jar
