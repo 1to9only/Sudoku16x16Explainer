@@ -86,7 +86,7 @@ public class SudokuPanel extends JPanel {
     }
 
     private void initialize() {
-        this.addMouseListener(new java.awt.event.MouseAdapter() {   
+        this.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseExited(java.awt.event.MouseEvent e) {
                 setFocusedCell(null);
@@ -105,9 +105,12 @@ public class SudokuPanel extends JPanel {
                         }
                     } else {
                         if (target.getValue() == 0) {
-                            // Set the cell's value
-                            engine.cellValueTyped(target, value);
-                            repaint();
+                            if ( target.hasPotentialValue( value) )
+                            {
+                                // Set the cell's value
+                                engine.cellValueTyped(target, value);
+                                repaint();
+                            }
                         } else {
                             // Clear the cell's value
                             engine.cellValueTyped(target, 0);
@@ -135,7 +138,7 @@ public class SudokuPanel extends JPanel {
                     setFocusedCandidate(0);
             }
         });
-        this.addKeyListener(new java.awt.event.KeyAdapter() {   
+        this.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyPressed(java.awt.event.KeyEvent e) {
                 int code = e.getKeyCode();
@@ -443,7 +446,7 @@ public class SudokuPanel extends JPanel {
         initGraphics(g2);
         paintLegend(g);
         AffineTransform oldTransform = g2.getTransform();
-        AffineTransform translate = 
+        AffineTransform translate =
             AffineTransform.getTranslateInstance(LEGEND_GAP_SIZE, GRID_GAP_SIZE);
         g2.transform(translate);
         g.clearRect(0, 0, GRID_SIZE, GRID_SIZE);
@@ -478,7 +481,7 @@ public class SudokuPanel extends JPanel {
             g2.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
             g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-            g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);    
+            g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -486,7 +489,7 @@ public class SudokuPanel extends JPanel {
             g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
             g2.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
             g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
-            g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);    
+            g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
             g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
@@ -645,7 +648,7 @@ public class SudokuPanel extends JPanel {
                     if (cell.getValue() != 0) {
                         g.setFont(bigFont);
                         int cx = x * CELL_OUTER_SIZE + CELL_PAD + CELL_INNER_SIZE / 2;
-                        int cy = y * CELL_OUTER_SIZE + CELL_PAD + CELL_INNER_SIZE / 2;          
+                        int cy = y * CELL_OUTER_SIZE + CELL_PAD + CELL_INNER_SIZE / 2;
                         initValueColor(g, cell);
                         drawStringCentered(g, "" + cell.getValue(), cx, cy);
                     }
