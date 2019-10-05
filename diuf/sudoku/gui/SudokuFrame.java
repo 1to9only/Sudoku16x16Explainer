@@ -50,6 +50,7 @@ public class SudokuFrame extends JFrame implements Asker {
     private JPanel hintDetailContainer = null;
     private JPanel buttonsPane = null;
     private JButton btnGetAllHints = null;
+    private JButton btnUndoStep = null;
     private JButton btnApplyHintAndGet = null;
     private JButton btnQuit = null;
     private JPanel buttonsContainer = null;
@@ -60,7 +61,7 @@ public class SudokuFrame extends JFrame implements Asker {
     private JCheckBox chkFilter = null;
     private JButton btnCheckValidity = null;
     private JButton btnApplyHint = null;
-    private JComboBox cmbViewSelector = null;
+    private JComboBox<String> cmbViewSelector = null;
     private JPanel hintsSouthPanel = null;
     private JPanel ratingPanel = null;
     private JLabel jLabel = null;
@@ -83,6 +84,7 @@ public class SudokuFrame extends JFrame implements Asker {
     private JMenuItem mitGetNextHint = null;
     private JMenuItem mitApplyHint = null;
     private JMenuItem mitGetAllHints = null;
+    private JMenuItem mitUndoStep = null;
     private JMenuItem mitSolve = null;
     private JMenuItem mitResetPotentials = null;
     private JMenuItem mitClearHints = null;
@@ -494,42 +496,55 @@ public class SudokuFrame extends JFrame implements Asker {
 
     private JPanel getButtonsPane() {
         if (buttonsPane == null) {
-            GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
-            gridBagConstraints21.gridx = 4;
-            gridBagConstraints21.weightx = 1.0D;
-            gridBagConstraints21.gridy = 0;
-            GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
-            gridBagConstraints11.gridx = 2;
-            gridBagConstraints11.weightx = 1.0D;
-            gridBagConstraints11.gridy = 0;
-            GridBagConstraints gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 0;
-            gridBagConstraints.weightx = 1.0D;
-            gridBagConstraints.gridy = 0;
-            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
-            gridBagConstraints3.gridy = 0;
-            gridBagConstraints3.weightx = 1.0D;
-            gridBagConstraints3.gridx = 6;
-            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
-            gridBagConstraints2.gridx = 5;
-            gridBagConstraints2.weightx = 1.0D;
-            gridBagConstraints2.gridy = 0;
+            GridBagConstraints gridBagConstraints0 = new GridBagConstraints();
+            gridBagConstraints0.gridx = 0;
+            gridBagConstraints0.weightx = 1.0D;
+            gridBagConstraints0.gridy = 0;
+
             GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
             gridBagConstraints1.gridx = 1;
             gridBagConstraints1.weightx = 1.0D;
             gridBagConstraints1.gridy = 0;
+
+            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+            gridBagConstraints2.gridx = 2;
+            gridBagConstraints2.weightx = 1.0D;
+            gridBagConstraints2.gridy = 0;
+
+            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+            gridBagConstraints3.gridx = 3;
+            gridBagConstraints3.weightx = 1.0D;
+            gridBagConstraints3.gridy = 0;
+
+            GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
+            gridBagConstraints5.gridx = 5;
+            gridBagConstraints5.weightx = 1.0D;
+            gridBagConstraints5.gridy = 0;
+
+            GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
+            gridBagConstraints6.gridx = 6;
+            gridBagConstraints6.weightx = 1.0D;
+            gridBagConstraints6.gridy = 0;
+
+            GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
+            gridBagConstraints7.gridx = 7;
+            gridBagConstraints7.weightx = 1.0D;
+            gridBagConstraints7.gridy = 0;
+
             buttonsPane = new JPanel();
             buttonsPane.setLayout(new GridBagLayout());
             buttonsPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
                     "Actions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                     javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(
                             "Dialog", java.awt.Font.BOLD, 12), null));
-            buttonsPane.add(getBtnGetNextHint(), gridBagConstraints11);
+
+            buttonsPane.add(getBtnCheckValidity(),   gridBagConstraints0);
             buttonsPane.add(getBtnApplyHintAndGet(), gridBagConstraints1);
-            buttonsPane.add(getBtnGetAllHints(), gridBagConstraints2);
-            buttonsPane.add(getBtnQuit(), gridBagConstraints3);
-            buttonsPane.add(getBtnApplyHint(), gridBagConstraints21);
-            buttonsPane.add(getBtnCheckValidity(), gridBagConstraints);
+            buttonsPane.add(getBtnGetNextHint(),     gridBagConstraints2);
+            buttonsPane.add(getBtnApplyHint(),       gridBagConstraints3);
+            buttonsPane.add(getBtnGetAllHints(),     gridBagConstraints5);
+            buttonsPane.add(getBtnUndoStep(),        gridBagConstraints6);
+            buttonsPane.add(getBtnQuit(),            gridBagConstraints7);
         }
         return buttonsPane;
     }
@@ -564,6 +579,22 @@ public class SudokuFrame extends JFrame implements Asker {
             });
         }
         return btnGetAllHints;
+    }
+
+    private JButton getBtnUndoStep() {
+        if (btnUndoStep == null) {
+            btnUndoStep = new JButton();
+            btnUndoStep.setText("Undo step");
+            btnUndoStep.setToolTipText("Undo previous solve step or value selection");
+            btnUndoStep.setMnemonic(KeyEvent.VK_N);
+            btnUndoStep.addActionListener(new java.awt.event.ActionListener() {
+
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    engine.UndoStep();
+                }
+            });
+        }
+        return btnUndoStep;
     }
 
     JButton getBtnApplyHintAndGet() {
@@ -686,9 +717,9 @@ public class SudokuFrame extends JFrame implements Asker {
         return btnApplyHint;
     }
 
-    private JComboBox getCmbViewSelector() {
+    private JComboBox<String> getCmbViewSelector() {
         if (cmbViewSelector == null) {
-            cmbViewSelector = new JComboBox();
+            cmbViewSelector = new JComboBox<String>();
             cmbViewSelector.setToolTipText("Toggle view (only for chaining hints)");
             cmbViewSelector.addItemListener(new java.awt.event.ItemListener() {
                 public void itemStateChanged(java.awt.event.ItemEvent e) {
@@ -939,7 +970,7 @@ public class SudokuFrame extends JFrame implements Asker {
             setCommand(getMitPaste(), 'V');
             editMenu.addSeparator();
             editMenu.add(getMitClear());
-            setCommand(getMitClear(), 'E'); 
+            setCommand(getMitClear(), 'E');
         }
         return editMenu;
     }
@@ -1017,6 +1048,8 @@ public class SudokuFrame extends JFrame implements Asker {
             getMitApplyHint().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
             toolMenu.add(getMitGetAllHints());
             getMitGetAllHints().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+            toolMenu.add(getMitUndoStep());
+            setCommand(getMitUndoStep(), 'Z');
             toolMenu.addSeparator();
             toolMenu.add(getMitGetSmallClue());
             getMitGetSmallClue().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
@@ -1060,7 +1093,7 @@ public class SudokuFrame extends JFrame implements Asker {
                     try {
                         engine.analyse();
                     } catch (UnsupportedOperationException ex) {
-                        JOptionPane.showMessageDialog(SudokuFrame.this, 
+                        JOptionPane.showMessageDialog(SudokuFrame.this,
                                 "The Sudoku Explainer failed to solve this Sudoku\n" +
                                 "using the solving techniques that are currently enabled.",
                                 "Analysis", JOptionPane.ERROR_MESSAGE);
@@ -1130,6 +1163,21 @@ public class SudokuFrame extends JFrame implements Asker {
             });
         }
         return mitGetAllHints;
+    }
+
+    private JMenuItem getMitUndoStep() {
+        if (mitUndoStep == null) {
+            mitUndoStep = new JMenuItem();
+            mitUndoStep.setText("Undo step");
+            mitUndoStep.setMnemonic(KeyEvent.VK_Z);
+            mitUndoStep.setToolTipText(getBtnUndoStep().getToolTipText());
+            mitUndoStep.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    engine.UndoStep();
+                }
+            });
+        }
+        return mitUndoStep;
     }
 
     private JMenuItem getMitSolve() {
