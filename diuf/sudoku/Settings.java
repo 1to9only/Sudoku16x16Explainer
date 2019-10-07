@@ -23,6 +23,7 @@ public class Settings {
     private boolean isRCNotation = false;
     private boolean isAntialiasing = true;
     private boolean isShowingCandidates = true;
+    private boolean isShowingCandidateMasks = true;
     private String lookAndFeelClassName = null;
 
     private EnumSet<SolvingTechnique> techniques;
@@ -64,6 +65,15 @@ public class Settings {
 
     public boolean isShowingCandidates() {
         return this.isShowingCandidates;
+    }
+
+    public void setShowingCandidateMasks(boolean value) {
+        this.isShowingCandidateMasks = value;
+        save();
+    }
+
+    public boolean isShowingCandidateMasks() {
+        return this.isShowingCandidateMasks;
     }
 
     public String getLookAndFeelClassName() {
@@ -127,6 +137,7 @@ public class Settings {
             isRCNotation = prefs.getBoolean("isRCNotation", isRCNotation);
             isAntialiasing = prefs.getBoolean("isAntialiasing", isAntialiasing);
             isShowingCandidates = prefs.getBoolean("isShowingCandidates", isShowingCandidates);
+            isShowingCandidateMasks = prefs.getBoolean("isShowingCandidateMasks", isShowingCandidateMasks);
             lookAndFeelClassName = prefs.get("lookAndFeelClassName", lookAndFeelClassName);
         } catch (SecurityException ex) {
             // Maybe we are running from an applet. Do nothing
@@ -141,6 +152,7 @@ public class Settings {
             prefs.putBoolean("isRCNotation", isRCNotation);
             prefs.putBoolean("isAntialiasing", isAntialiasing);
             prefs.putBoolean("isShowingCandidates", isShowingCandidates);
+            prefs.putBoolean("isShowingCandidateMasks", isShowingCandidateMasks);
             if (lookAndFeelClassName != null)
                 prefs.put("lookAndFeelClassName", lookAndFeelClassName);
             try {
