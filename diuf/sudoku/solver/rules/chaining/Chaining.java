@@ -127,8 +127,9 @@ public class Chaining implements IndirectHintProducer {
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
                 Cell cell = grid.getCell(x, y);
-                int cardinality = cell.getPotentialValues().cardinality();
+//c             int cardinality = cell.getPotentialValues().cardinality();
                 if (cell.getValue() == 0) { // the cell is empty
+                int cardinality = cell.getPotentialValues().cardinality();
                     if (cardinality > 1) {
                         // Iterate on all potential values that are not alone
                         for (int value = 1; value <= 9; value++) {
@@ -136,7 +137,7 @@ public class Chaining implements IndirectHintProducer {
                                 Potential pOn = new Potential(cell, value, true);
                                 doUnaryChaining(grid, pOn, result, isYChainEnabled, isXChainEnabled);
                             }
-                        } 
+                        }
                     }
                 } // if empty
             } // for x
@@ -157,8 +158,9 @@ public class Chaining implements IndirectHintProducer {
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
                 Cell cell = grid.getCell(x, y);
-                int cardinality = cell.getPotentialValues().cardinality();
+//c             int cardinality = cell.getPotentialValues().cardinality();
                 if (cell.getValue() == 0) { // the cell is empty
+                int cardinality = cell.getPotentialValues().cardinality();
                     if (cardinality > 2 || (cardinality > 1 && isDynamic)) {
                         // Prepare storage and accumulator for "Cell Reduction"
                         Map<Integer, LinkedSet<Potential>> valueToOn =
@@ -573,12 +575,13 @@ public class Chaining implements IndirectHintProducer {
         }
 
         if (isXChainEnabled) {
-            // Second rule: if there is only two positions for this potential, the other one gets on
-            List<Class<? extends Grid.Region>> partTypes = new ArrayList<Class<? extends Grid.Region>>(3);
-            partTypes.add(Grid.Block.class);
-            partTypes.add(Grid.Row.class);
-            partTypes.add(Grid.Column.class);
-            for (Class<? extends Grid.Region> partType : partTypes) {
+        //  // Second rule: if there is only two positions for this potential, the other one gets on
+        //  List<Class<? extends Grid.Region>> partTypes = new ArrayList<Class<? extends Grid.Region>>(3);
+        //  partTypes.add(Grid.Block.class);
+        //  partTypes.add(Grid.Row.class);
+        //  partTypes.add(Grid.Column.class);
+        //  for (Class<? extends Grid.Region> partType : partTypes) {
+            for (Class<? extends Grid.Region> partType : grid.getRegionTypes()) {
                 Grid.Region region = grid.getRegionAt(partType, p.cell.getX(), p.cell.getY());
                 BitSet potentialPositions = region.getPotentialPositions(p.value);
                 if (potentialPositions.cardinality() == 2) {
@@ -631,8 +634,8 @@ public class Chaining implements IndirectHintProducer {
                     if (!isParent(p, pOff)) {
                         // Not processed yet
                         pendingOff.add(pOff);
-                        assert length >= 1;
-                        if (length >= 1) // Seems this can be removed!
+//a                     assert length >= 1;
+//s                     if (length >= 1) // Seems this can be removed!
                             toOff.add(pOff);
                     }
                 }
@@ -650,8 +653,8 @@ public class Chaining implements IndirectHintProducer {
                     if (!toOn.contains(pOn)) {
                         // Not processed yet
                         pendingOn.add(pOn);
-                        assert length >= 1;
-                        if (length >= 1) // Seems this can be removed
+//a                     assert length >= 1;
+//s                     if (length >= 1) // Seems this can be removed
                             toOn.add(pOn);
                     }
                 }
@@ -675,13 +678,13 @@ public class Chaining implements IndirectHintProducer {
                         if (!chains.contains(pOff))
                             chains.add(pOff);
                     }
-                    if (!isParent(p, pOff)) { // Why this filter? (seems useless)
+//s                 if (!isParent(p, pOff)) { // Why this filter? (seems useless)
                         if (!toOff.contains(pOff)) {
                             // Not processed yet
                             pendingOff.add(pOff);
                             toOff.add(pOff);
                         }
-                    }
+//s                 }
                 }
             }
             while (!pendingOff.isEmpty()) {
@@ -990,7 +993,7 @@ public class Chaining implements IndirectHintProducer {
 
     public String getCommonName(ChainingHint hint) {
         if (!isDynamic && !isMultipleEnabled) {
-            if (hint.isXChain) 
+            if (hint.isXChain)
                 return "X-Chain";
             else
                 return "Y-Chain";
