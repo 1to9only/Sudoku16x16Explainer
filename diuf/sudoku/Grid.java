@@ -10,12 +10,12 @@ import java.util.*;
 /**
  * A Sudoku grid.
  * <p>
- * Contains the 9x9 array of cells, as well as methods
+ * Contains the 16x16 array of cells, as well as methods
  * to manipulate regions (rows, columns and blocks).
  * <p>
  * Horizontal coordinates (for Cells) range from 0 (leftmost) to
- * 8 (rightmost). Vertical coordinates range from 0 (topmost) to
- * 8 (bottommost).
+ * 15 (rightmost). Vertical coordinates range from 0 (topmost) to
+ * 15 (bottommost).
  */
 public class Grid {
 
@@ -23,35 +23,35 @@ public class Grid {
      * Cells of the grid. First array index is the vertical index (from top
      * to bottom), and second index is horizontal index (from left to right).
      */
-    private Cell[][] cells = new Cell[9][9];
+    private Cell[][] cells = new Cell[16][16];
 
     // Views
-    private Row[] rows = new Row[9];
-    private Column[] columns = new Column[9];
-    private Block[] blocks = new Block[9];
+    private Row[] rows = new Row[16];
+    private Column[] columns = new Column[16];
+    private Block[] blocks = new Block[16];
 
 
     /**
-     * Create a new 9x9 Sudoku grid. All cells are set to empty
+     * Create a new 16x16 Sudoku grid. All cells are set to empty
      */
     public Grid() {
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 cells[y][x] = new Cell(this, x, y);
             }
         }
         // Build subparts views
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 16; i++) {
             rows[i] = new Row(i);
             columns[i] = new Column(i);
-            blocks[i] = new Block(i / 3, i % 3);
+            blocks[i] = new Block(i / 4, i % 4);
         }
     }
 
     /**
      * Get the cell at the given coordinates
-     * @param x the x coordinate (0=leftmost, 8=rightmost)
-     * @param y the y coordinate (0=topmost, 8=bottommost)
+     * @param x the x coordinate (0=leftmost, 15=rightmost)
+     * @param y the y coordinate (0=topmost, 15=bottommost)
      * @return the cell at the given coordinates
      */
     public Cell getCell(int x, int y) {
@@ -59,10 +59,10 @@ public class Grid {
     }
 
     /**
-     * Get the 9 regions of the given type
+     * Get the 16 regions of the given type
      * @param regionType the type of the regions to return. Must be one of
      * {@link Grid.Block}, {@link Grid.Row} or {@link Grid.Column}.
-     * @return the 9 regions of the given type
+     * @return the 16 regions of the given type
      */
     public Region[] getRegions(Class<? extends Region> regionType) {
         if (regionType == Row.class)
@@ -76,7 +76,7 @@ public class Grid {
     /**
      * Get the row at the given index.
      * Rows are numbered from top to bottom.
-     * @param num the index of the row to get, between 0 and 8, inclusive
+     * @param num the index of the row to get, between 0 and 15, inclusive
      * @return the row at the given index
      */
     public Row getRow(int num) {
@@ -86,7 +86,7 @@ public class Grid {
     /**
      * Get the column at the given index.
      * Columns are numbered from left to right.
-     * @param num the index of the column to get, between 0 and 8, inclusive
+     * @param num the index of the column to get, between 0 and 15, inclusive
      * @return the column at the given index
      */
     public Column getColumn(int num) {
@@ -96,7 +96,7 @@ public class Grid {
     /**
      * Get the block at the given index.
      * Blocks are numbered from left to right, top to bottom.
-     * @param num the index of the block to get, between 0 and 8, inclusive
+     * @param num the index of the block to get, between 0 and 15, inclusive
      * @return the block at the given index
      */
     public Block getBlock(int num) {
@@ -110,7 +110,7 @@ public class Grid {
      * @return the block at the given location
      */
     public Block getBlock(int vPos, int hPos) {
-        return this.blocks[vPos * 3 + hPos];
+        return this.blocks[vPos * 4 + hPos];
     }
 
     // Cell values
@@ -156,14 +156,14 @@ public class Grid {
     }
 
     /**
-     * Get the 3x3 block at the given location
+     * Get the 4x4 block at the given location
      * @param x the horizontal coordinate
      * @param y the vertical coordinate
      * @return the block at the given coordinates (the coordinates
      * are coordinates of a cell)
      */
     public Block getBlockAt(int x, int y) {
-        return this.blocks[(y / 3) * 3 + (x / 3)];
+        return this.blocks[(y / 4) * 4 + (x / 4)];
     }
 
     public Grid.Region getRegionAt(Class<? extends Grid.Region> regionType, int x, int y) {
@@ -198,11 +198,11 @@ public class Grid {
         return _regionTypes;
     }
 
-    // Grid regions implementation (rows, columns, 3x3 squares)
+    // Grid regions implementation (rows, columns, 4x4 squares)
 
     /**
      * Abstract class representing a region of a sudoku grid. A region
-     * is either a row, a column or a 3x3 block.
+     * is either a row, a column or a 4x4 block.
      */
     public abstract class Region {
 
@@ -211,7 +211,7 @@ public class Grid {
          * returned according to the index is not defined, but is guaranted
          * to be consistant accross multiple invocations of this method.
          * @param index the index of the cell to get, between 0 (inclusive)
-         * and 9 (exclusive).
+         * and 16 (exclusive).
          * @return the cell at the given index
          */
         public abstract Cell getCell(int index);
@@ -228,7 +228,7 @@ public class Grid {
             /*
              * This code is not really used. The method is always overriden
              */
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 16; i++) {
                 if (getCell(i).equals(cell))
                     return i;
             }
@@ -242,7 +242,7 @@ public class Grid {
          * @return whether this region contains the given value
          */
         public boolean contains(int value) {
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 16; i++) {
                 if (getCell(i).getValue() == value)
                     return true;
             }
@@ -260,8 +260,8 @@ public class Grid {
          * @see Cell#getPotentialValues()
          */
         public BitSet getPotentialPositions(int value) {
-            BitSet result = new BitSet(9);
-            for (int index = 0; index < 9; index++) {
+            BitSet result = new BitSet(16);
+            for (int index = 0; index < 16; index++) {
                 result.set(index, getCell(index).hasPotentialValue(value));
             }
             return result;
@@ -278,7 +278,7 @@ public class Grid {
          */
         public Set<Cell> getCellSet() {
             Set<Cell> result = new LinkedHashSet<Cell>();
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 16; i++)
                 result.add(getCell(i));
             return result;
         }
@@ -313,7 +313,7 @@ public class Grid {
          */
         public int getEmptyCellCount() {
             int result = 0;
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 16; i++)
                 if (getCell(i).isEmpty())
                     result++;
             return result;
@@ -362,7 +362,7 @@ public class Grid {
         public boolean crosses(Region other) {
             if (other instanceof Block) {
                 Block square = (Block)other;
-                return rowNum / 3 == square.vNum;
+                return rowNum / 4 == square.vNum;
             } else if (other instanceof Column) {
                 return true;
             } else if (other instanceof Row) {
@@ -418,7 +418,7 @@ public class Grid {
         public boolean crosses(Region other) {
             if (other instanceof Block) {
                 Block square = (Block)other;
-                return columnNum / 3 == square.hNum;
+                return columnNum / 4 == square.hNum;
             } else if (other instanceof Row) {
                 return true;
             } else if (other instanceof Column) {
@@ -446,7 +446,7 @@ public class Grid {
     }
 
     /**
-     * A 3x3 block of a sudoku grid.
+     * A 4x4 block of a sudoku grid.
      */
     public class Block extends Region {
 
@@ -467,12 +467,12 @@ public class Grid {
 
         @Override
         public Cell getCell(int index) {
-            return cells[vNum * 3 + index / 3][hNum * 3 + index % 3];
+            return cells[vNum * 4 + index / 4][hNum * 4 + index % 4];
         }
 
         @Override
         public int indexOf(Cell cell) {
-            return (cell.getY() % 3) * 3 + (cell.getX() % 3);
+            return (cell.getY() % 4) * 4 + (cell.getX() % 4);
         }
 
         @Override
@@ -496,7 +496,7 @@ public class Grid {
 
         @Override
         public String toFullString() {
-            return toString() + " " + (vNum * 3 + hNum + 1);
+            return toString() + " " + (vNum * 4 + hNum + 1);
         }
 
     }
@@ -519,7 +519,7 @@ public class Grid {
     public Cell getFirstCancellerOf(Cell target, int value) {
         for (Class<? extends Region> regionType : getRegionTypes()) {
             Region region = getRegionAt(regionType, target.getX(), target.getY());
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 16; i++) {
                 Cell cell = region.getCell(i);
                 if (!cell.equals(target) && cell.getValue() == value)
                     return cell;
@@ -535,8 +535,8 @@ public class Grid {
      * @param other the grid to copy this grid to
      */
     public void copyTo(Grid other) {
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 this.cells[y][x].copyTo(other.cells[y][x]);
             }
         }
@@ -549,8 +549,8 @@ public class Grid {
      */
     public int getCountOccurancesOfValue(int value) {
         int result = 0;
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 if (cells[y][x].getValue() == value)
                     result++;
             }
@@ -565,8 +565,8 @@ public class Grid {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 int value = getCellValue(x, y);
                 if (value == 0)
                     result.append('.');
@@ -587,8 +587,8 @@ public class Grid {
         if (!(o instanceof Grid))
             return false;
         Grid other = (Grid)o;
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 Cell thisCell = this.getCell(x, y);
                 Cell otherCell = other.getCell(x, y);
                 if (thisCell.getValue() != otherCell.getValue())
@@ -603,8 +603,8 @@ public class Grid {
     @Override
     public int hashCode() {
         int result = 0;
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 Cell cell = getCell(x, y);
                 result ^= cell.getValue();
                 result ^= cell.getPotentialValues().hashCode();

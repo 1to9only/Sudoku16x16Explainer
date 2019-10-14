@@ -34,7 +34,19 @@ public class HiddenSingleHint extends DirectHint implements Rule {
     }
 
     public String getName() {
-        return "Hidden Single";
+        Grid.Region region = getRegion();
+        if (isAlone) {
+            return "Hidden Single";
+        }
+        else if (region instanceof Grid.Block) {
+            return "Hidden Single (Block)";
+        }
+        else if (region instanceof Grid.Column) {
+            return "Hidden Single (Column)";
+        }
+        else {
+            return "Hidden Single (Row)";
+        }
     }
 
     public String getClueHtml(boolean isBig) {

@@ -22,7 +22,7 @@ public class HiddenSetHint extends IndirectHint implements Rule, HasParentPotent
     private final Map<Cell, BitSet> highlightPotentials;
     private final Grid.Region region;
 
-    
+
     public HiddenSetHint(IndirectHintProducer rule, Cell[] cells,
             int[] values, Map<Cell, BitSet> highlightPotentials,
             Map<Cell, BitSet> removePotentials, Grid.Region region) {
@@ -74,17 +74,17 @@ public class HiddenSetHint extends IndirectHint implements Rule, HasParentPotent
     }
 
     public String getName() {
-        final String[] groupNames = new String[] {"Pair", "Triplet", "Quad"};
+        final String[] groupNames = new String[] {"Pair", "Triplet", "Quad", "Quintuplet", "Sextuplet", "Septuplet"};
         int degree = values.length;
         return "Hidden " + groupNames[degree - 2];
     }
 
     public Collection<Potential> getRuleParents(Grid initialGrid, Grid currentGrid) {
         Collection<Potential> result = new ArrayList<Potential>();
-        BitSet myPositions = new BitSet(9);
+        BitSet myPositions = new BitSet(16);
         for (int i = 0; i < values.length; i++)
             myPositions.or(region.getPotentialPositions(values[i]));
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 16; i++) {
             if (!myPositions.get(i)) {
                 Cell cell = region.getCell(i);
                 Cell initialCell = initialGrid.getCell(cell.getX(), cell.getY());
@@ -112,7 +112,7 @@ public class HiddenSetHint extends IndirectHint implements Rule, HasParentPotent
         StringBuilder builder = new StringBuilder();
         builder.append(getName());
         builder.append(": ");
-        if (cells.length <= 4)
+        if (cells.length <= 7)
             builder.append(Cell.toFullString(this.cells));
         else
             builder.append("Cells [...]");
@@ -129,7 +129,7 @@ public class HiddenSetHint extends IndirectHint implements Rule, HasParentPotent
 
     @Override
     public String toHtml() {
-        final String[] numberNames = new String[] {"two", "three", "four"};
+        final String[] numberNames = new String[] {"two", "three", "four", "five", "six", "seven"};
         String result = HtmlLoader.loadHtml(this, "HiddenSetHint.html");
         String counter = numberNames[values.length - 2];
         String cellList = HtmlLoader.formatList(cells);

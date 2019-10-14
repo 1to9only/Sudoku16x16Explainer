@@ -14,8 +14,8 @@ public enum Symmetry {
         @Override
         public Point[] getPoints(int x, int y) {
             return new Point[] {
-                    new Point(x, y), 
-                    new Point(8 - x, y)};
+                    new Point(x, y),
+                    new Point(15 - x, y)};
         }
 
         @Override
@@ -28,8 +28,8 @@ public enum Symmetry {
         public Point[] getPoints(int x, int y) {
             return new Point[] {
                     new Point(x, y),
-                    new Point(x, 8 - y)};
-        }    
+                    new Point(x, 15 - y)};
+        }
 
         @Override
         public String getDescription() {
@@ -41,8 +41,8 @@ public enum Symmetry {
         public Point[] getPoints(int x, int y) {
             return new Point[] {
                     new Point(x, y),
-                    new Point(8 - y, 8 - x)};
-        }    
+                    new Point(15 - y, 15 - x)};
+        }
 
         @Override
         public String getDescription() {
@@ -55,7 +55,7 @@ public enum Symmetry {
             return new Point[] {
                     new Point(x, y),
                     new Point(y, x)};
-        }  
+        }
 
         @Override
         public String toString() {
@@ -73,8 +73,8 @@ public enum Symmetry {
             return new Point[] {
                     new Point(x, y),
                     new Point(y, x),
-                    new Point(8 - y, 8 - x),
-                    new Point(8 - x, 8 - y)};
+                    new Point(15 - y, 15 - x),
+                    new Point(15 - x, 15 - y)};
         }
 
         @Override
@@ -92,10 +92,10 @@ public enum Symmetry {
         public Point[] getPoints(int x, int y) {
             return new Point[] {
                     new Point(x, y),
-                    new Point(8 - x, y),
-                    new Point(x, 8 - y),
-                    new Point(8 - x, 8 - y)};
-        }    
+                    new Point(15 - x, y),
+                    new Point(x, 15 - y),
+                    new Point(15 - x, 15 - y)};
+        }
 
         @Override
         public String getDescription() {
@@ -107,7 +107,7 @@ public enum Symmetry {
         public Point[] getPoints(int x, int y) {
             return new Point[] {
                     new Point(x, y),
-                    new Point(8 - x, 8 - y)};
+                    new Point(15 - x, 15 - y)};
         }
 
         @Override
@@ -125,9 +125,9 @@ public enum Symmetry {
         public Point[] getPoints(int x, int y) {
             return new Point[] {
                     new Point(x, y),
-                    new Point(8 - x, 8 - y),
-                    new Point(y, 8 - x),
-                    new Point(8 - y, x)};
+                    new Point(15 - x, 15 - y),
+                    new Point(y, 15 - x),
+                    new Point(15 - y, x)};
         }
 
         @Override
@@ -157,14 +157,14 @@ public enum Symmetry {
         public Point[] getPoints(int x, int y) {
             return new Point[] {
                     new Point(x, y),
-                    new Point(8 - x, y),
-                    new Point(x, 8 - y),
-                    new Point(8 - x, 8 - y),
+                    new Point(15 - x, y),
+                    new Point(x, 15 - y),
+                    new Point(15 - x, 15 - y),
                     new Point(y, x),
-                    new Point(8 - y, x),
-                    new Point(y, 8 - x),
-                    new Point(8 - y, 8 - x)};
-        }    
+                    new Point(15 - y, x),
+                    new Point(y, 15 - x),
+                    new Point(15 - y, 15 - x)};
+        }
 
         @Override
         public String getDescription() {

@@ -25,12 +25,12 @@ public class NoDoubles implements WarningHintProducer {
             Grid.Region[] regions = grid.getRegions(regionType);
 
             // Iterate on occurances of a region
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 16; i++) {
                 final Grid.Region region = regions[i];
-                BitSet values = new BitSet(10);
+                BitSet values = new BitSet(16);
 
                 // Iterate on cells of a region
-                for (int j = 0; j < 9; j++) {
+                for (int j = 0; j < 16; j++) {
                     final Cell cell = region.getCell(j);
                     int value = cell.getValue();
                     if (value != 0) {
@@ -44,7 +44,7 @@ public class NoDoubles implements WarningHintProducer {
                                 public Collection<Cell> getRedCells() {
                                     Collection<Cell> result = new ArrayList<Cell>();
                                     result.add(cell);
-                                    for (int i = 0; i < 9; i++) {
+                                    for (int i = 0; i < 16; i++) {
                                         Cell other = region.getCell(i);
                                         if (!other.equals(cell) && cell.getValue() == other.getValue())
                                             result.add(other);
@@ -72,12 +72,12 @@ public class NoDoubles implements WarningHintProducer {
             Grid.Region[] regions = grid.getRegions(regionType);
 
             // Iterate on occurances of a region
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 16; i++) {
                 final Grid.Region region = regions[i];
-                BitSet values = new BitSet(10);
+                BitSet values = new BitSet(16);
 
                 // Iterate on cells of a region
-                for (int j = 0; j < 9; j++) {
+                for (int j = 0; j < 16; j++) {
                     final Cell cell = region.getCell(j);
                     int value = cell.getValue();
                     if (value != 0) {

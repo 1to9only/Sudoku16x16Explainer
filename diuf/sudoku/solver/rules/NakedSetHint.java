@@ -20,7 +20,7 @@ public class NakedSetHint extends IndirectHint implements Rule, HasParentPotenti
     private final Map<Cell, BitSet> highlightPotentials;
     private final Grid.Region region;
 
-    
+
     public NakedSetHint(IndirectHintProducer rule, Cell[] cells,
             int[] values, Map<Cell, BitSet> highlightPotentials,
             Map<Cell, BitSet> removePotentials, Grid.Region region) {
@@ -72,18 +72,18 @@ public class NakedSetHint extends IndirectHint implements Rule, HasParentPotenti
     }
 
     public String getName() {
-        final String[] groupNames = new String[] {"Pair", "Triplet", "Quad"};
+        final String[] groupNames = new String[] {"Pair", "Triplet", "Quad", "Quintuplet", "Sextuplet", "Septuplet"};
         return "Naked " + groupNames[values.length - 2];
     }
 
     public Collection<Potential> getRuleParents(Grid initialGrid, Grid currentGrid) {
         Collection<Potential> result = new ArrayList<Potential>();
-        BitSet myValues = new BitSet(10);
+        BitSet myValues = new BitSet(16);
         for (int i = 0; i < values.length; i++)
             myValues.set(values[i]);
         for (Cell cell : this.cells) {
             Cell initialCell = initialGrid.getCell(cell.getX(), cell.getY());
-            for (int value = 1; value <= 9; value++) {
+            for (int value = 1; value <= 16; value++) {
                 if (initialCell.hasPotentialValue(value) && !myValues.get(value))
                     // This potential must go off before I can be applied
                     result.add(new Potential(cell, value, false));
@@ -106,7 +106,7 @@ public class NakedSetHint extends IndirectHint implements Rule, HasParentPotenti
         StringBuilder builder = new StringBuilder();
         builder.append(getName());
         builder.append(": ");
-        if (cells.length <= 4)
+        if (cells.length <= 7)
             builder.append(Cell.toFullString(this.cells));
         else
             builder.append("Cells [...]");
@@ -123,7 +123,7 @@ public class NakedSetHint extends IndirectHint implements Rule, HasParentPotenti
 
     @Override
     public String toHtml() {
-        final String[] numberNames = new String[] {"two", "three", "four"};
+        final String[] numberNames = new String[] {"two", "three", "four", "five", "six", "seven"};
         String result = HtmlLoader.loadHtml(this, "NakedSetHint.html");
         String counter = numberNames[values.length - 2];
         String cellList = HtmlLoader.formatList(cells);

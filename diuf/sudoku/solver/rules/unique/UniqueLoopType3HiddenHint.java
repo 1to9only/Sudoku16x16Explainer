@@ -48,7 +48,7 @@ public class UniqueLoopType3HiddenHint extends UniqueLoopHint {
             Cell cell = region.getCell(index);
             BitSet values = potentials.get(cell);
             if (values == null) {
-                values = new BitSet(10);
+                values = new BitSet(16);
                 potentials.put(cell, values);
             }
             values.or(hiddenValues);

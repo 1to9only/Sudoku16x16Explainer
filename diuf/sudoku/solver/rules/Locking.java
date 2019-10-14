@@ -45,21 +45,21 @@ public class Locking implements IndirectHintProducer {
 //a     assert (regionType1 == Grid.Block.class) != (regionType2 == Grid.Block.class);
 
         // Iterate on pairs of parts
-        for (int i1 = 0; i1 < 9; i1++) {
-            for (int i2 = 0; i2 < 9; i2++) {
+        for (int i1 = 0; i1 < 16; i1++) {
+            for (int i2 = 0; i2 < 16; i2++) {
                 Grid.Region region1 = grid.getRegions(regionType1)[i1];
                 Grid.Region region2 = grid.getRegions(regionType2)[i2];
                 if (region1.crosses(region2)) {
                     Set<Cell> region2Cells = region2.getCellSet();
                     // Iterate on values
-                    for (int value = 1; value <= 9; value++) {
+                    for (int value = 1; value <= 16; value++) {
                         boolean isInCommonSet = true;
                         // Get the potential positions of the value in part1
                         BitSet potentialPositions = region1.getPotentialPositions(value);
                         // Note: if cardinality == 1, this is Hidden Single in part1
                         if (potentialPositions.cardinality() > 1) {
                             // Test if all potential positions are also in part2
-                            for (int i = 0; i < 9; i++) {
+                            for (int i = 0; i < 16; i++) {
                                 if (potentialPositions.get(i)) {
                                     Cell cell = region1.getCell(i);
                                     if (!region2Cells.contains(cell))
@@ -88,7 +88,7 @@ public class Locking implements IndirectHintProducer {
             Class<S> regionType1, HintsAccumulator accu, int i1,
             Grid.Region region1, Grid.Region region2, int value) throws InterruptedException {
         // Look if the pointing / claiming induce a hidden single
-        for(int i3 = 0; i3 < 9; i3++) {
+        for(int i3 = 0; i3 < 16; i3++) {
             if (i3 != i1) {
                 Grid.Region region3 = grid.getRegions(regionType1)[i3];
                 if (region3.crosses(region2)) {
@@ -98,7 +98,7 @@ public class Locking implements IndirectHintProducer {
                     if (potentialPositions3.cardinality() > 1) {
                         int nbRemainInRegion3 = 0;
                         Cell hcell = null;
-                        for (int i = 0; i < 9; i++) {
+                        for (int i = 0; i < 16; i++) {
                             if (potentialPositions3.get(i)) {
                                 Cell cell = region3.getCell(i);
                                 if (!region2Cells.contains(cell)) { // This position is not removed
@@ -121,7 +121,7 @@ public class Locking implements IndirectHintProducer {
     private IndirectHint createLockingHint(Grid.Region p1, Grid.Region p2, Cell hcell, int value) {
         // Build highlighted potentials
         Map<Cell,BitSet> cellPotentials = new HashMap<Cell,BitSet>();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 16; i++) {
             Cell cell = p1.getCell(i);
             if (cell.hasPotentialValue(value))
                 cellPotentials.put(cell, SingletonBitSet.create(value));
@@ -130,7 +130,7 @@ public class Locking implements IndirectHintProducer {
         Map<Cell,BitSet> cellRemovablePotentials = new HashMap<Cell,BitSet>();
         List<Cell> highlightedCells = new ArrayList<Cell>();
         Set<Cell> p1Cells = p1.getCellSet();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 16; i++) {
             Cell cell = p2.getCell(i);
             if (!p1Cells.contains(cell)) {
                 if (cell.hasPotentialValue(value))

@@ -40,13 +40,13 @@ public class UniqueLoopType3NakedHint extends UniqueLoopHint {
     }
 
     private Map<Cell, BitSet> appendOrangePotentials(Map<Cell, BitSet> potentials) {
-        BitSet nakedSet = new BitSet(10);
+        BitSet nakedSet = new BitSet(16);
         for (int i = 0; i < nakedValues.length; i++)
             nakedSet.set(nakedValues[i]);
         for (Cell cell : cells)
             potentials.put(cell, nakedSet);
 
-        BitSet otherSet = new BitSet(10);
+        BitSet otherSet = new BitSet(16);
         for (int i = 0; i < otherValues.length; i++)
             otherSet.set(otherValues[i]);
         BitSet prevSet = potentials.get(c1);

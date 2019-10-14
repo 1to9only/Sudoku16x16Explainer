@@ -25,7 +25,7 @@ public class NakedSingle implements DirectHintProducer {
         // Iterate on parts
         for (Grid.Region part : parts) {
             // Iterate on cells
-            for (int index = 0; index < 9; index++) {
+            for (int index = 0; index < 16; index++) {
                 Cell cell = part.getCell(index);
                 // Get the cell's potential values
                 BitSet potentialValues = cell.getPotentialValues();

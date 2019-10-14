@@ -88,7 +88,7 @@ public class SudokuFrame extends JFrame implements Asker {
     private JMenuItem mitSolve = null;
     private JMenuItem mitResetPotentials = null;
     private JMenuItem mitClearHints = null;
-    private File defaultDirectory = null;
+    private File defaultDirectory = new File("").getAbsoluteFile();
     private JRadioButton rdbView1 = null;
     private JRadioButton rdbView2 = null;
     private JMenu optionsMenu = null;
@@ -170,7 +170,7 @@ public class SudokuFrame extends JFrame implements Asker {
             if (currentHint instanceof DirectHint) {
                 DirectHint dHint = (DirectHint)currentHint;
                 sudokuPanel.setGreenCells(Collections.singleton(dHint.getCell()));
-                BitSet values = new BitSet(10);
+                BitSet values = new BitSet(16);
                 values.set(dHint.getValue());
                 sudokuPanel.setGreenPotentials(Collections.singletonMap(
                         dHint.getCell(), values));
@@ -313,7 +313,7 @@ public class SudokuFrame extends JFrame implements Asker {
     }
 
     private void initialize() {
-        this.setTitle("Sudoku Explainer " + VERSION + "." + REVISION + SUBREV);
+        this.setTitle("Sudoku 16x16 Explainer " + VERSION + "." + REVISION + SUBREV);
         JMenuBar menuBar = getJJMenuBar();
         setupLookAndFeelMenu();
         this.setJMenuBar(menuBar);
@@ -1268,7 +1268,7 @@ public class SudokuFrame extends JFrame implements Asker {
     private JRadioButtonMenuItem getMitMathMode() {
         if (mitMathMode == null) {
             mitMathMode = new JRadioButtonMenuItem();
-            mitMathMode.setText("R1C1 - R9C9 cell notation");
+            mitMathMode.setText("R1C1 - R16C16 cell notation");
             mitMathMode.setMnemonic(KeyEvent.VK_R);
             mitMathMode.setSelected(Settings.getInstance().isRCNotation());
             mitMathMode.addItemListener(new java.awt.event.ItemListener() {
@@ -1286,7 +1286,7 @@ public class SudokuFrame extends JFrame implements Asker {
     private JRadioButtonMenuItem getMitChessMode() {
         if (mitChessMode == null) {
             mitChessMode = new JRadioButtonMenuItem();
-            mitChessMode.setText("A1 - I9 cell notation");
+            mitChessMode.setText("A1 - I16 cell notation");
             mitChessMode.setMnemonic(KeyEvent.VK_A);
             mitChessMode.setSelected(!Settings.getInstance().isRCNotation());
             mitChessMode.addItemListener(new java.awt.event.ItemListener() {

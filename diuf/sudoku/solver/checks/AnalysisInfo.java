@@ -8,6 +8,7 @@ package diuf.sudoku.solver.checks;
 import java.text.*;
 import java.util.*;
 
+import diuf.sudoku.*;
 import diuf.sudoku.Grid.*;
 import diuf.sudoku.solver.*;
 import diuf.sudoku.tools.*;
@@ -40,17 +41,28 @@ public class AnalysisInfo extends WarningHint {
     @Override
     public String toHtml() {
         double difficulty = getDifficulty();
+        double total = getTotal();
+        int steps = 0;
         DecimalFormat format = new DecimalFormat("#0.0");
+        DecimalFormat numeric = new DecimalFormat("#0");
+        DecimalFormat decimal = new DecimalFormat("#0.00");
         StringBuilder details = new StringBuilder();
         for (String ruleName : ruleNames.keySet()) {
             int count = ruleNames.get(ruleName);
+            steps += count;
             details.append(Integer.toString(count));
             details.append(" x ");
             details.append(ruleName);
             details.append("<br>\n");
         }
         String result = HtmlLoader.loadHtml(this, "Analysis.html");
-        result = HtmlLoader.format(result, format.format(difficulty), details);
+        result = HtmlLoader.format(result,
+                                   format.format(difficulty),
+                                   format.format(total),
+                                   numeric.format(steps),
+                                   decimal.format(total/steps),
+                                   details
+                                   );
         return result;
     }
 
@@ -61,6 +73,15 @@ public class AnalysisInfo extends WarningHint {
                 difficulty = rule.getDifficulty();
         }
         return difficulty;
+    }
+
+    public double getTotal() {
+        double total = 0;
+        for (Rule rule : rules.keySet()) {
+            int count = rules.get(rule);
+            total += count * rule.getDifficulty();
+        }
+        return total;
     }
 
     @Override

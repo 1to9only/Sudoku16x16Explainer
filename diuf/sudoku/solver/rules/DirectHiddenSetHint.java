@@ -112,7 +112,7 @@ public class DirectHiddenSetHint extends IndirectHint implements Rule {
     }
 
     public String getName() {
-        final String[] groupNames = new String[] {"Pair", "Triplet", "Quad"};
+        final String[] groupNames = new String[] {"Pair", "Triplet", "Quad", "Quintuplet", "Sextuplet", "Septuplet"};
         int degree = values.length;
         return "Direct Hidden " + groupNames[degree - 2];
     }
@@ -131,7 +131,7 @@ public class DirectHiddenSetHint extends IndirectHint implements Rule {
         StringBuilder builder = new StringBuilder();
         builder.append(getName());
         builder.append(": ");
-        if (cells.length <= 4)
+        if (cells.length <= 7)
             builder.append(Cell.toFullString(this.cells));
         else
             builder.append("Cells [...]");
@@ -148,7 +148,7 @@ public class DirectHiddenSetHint extends IndirectHint implements Rule {
 
     @Override
     public String toHtml() {
-        final String[] numberNames = new String[] {"two", "three", "four"};
+        final String[] numberNames = new String[] {"two", "three", "four", "five", "six", "seven"};
         String result = HtmlLoader.loadHtml(this, "DirectHiddenSetHint.html");
         String counter = numberNames[values.length - 2];
         String cellList = HtmlLoader.formatList(cells);

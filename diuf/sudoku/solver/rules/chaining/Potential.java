@@ -91,7 +91,7 @@ public class Potential {
 
     @Override
     public int hashCode() {
-        return ((cell.getY() * 9 + cell.getX()) * 9 + value) * 2 + (isOn ? 1 : 0);
+        return ((cell.getY() * 16 + cell.getX()) * 16 + value) * 2 + (isOn ? 1 : 0);
     }
 
     @Override

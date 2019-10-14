@@ -31,14 +31,14 @@ public class HiddenSingle implements DirectHintProducer {
      * For each parts of the given type, check if a value has only one
      * possible potential position.
      * @param regionType the type of the parts to check
-     */  
+     */
     private <T extends Grid.Region> void getHints(Grid grid, Class<T> regionType,
             HintsAccumulator accu, boolean aloneOnly) throws InterruptedException {
         Grid.Region[] regions = grid.getRegions(regionType);
         // Iterate on parts
         for (Grid.Region region : regions) {
             // Iterate on values
-            for (int value = 1; value <= 9; value++) {
+            for (int value = 1; value <= 16; value++) {
                 // Get value's potential position
                 BitSet potentialIndexes = region.getPotentialPositions(value);
                 if (potentialIndexes.cardinality() == 1) {

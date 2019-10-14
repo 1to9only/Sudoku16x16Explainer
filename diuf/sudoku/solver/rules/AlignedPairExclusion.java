@@ -28,8 +28,8 @@ public class AlignedPairExclusion extends AlignedExclusion {
          */
         List<Cell> candidateList = new ArrayList<Cell>();
         Map<Cell, Collection<Cell>> cellExcluders = new LinkedHashMap<Cell, Collection<Cell>>();
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 Cell cell = grid.getCell(x, y);
                 if (cell.getPotentialValues().cardinality() >= 2) {
                     boolean hasNakedSingle = false;

@@ -167,7 +167,7 @@ public class SudokuExplainer {
                 BitSet removable = removablePotentials.get(cell);
                 BitSet current = removedPotentials.get(cell);
                 if (current == null) {
-                    current = new BitSet(10);
+                    current = new BitSet(16);
                     removedPotentials.put(cell, current);
                 }
                 current.or(removable);
@@ -458,7 +458,7 @@ public class SudokuExplainer {
     public void applySelectedHints() {
         pushGrid();
         for (Hint hint : selectedHints)
-            hint.apply();
+            hint.apply(grid);
         clearHints();
         repaintAll();
     }

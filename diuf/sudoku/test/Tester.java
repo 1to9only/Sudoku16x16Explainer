@@ -36,15 +36,15 @@ public class Tester {
             String line = reader.readLine();
             while (line != null) {
                 line = line.trim();
-                if (line.length() >= 81) {
+                if (line.length() >= 256) {
                     writer.println("Analyzing Sudoku #" + reader.getLineNumber());
                     System.out.println("Analyzing Sudoku #" + reader.getLineNumber());
                     Grid grid = new Grid();
-                    for (int i = 0; i < 81; i++) {
+                    for (int i = 0; i < 256; i++) {
                         char ch = line.charAt(i);
-                        if (ch >= '1' && ch <= '9') {
-                            int value = (ch - '0');
-                            grid.setCellValue(i % 9, i / 9, value);
+                        if (ch >= 'A' && ch <= 'P') {
+                            int value = (ch - 'A'+1);
+                            grid.setCellValue(i % 16, i / 16, value);
                         }
                     }
                     Solver solver = new Solver(grid);

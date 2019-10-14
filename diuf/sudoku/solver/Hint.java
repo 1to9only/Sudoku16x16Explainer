@@ -44,9 +44,9 @@ public abstract class Hint {
     }
 
     /**
-     * Apply this hint on the current sudoku grid.
+     * Apply this hint on the target sudoku grid.
      */
-    public abstract void apply();
+    public abstract void apply(Grid targetGrid);
 
     /**
      * Get the regions concerned by this hint.

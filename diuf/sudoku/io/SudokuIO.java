@@ -20,9 +20,9 @@ import diuf.sudoku.*;
  * The support for formats is minimal and quick&dirty.
  * Only plain text formats are supported when reading:
  * <ul>
- * <li>A single line of 81 characters (all characters not in the
- * '1' - '9' range is considered as an empty cell).
- * <li>9 lines of 9 characters.
+ * <li>A single line of 256 characters (all characters not in the
+ * 'A' - 'P' range is considered as an empty cell).
+ * <li>16 lines of 16 characters.
  * <li>Other multi-lines formats, with more than one character per cell,
  * or more than one line per row, or even with a few characters between
  * blocks might be supported, but there is no warranty. If a given format
@@ -31,7 +31,7 @@ import diuf.sudoku.*;
  * <p>
  * When writing, the following format is used:
  * <ul>
- * <li>9 lines of 9 characters
+ * <li>16 lines of 16 characters
  * <li>empty cells are represented by a '.'
  * </ul>
  */
@@ -81,7 +81,7 @@ public class SudokuIO {
         int cluecount = 0;
         while ( cluenum < linelen ) {
             ch = line.charAt(cluenum++);
-            if (ch >= '1' && ch <= '9') { cluecount++; ispad = 0; grpcnt++; }
+            if (ch >= 'A' && ch <= 'P') { cluecount++; ispad = 0; grpcnt++; }
             else
             if (ch == '.' || ch == '0') { cluecount++; ispad = 0; grpcnt++; }
             else
@@ -91,12 +91,12 @@ public class SudokuIO {
         cellnum = 0;
         cluenum = 0;
 
-        if ( cluecount >= 81 ) { // sudoku
-            while ( cellnum < 81 && cluenum < linelen ) {
+        if ( cluecount >= 256 ) { // sudoku
+            while ( cellnum < 256 && cluenum < linelen ) {
                 ch = line.charAt(cluenum++);
-                if (ch >= '1' && ch <= '9') {
-                    int value = ch - '0';
-                    grid.setCellValue(cellnum % 9, cellnum / 9, value);
+                if (ch >= 'A' && ch <= 'P') {
+                    int value = ch - 'A'+1;
+                    grid.setCellValue(cellnum % 16, cellnum / 16, value);
                     cellnum++;
                 }
                 else
@@ -104,19 +104,19 @@ public class SudokuIO {
                     cellnum++;
                 }
             }
-            return ( cellnum==81 ? RES_OK : RES_WARN);
+            return ( cellnum==256 ? RES_OK : RES_WARN);
         }
 
         return RES_ERROR;
     }
 
     private static void saveToWriter(Grid grid, Writer writer) throws IOException {
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 int value = grid.getCellValue(x, y);
                 int ch = '.';
                 if (value > 0)
-                    ch = '0' + value;
+                    ch = 'A'-1 + value;
                 writer.write(ch);
             }
             writer.write("\r\n");

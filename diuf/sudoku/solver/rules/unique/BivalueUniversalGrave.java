@@ -24,13 +24,13 @@ public class BivalueUniversalGrave implements IndirectHintProducer {
         grid.copyTo(temp);
         List<Cell> bugCells = new ArrayList<Cell>();
         Map<Cell, BitSet> bugValues = new HashMap<Cell, BitSet>();
-        BitSet allBugValues = new BitSet(10);
+        BitSet allBugValues = new BitSet(16);
         Set<Cell> commonCells = null;
         for (Class<? extends Grid.Region> regionType : grid.getRegionTypes()) {
             Grid.Region[] regions = grid.getRegions(regionType);
             for (int i = 0; i < regions.length; i++) {
                 Grid.Region region = regions[i];
-                for (int value = 1; value <= 9; value++) {
+                for (int value = 1; value <= 16; value++) {
                     // Possible positions of a value in a region (row/column/block):
                     BitSet positions = region.getPotentialPositions(value);
                     int cardinality = positions.cardinality();
@@ -56,7 +56,7 @@ public class BivalueUniversalGrave implements IndirectHintProducer {
                             if (!bugCells.contains(cell))
                                 bugCells.add(cell);
                             if (!bugValues.containsKey(cell))
-                                bugValues.put(cell, new BitSet(10));
+                                bugValues.put(cell, new BitSet(16));
                             bugValues.get(cell).set(value);
                             allBugValues.set(value);
                             Cell twin = temp.getCell(cell.getX(), cell.getY());
@@ -81,8 +81,8 @@ public class BivalueUniversalGrave implements IndirectHintProducer {
 
         // When bug values have been removed, all remaining empty cells must have
         // exactly two potential values. Check it
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 Cell cell = temp.getCell(x, y);
                 if (cell.getValue() == 0 && cell.getPotentialValues().cardinality() != 2)
                     return; // Not a BUG
@@ -94,7 +94,7 @@ public class BivalueUniversalGrave implements IndirectHintProducer {
             Grid.Region[] regions = temp.getRegions(regionType);
             for (int i = 0; i < regions.length; i++) {
                 Grid.Region region = regions[i];
-                for (int value = 1; value <= 9; value++) {
+                for (int value = 1; value <= 16; value++) {
                     // Possible positions of a value in a region (row/column/block):
                     BitSet positions = region.getPotentialPositions(value);
                     int cardinality = positions.cardinality();
@@ -103,7 +103,7 @@ public class BivalueUniversalGrave implements IndirectHintProducer {
                 }
             }
         }
-        
+
         if (bugCells.size() == 1) {
             // Yeah, potential BUG type-1 pattern found
             addBug1Hint(accu, bugCells, allBugValues);
@@ -184,7 +184,7 @@ public class BivalueUniversalGrave implements IndirectHintProducer {
                         while (perm.hasNext()) {
                             BitSet[] potentials = new BitSet[degree];
                             Cell[] nakedCells = new Cell[degree - 1];
-                            BitSet otherCommon = new BitSet(10);
+                            BitSet otherCommon = new BitSet(16);
                             int[] indexes = perm.nextBitNums();
                             for (int i = 0; i < indexes.length; i++) {
                                 Cell cell = regionCells.get(indexes[i]);
@@ -242,7 +242,7 @@ public class BivalueUniversalGrave implements IndirectHintProducer {
         // Test for a common, non-bug value in both cells
         Cell c1 = bugCells.get(0);
         Cell c2 = bugCells.get(1);
-        BitSet common = new BitSet(10);
+        BitSet common = new BitSet(16);
         common.or(c1.getPotentialValues());
         common.and(c2.getPotentialValues());
         common.andNot(allExtraValues);

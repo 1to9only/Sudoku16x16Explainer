@@ -26,7 +26,7 @@ public class CommonTuples {
      * @return the intersection of all bitsets, or <code>null</code>
      */
     public static BitSet searchCommonTuple(BitSet[] candidates, int degree) {
-        BitSet result = new BitSet(9);
+        BitSet result = new BitSet(16);
         for (BitSet candidate : candidates) {
             if (candidate.cardinality() <= 1)
                 return null;
@@ -43,7 +43,7 @@ public class CommonTuples {
      * (Used for Unique Loops and BUGs type 3)
      */
     public static BitSet searchCommonTupleLight(BitSet[] candidates, int degree) {
-        BitSet result = new BitSet(9);
+        BitSet result = new BitSet(16);
         for (BitSet candidate : candidates) {
             result.or(candidate);
             if (candidate.cardinality() == 0)

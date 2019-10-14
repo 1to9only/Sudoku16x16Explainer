@@ -74,13 +74,13 @@ public class Generator {
         grid.copyTo(solution);
 
         // Build running indexes
-        int[] indexes = new int[81];
+        int[] indexes = new int[256];
         for (int i = 0; i < indexes.length; i++)
             indexes[i] = i;
         // Shuffle
-        for (int i = 0; i < 81; i++) {
-            int p1 = rnd.nextInt(81);
-            int p2 = rnd.nextInt(81);
+        for (int i = 0; i < 256; i++) {
+            int p1 = rnd.nextInt(256);
+            int p2 = rnd.nextInt(256);
             int temp = indexes[p1];
             indexes[p1] = indexes[p2];
             indexes[p2] = temp;
@@ -93,13 +93,13 @@ public class Generator {
         boolean isSuccess = true;
         while (isSuccess) {
             // Choose a random cell to clear
-            int index = rnd.nextInt(81);
-            int countDown = 81; // Number of cells
+            int index = rnd.nextInt(256);
+            int countDown = 256; // Number of cells
             isSuccess = false;
             do {
                 // Build symmetric points list
-                int y = indexes[index] / 9;
-                int x = indexes[index] % 9;
+                int y = indexes[index] / 16;
+                int x = indexes[index] % 16;
                 Point[] points = symmetry.getPoints(x, y);
 
                 // Remove cells
@@ -127,7 +127,7 @@ public class Generator {
                         attempts += 1;
                     }
                 }
-                index = (index + 1) % 81; // Next index (indexing scrambled array of indexes)
+                index = (index + 1) % 256; // Next index (indexing scrambled array of indexes)
                 countDown--;
             } while (!isSuccess && countDown > 0);
         }

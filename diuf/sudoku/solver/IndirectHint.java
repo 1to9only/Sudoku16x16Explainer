@@ -44,7 +44,7 @@ public abstract class IndirectHint extends Hint {
      * Get the potential values that can be removed from cells of the sudoku
      * grid by applying this hint. The keys are cells of the grid, and the
      * values are the bit set of values that can be removed from the corresponding
-     * cell. Note that the bit sets can only contain values ranging between 1 and 9.
+     * cell. Note that the bit sets can only contain values ranging between 1 and 16.
      * @return the potential values that can be removed from cells of the sudoku
      * grid by applying this hint
      */
@@ -69,13 +69,17 @@ public abstract class IndirectHint extends Hint {
      * Apply this hint on the grid (passed to the constructor).
      */
     @Override
-    public void apply() {
+    public void apply(Grid targetGrid) {
         for (Cell cell : removablePotentials.keySet()) {
             BitSet cellRemovablePotentials = removablePotentials.get(cell);
-            cell.removePotentialValues(cellRemovablePotentials);
+            Cell targetCell = targetGrid.getCell(cell.getX(), cell.getY());
+            targetCell.removePotentialValues(cellRemovablePotentials);
         }
-        if (getCell() != null)
-            getCell().setValueAndCancel(getValue());
+        Cell cell = getCell();
+        if (cell != null) {
+            Cell targetCell = targetGrid.getCell(cell.getX(), cell.getY());
+            targetCell.setValueAndCancel(getValue());
+        }
     }
 
 //  Visual representation
@@ -91,7 +95,7 @@ public abstract class IndirectHint extends Hint {
      * of this hint.
      * @return the cells that must be highlighted in a visual representation, or
      * <tt>null</tt> if none
-     * 
+     *
      */
     public abstract Cell[] getSelectedCells();
 

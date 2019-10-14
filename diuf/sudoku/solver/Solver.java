@@ -108,21 +108,31 @@ public class Solver {
         addIfWorth(SolvingTechnique.Swordfish, indirectHintProducers, new Fisherman(3));
         addIfWorth(SolvingTechnique.HiddenTriplet, indirectHintProducers, new HiddenSet(3, false));
         addIfWorth(SolvingTechnique.XYWing, indirectHintProducers, new XYWing(false));
+        addIfWorth(SolvingTechnique.DirectHiddenQuad, indirectHintProducers, new HiddenSet(4, true));
         addIfWorth(SolvingTechnique.XYZWing, indirectHintProducers, new XYWing(true));
-        addIfWorth(SolvingTechnique.UniqueLoop, indirectHintProducers, new UniqueLoops());
+//      addIfWorth(SolvingTechnique.UniqueLoop, indirectHintProducers, new UniqueLoops());
         addIfWorth(SolvingTechnique.NakedQuad, indirectHintProducers, new NakedSet(4));
+        addIfWorth(SolvingTechnique.NakedQuintuplet, indirectHintProducers, new NakedSet(5));
+        addIfWorth(SolvingTechnique.NakedSextuplet, indirectHintProducers, new NakedSet(6));
+        addIfWorth(SolvingTechnique.NakedSeptuplet, indirectHintProducers, new NakedSet(7));
         addIfWorth(SolvingTechnique.Jellyfish, indirectHintProducers, new Fisherman(4));
+        addIfWorth(SolvingTechnique.Starfish, indirectHintProducers, new Fisherman(5));
+        addIfWorth(SolvingTechnique.Whale, indirectHintProducers, new Fisherman(6));
+        addIfWorth(SolvingTechnique.Leviathan, indirectHintProducers, new Fisherman(7));
         addIfWorth(SolvingTechnique.HiddenQuad, indirectHintProducers, new HiddenSet(4, false));
+        addIfWorth(SolvingTechnique.HiddenQuintuplet, indirectHintProducers, new HiddenSet(5, false));
+        addIfWorth(SolvingTechnique.HiddenSextuplet, indirectHintProducers, new HiddenSet(6, false));
+        addIfWorth(SolvingTechnique.HiddenSeptuplet, indirectHintProducers, new HiddenSet(7, false));
         addIfWorth(SolvingTechnique.BivalueUniversalGrave, indirectHintProducers, new BivalueUniversalGrave());
-        addIfWorth(SolvingTechnique.AlignedPairExclusion, indirectHintProducers, new AlignedPairExclusion());
+//      addIfWorth(SolvingTechnique.AlignedPairExclusion, indirectHintProducers, new AlignedPairExclusion());
         chainingHintProducers = new ArrayList<IndirectHintProducer>();
-        addIfWorth(SolvingTechnique.ForcingChainCycle, chainingHintProducers, new Chaining(false, false, false, 0));
-        addIfWorth(SolvingTechnique.AlignedTripletExclusion, chainingHintProducers, new AlignedExclusion(3));
-        addIfWorth(SolvingTechnique.NishioForcingChain, chainingHintProducers, new Chaining(false, true, true, 0));
-        addIfWorth(SolvingTechnique.MultipleForcingChain, chainingHintProducers, new Chaining(true, false, false, 0));
-        addIfWorth(SolvingTechnique.DynamicForcingChain, chainingHintProducers, new Chaining(true, true, false, 0));
+        addIfWorth(SolvingTechnique.ForcingChainCycle, chainingHintProducers, new Chaining(false, false, false, 0, true, 0));
+//      addIfWorth(SolvingTechnique.AlignedTripletExclusion, chainingHintProducers, new AlignedExclusion(3));
+        addIfWorth(SolvingTechnique.NishioForcingChain, chainingHintProducers, new Chaining(false, true, true, 0, true, 0));
+        addIfWorth(SolvingTechnique.MultipleForcingChain, chainingHintProducers, new Chaining(true, false, false, 0, true, 0));
+        addIfWorth(SolvingTechnique.DynamicForcingChain, chainingHintProducers, new Chaining(true, true, false, 0, true, 0));
         chainingHintProducers2 = new ArrayList<IndirectHintProducer>();
-        addIfWorth(SolvingTechnique.DynamicForcingChainPlus, chainingHintProducers2, new Chaining(true, true, false, 1));
+        addIfWorth(SolvingTechnique.DynamicForcingChainPlus, chainingHintProducers2, new Chaining(true, true, false, 1, true, 0));
         // These rules are not really solving techs. They check the validity of the puzzle
         validatorHintProducers = new ArrayList<WarningHintProducer>();
         validatorHintProducers.add(new NoDoubles());
@@ -132,11 +142,12 @@ public class Solver {
         warningHintProducers.add(new BruteForceAnalysis(false));
         // These are very slow. We add them only as "rescue"
         advancedHintProducers = new ArrayList<IndirectHintProducer>();
-        addIfWorth(SolvingTechnique.NestedForcingChain, advancedHintProducers, new Chaining(true, true, false, 2));
-        addIfWorth(SolvingTechnique.NestedForcingChain, advancedHintProducers, new Chaining(true, true, false, 3));
+        addIfWorth(SolvingTechnique.NestedForcingChain, advancedHintProducers, new Chaining(true, true, false, 2, true, 0));
+        addIfWorth(SolvingTechnique.NestedForcingChain, advancedHintProducers, new Chaining(true, true, false, 3, true, 0));
         experimentalHintProducers = new ArrayList<IndirectHintProducer>(); // Two levels of nesting !?
-        addIfWorth(SolvingTechnique.NestedForcingChain, experimentalHintProducers, new Chaining(true, true, false, 4));
-        addIfWorth(SolvingTechnique.NestedForcingChain, experimentalHintProducers, new Chaining(true, true, false, 5));
+        addIfWorth(SolvingTechnique.NestedForcingChain, experimentalHintProducers, new Chaining(true, true, false, 4, true, 0));
+        addIfWorth(SolvingTechnique.NestedForcingChain, experimentalHintProducers, new Chaining(true, true, false, 4, true, 1));
+        addIfWorth(SolvingTechnique.NestedForcingChain, experimentalHintProducers, new Chaining(true, true, false, 4, true, 2));
     }
 
     /**
@@ -149,12 +160,12 @@ public class Solver {
     private <T extends Grid.Region> void cancelBy(Class<T> partType) {
         Grid.Region[] parts = grid.getRegions(partType);
         for (Grid.Region part : parts) {
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 16; i++) {
                 Cell cell = part.getCell(i);
                 if (!cell.isEmpty()) {
                     int value = cell.getValue();
                     // Remove the cell value from the potential values of other cells
-                    for (int j = 0; j < 9; j++)
+                    for (int j = 0; j < 16; j++)
                         part.getCell(j).removePotentialValue(value);
                 }
             }
@@ -165,11 +176,11 @@ public class Solver {
      * Rebuild, for each empty cell, the set of potential values.
      */
     public void rebuildPotentialValues() {
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 Cell cell = grid.getCell(x, y);
                 if (cell.getValue() == 0) {
-                    for (int value = 1; value <= 9; value++)
+                    for (int value = 1; value <= 16; value++)
                         cell.addPotentialValue(value);
                 }
             }
@@ -183,8 +194,8 @@ public class Solver {
      * Can be invoked after a new cell gets a value.
      */
     public void cancelPotentialValues() {
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 Cell cell = grid.getCell(x, y);
                 if (cell.getValue() != 0)
                     cell.clearPotentialValues();
@@ -229,7 +240,7 @@ public class Solver {
      * if the sudoku is valid.
      */
     public Hint checkValidity() {
-        int oldPriority = lowerPriority();
+//      int oldPriority = lowerPriority();
         SingleHintAccumulator accu = new SingleHintAccumulator();
         try {
             for (WarningHintProducer producer : validatorHintProducers)
@@ -237,7 +248,7 @@ public class Solver {
             for (WarningHintProducer producer : warningHintProducers)
                 producer.getHints(grid, accu);
         } catch (InterruptedException willProbablyHappen) {}
-        normalPriority(oldPriority);
+//      normalPriority(oldPriority);
         return accu.getHint();
     }
 
@@ -265,7 +276,7 @@ public class Solver {
     public void gatherHints(List<Hint> previousHints, final List<Hint> result,
             HintsAccumulator accu, Asker asker) {
 
-        int oldPriority = lowerPriority();
+//      int oldPriority = lowerPriority();
         boolean isAdvanced = false;
         try {
             for (HintProducer producer : directHintProducers)
@@ -303,11 +314,11 @@ public class Solver {
         } catch (InterruptedException willProbablyHappen) {}
         if (!isAdvanced)
             isUsingAdvanced = false;
-        normalPriority(oldPriority);
+//      normalPriority(oldPriority);
     }
 
     public List<Hint> getAllHints(Asker asker) {
-        int oldPriority = lowerPriority();
+//      int oldPriority = lowerPriority();
         List<Hint> result = new ArrayList<Hint>();
         HintsAccumulator accu = new DefaultHintsAccumulator(result);
         try {
@@ -343,13 +354,13 @@ public class Solver {
                 }
             }
         } catch (InterruptedException cannotHappen) {}
-        normalPriority(oldPriority);
+//      normalPriority(oldPriority);
         return result;
     }
 
     private boolean isSolved() {
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 if (grid.getCellValue(x, y) == 0)
                     return false;
             }
@@ -366,7 +377,7 @@ public class Solver {
                 return -1;
             else if (d1 > d2)
                 return 1;
-            else 
+            else
                 return r1.getName().compareTo(r2.getName());
         }
 
@@ -382,7 +393,7 @@ public class Solver {
      * be solved without recursive guessing (brute-force).
      */
     public Map<Rule,Integer> solve(Asker asker) {
-        int oldPriority = lowerPriority();
+//      int oldPriority = lowerPriority();
         // rebuildPotentialValues();
         Map<Rule,Integer> usedRules = new TreeMap<Rule,Integer>(new RuleComparer());
         boolean isUsingAdvanced = false;
@@ -417,9 +428,9 @@ public class Solver {
                 usedRules.put(rule, usedRules.get(rule) + 1);
             else
                 usedRules.put(rule, 1);
-            hint.apply();
+            hint.apply(grid);
         }
-        normalPriority(oldPriority);
+//      normalPriority(oldPriority);
         return usedRules;
     }
 
@@ -436,7 +447,7 @@ public class Solver {
      * given bounds. An arbitrary out-of-bounds value else.
      */
     public double analyseDifficulty(double min, double max) {
-        int oldPriority = lowerPriority();
+//      int oldPriority = lowerPriority();
         try {
             double difficulty = Double.NEGATIVE_INFINITY;
             while (!isSolved()) {
@@ -466,11 +477,11 @@ public class Solver {
                     break;
                 if (difficulty > max)
                     break;
-                hint.apply();
+                hint.apply(grid);
             }
             return difficulty;
         } finally {
-            normalPriority(oldPriority);
+//          normalPriority(oldPriority);
         }
     }
 
@@ -499,7 +510,7 @@ public class Solver {
                 } catch (InterruptedException willHappen) {}
                 Hint hint = accu.getHint();
                 if (hint == null) {
-		    difficulty = 20.0;
+                    difficulty = 20.0;
                     break;
                 }
 //a             assert hint instanceof Rule;
@@ -507,20 +518,90 @@ public class Solver {
                 double ruleDiff = rule.getDifficulty();
                 if (ruleDiff > difficulty)
                     difficulty = ruleDiff;
-                hint.apply();
-		if (pearl == 0.0) {
-		    if (diamond == 0.0)
-			diamond = difficulty;
-		    if (hint.getCell() != null) {
+                hint.apply(grid);
+                if (pearl == 0.0) {
+                    if (diamond == 0.0)
+                        diamond = difficulty;
+                    if (hint.getCell() != null) {
                         if (want == 'd' && difficulty > diamond) {
-		            difficulty = 20.0;
+                            difficulty = 20.0;
                             break;
                         }
-		        pearl = difficulty;
-		    }
+                        pearl = difficulty;
+                    }
                 }
-		else if (want != 0 && difficulty > pearl) {
-		    difficulty = 20.0;
+                else if (want != 0 && difficulty > pearl) {
+                    difficulty = 20.0;
+                    break;
+                }
+            }
+        } finally {
+            backup.copyTo(grid);
+        }
+    }
+
+    public void getHintsHint() {
+        Grid backup = new Grid();
+        grid.copyTo(backup);
+        try {
+            difficulty = Double.NEGATIVE_INFINITY;
+            pearl = 0.0;
+            diamond = 0.0;
+            while (!isSolved()) {
+                SingleHintAccumulator accu = new SingleHintAccumulator();
+                try {
+                    for (HintProducer producer : directHintProducers)
+                        producer.getHints(grid, accu);
+                    for (IndirectHintProducer producer : indirectHintProducers)
+                        producer.getHints(grid, accu);
+                    for (IndirectHintProducer producer : chainingHintProducers)
+                        producer.getHints(grid, accu);
+                    for (IndirectHintProducer producer : chainingHintProducers2)
+                        producer.getHints(grid, accu);
+                    for (IndirectHintProducer producer : advancedHintProducers)
+                        producer.getHints(grid, accu);
+                    for (IndirectHintProducer producer : experimentalHintProducers)
+                        producer.getHints(grid, accu);
+                } catch (InterruptedException willHappen) {}
+                Hint hint = accu.getHint();
+                if (hint == null) {
+                    difficulty = 20.0;
+                    break;
+                }
+//a             assert hint instanceof Rule;
+                Rule rule = (Rule)hint;
+                double ruleDiff = rule.getDifficulty();
+                if (ruleDiff > difficulty)
+                    difficulty = ruleDiff;
+                hint.apply(grid);
+
+                String s = "";
+                for (int i = 0; i < 256; i++) {
+                    int n = grid.getCellValue(i % 16, i / 16);
+                    s += (n==0)?".":"@ABCDEFGHIJKLMNOP".substring(n,n+1);
+                }
+                s += " ";
+                int w = (int)((ruleDiff + 0.05) * 10);
+                int p = w % 10;
+                w /= 10;
+                s += w + "." + p;
+                s += ", " + hint.toString();
+                System.out.println(s);
+                System.out.flush();
+
+                if (pearl == 0.0) {
+                    if (diamond == 0.0)
+                        diamond = difficulty;
+                    if (hint.getCell() != null) {
+                        if (want == 'd' && difficulty > diamond) {
+                            difficulty = 20.0;
+                            break;
+                        }
+                        pearl = difficulty;
+                    }
+                }
+                else if (want != 0 && difficulty > pearl) {
+                    difficulty = 20.0;
                     break;
                 }
             }

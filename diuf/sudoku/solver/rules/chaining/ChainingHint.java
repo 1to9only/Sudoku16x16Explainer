@@ -254,13 +254,13 @@ public abstract class ChainingHint extends IndirectHint implements Rule, HasPare
                         if (cause.equals(Potential.Cause.NakedSingle)) {
                             Cell actCell = currentGrid.getCell(curCell.getX(), curCell.getY());
                             Cell initCell = initialGrid.getCell(curCell.getX(), curCell.getY());
-                            for (int value = 1; value <= 9; value++) {
+                            for (int value = 1; value <= 16; value++) {
                                 if (initCell.hasPotentialValue(value) && !actCell.hasPotentialValue(value))
                                     result.add(new Potential(actCell, value, false));
                             }
                         } else { // Hidden single
                             Region r = currentGrid.getRegionAt(getCauseRegion(cause), curCell);
-                            for (int i = 0; i < 9; i++) {
+                            for (int i = 0; i < 16; i++) {
                                 Cell actCell = r.getCell(i);
                                 Cell initCell = initialGrid.getCell(actCell.getX(), actCell.getY());
                                 if (initCell.hasPotentialValue(p.value) && !actCell.hasPotentialValue(p.value))
@@ -478,7 +478,7 @@ public abstract class ChainingHint extends IndirectHint implements Rule, HasPare
             for (Potential target : nestedHint.getChainsTargets()) {
                 Potential assumption = getSrcPotential(target);
                 nested.append("Chain " + index + ": <b>If " + assumption.toWeakString()
-                        + ", then " + target.toStrongString() + "</b>" 
+                        + ", then " + target.toStrongString() + "</b>"
                         + " (View " + index + "):<br>\n");
                 nested.append(getHtmlChain(target));
                 nested.append("<br>\n");

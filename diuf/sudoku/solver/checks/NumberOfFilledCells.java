@@ -17,8 +17,8 @@ public class NumberOfFilledCells implements WarningHintProducer {
     public void getHints(Grid grid, HintsAccumulator accu)
             throws InterruptedException {
         int countEmpty = 0;
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 if (grid.getCell(x, y).getValue() == 0)
                     countEmpty++;
             }
@@ -27,13 +27,14 @@ public class NumberOfFilledCells implements WarningHintProducer {
             WarningMessage message = new WarningMessage(this, "The sudoku has been solved",
             "SudokuSolved.html");
             accu.add(message);
-        } else if (countEmpty > 81 - 17) {
-            int given = 81 - countEmpty;
-            WarningMessage message = new WarningMessage(this,
-                    "Sudoku is not valid",
-                    "TooFewCells.html", given);
-            accu.add(message);
         }
+    //  else if (countEmpty > 81 - 17) {
+    //      int given = 81 - countEmpty;
+    //      WarningMessage message = new WarningMessage(this,
+    //              "Sudoku is not valid",
+    //              "TooFewCells.html", given);
+    //      accu.add(message);
+    //  }
     }
 
     @Override

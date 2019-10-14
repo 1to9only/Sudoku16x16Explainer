@@ -29,7 +29,7 @@ public class XYWing implements IndirectHintProducer {
      * <p>
      * In an XY-Wing, the three cells must have exactly the potential values xy,
      * xz and yz, respectively, where x, y and z are different number between
-     * 1 and 9.
+     * 1 and 16.
      * <p>
      * We test that their union has three value and their intersection is empty.
      * @param xyValues the potential values of the "XY" cell
@@ -67,8 +67,8 @@ public class XYWing implements IndirectHintProducer {
 
     public void getHints(Grid grid, HintsAccumulator accu) throws InterruptedException {
         int targetCardinality = (isXYZ ? 3 : 2);
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 Cell xyCell = grid.getCell(x, y);
                 BitSet xyValues = xyCell.getPotentialValues();
                 if (xyValues.cardinality() == targetCardinality) {

@@ -24,14 +24,14 @@ public class Cell {
     private final int x;
     private final int y;
     private int value = 0;
-    private BitSet potentialValues = new BitSet(9);
+    private BitSet potentialValues = new BitSet(16);
 
 
     /**
      * Create a new cell
      * @param grid the grid this cell is part of
-     * @param x the x coordinate of this cell (0=leftmost, 8=rightmost)
-     * @param y the y coordinate of this cell (0=topmost, 8=bottommost)
+     * @param x the x coordinate of this cell (0=leftmost, 15=rightmost)
+     * @param y the y coordinate of this cell (0=topmost, 15=bottommost)
      */
     public Cell(Grid grid, int x, int y) {
         this.grid = grid;
@@ -41,7 +41,7 @@ public class Cell {
 
     /**
      * Get the x coordinate of this cell.
-     * 0 = leftmost, 8 = rightmost
+     * 0 = leftmost, 15 = rightmost
      * @return the x coordinate of this cell
      */
     public int getX() {
@@ -50,7 +50,7 @@ public class Cell {
 
     /**
      * Get the y coordinate of this cell.
-     * 0 = topmost, 8 = bottommost
+     * 0 = topmost, 15 = bottommost
      * @return the y coordinate of this cell
      */
     public int getY() {
@@ -98,7 +98,7 @@ public class Cell {
         this.potentialValues.clear();
         for (Class<? extends Grid.Region> regionType : grid.getRegionTypes()) {
             Grid.Region region = grid.getRegionAt(regionType, this.x, this.y);
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 16; i++) {
                 Cell other = region.getCell(i);
                 other.removePotentialValue(value);
             }
@@ -109,7 +109,7 @@ public class Cell {
      * Get the potential values for this cell.
      * <p>
      * The result is returned as a bitset. Each of the
-     * bit number 1 to 9 is set if the corresponding
+     * bit number 1 to 16 is set if the corresponding
      * value is a potential value for this cell. Bit number
      * <tt>0</tt> is not used and ignored.
      * @return the potential values for this cell
@@ -121,7 +121,7 @@ public class Cell {
     /**
      * Test whether the given value is a potential
      * value for this cell.
-     * @param value the potential value to test, between 1 and 9, inclusive
+     * @param value the potential value to test, between 1 and 16, inclusive
      * @return whether the given value is a potential value for this cell
      */
     public boolean hasPotentialValue(int value) {
@@ -130,7 +130,7 @@ public class Cell {
 
     /**
      * Add the given value as a potential value for this cell
-     * @param value the value to add, between 1 and 9, inclusive
+     * @param value the value to add, between 1 and 16, inclusive
      */
     public void addPotentialValue(int value) {
         this.potentialValues.set(value, true);
@@ -138,7 +138,7 @@ public class Cell {
 
     /**
      * Remove the given value from the potential values of this cell.
-     * @param value the value to remove, between 1 and 9, inclusive
+     * @param value the value to remove, between 1 and 16, inclusive
      */
     public void removePotentialValue(int value) {
         this.potentialValues.set(value, false);
@@ -171,7 +171,7 @@ public class Cell {
             // Get region on which this cell is
             Grid.Region region = grid.getRegionAt(regionType, x, y);
             // Add all cell of that region
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 16; i++)
                 result.add(region.getCell(i));
         }
         // Remove this cell
@@ -182,8 +182,8 @@ public class Cell {
     /**
      * Get a string representation of a cell. The notation that
      * is used is defined by the {@link Settings} class.
-     * @param x the horizontal coordinate of the cell (0=leftmost, 8=rightmost)
-     * @param y the vertical coordinate of the cell (0=topmost, 8=bottommost)
+     * @param x the horizontal coordinate of the cell (0=leftmost, 15=rightmost)
+     * @param y the vertical coordinate of the cell (0=topmost, 15=bottommost)
      * @return a string representation of the cell
      */
     private static String toString(int x, int y) {
@@ -208,7 +208,7 @@ public class Cell {
      * Get a string representation of this cell.
      * <p>
      * Returned strings are in the form "A1", "A2", "A3", ...
-     * "I9".
+     * "I16".
      * @return a string representation of this cell.
      */
     @Override
@@ -235,7 +235,7 @@ public class Cell {
             if (i > 0)
                 builder.append(",");
             Cell cell = cells[i];
-            builder.append(toString(cell.x, cell.y));      
+            builder.append(toString(cell.x, cell.y));
         }
         return builder.toString();
     }
@@ -254,7 +254,7 @@ public class Cell {
             if (i > 0)
                 builder.append(",");
             Cell cell = cells[i];
-            builder.append(toString(cell.x, cell.y));      
+            builder.append(toString(cell.x, cell.y));
         }
         return builder.toString();
     }
