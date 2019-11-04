@@ -5,7 +5,7 @@
  */
 package diuf.sudoku.solver;
 
-import java.security.*;
+//port java.security.*;
 import java.util.*;
 
 import diuf.sudoku.*;
@@ -112,17 +112,24 @@ public class Solver {
         addIfWorth(SolvingTechnique.XYZWing, indirectHintProducers, new XYWing(true));
 //      addIfWorth(SolvingTechnique.UniqueLoop, indirectHintProducers, new UniqueLoops());
         addIfWorth(SolvingTechnique.NakedQuad, indirectHintProducers, new NakedSet(4));
-        addIfWorth(SolvingTechnique.NakedQuintuplet, indirectHintProducers, new NakedSet(5));
-        addIfWorth(SolvingTechnique.NakedSextuplet, indirectHintProducers, new NakedSet(6));
-        addIfWorth(SolvingTechnique.NakedSeptuplet, indirectHintProducers, new NakedSet(7));
         addIfWorth(SolvingTechnique.Jellyfish, indirectHintProducers, new Fisherman(4));
+        addIfWorth(SolvingTechnique.HiddenQuad, indirectHintProducers, new HiddenSet(4, false));
+
+        addIfWorth(SolvingTechnique.NakedQuintuplet, indirectHintProducers, new NakedSet(5));
+        addIfWorth(SolvingTechnique.HiddenQuintuplet, indirectHintProducers, new HiddenSet(5, false));
+        addIfWorth(SolvingTechnique.NakedSextuplet, indirectHintProducers, new NakedSet(6));
+        addIfWorth(SolvingTechnique.HiddenSextuplet, indirectHintProducers, new HiddenSet(6, false));
+//      addIfWorth(SolvingTechnique.NakedSeptuplet, indirectHintProducers, new NakedSet(7));
+//      addIfWorth(SolvingTechnique.HiddenSeptuplet, indirectHintProducers, new HiddenSet(7, false));
+
         addIfWorth(SolvingTechnique.Starfish, indirectHintProducers, new Fisherman(5));
         addIfWorth(SolvingTechnique.Whale, indirectHintProducers, new Fisherman(6));
         addIfWorth(SolvingTechnique.Leviathan, indirectHintProducers, new Fisherman(7));
-        addIfWorth(SolvingTechnique.HiddenQuad, indirectHintProducers, new HiddenSet(4, false));
-        addIfWorth(SolvingTechnique.HiddenQuintuplet, indirectHintProducers, new HiddenSet(5, false));
-        addIfWorth(SolvingTechnique.HiddenSextuplet, indirectHintProducers, new HiddenSet(6, false));
-        addIfWorth(SolvingTechnique.HiddenSeptuplet, indirectHintProducers, new HiddenSet(7, false));
+
+//      addIfWorth(SolvingTechnique.NakedOctuplet, indirectHintProducers, new NakedSet(8));
+//      addIfWorth(SolvingTechnique.HiddenOctuplet, indirectHintProducers, new HiddenSet(8, false));
+//      addIfWorth(SolvingTechnique.LochNessMonster, indirectHintProducers, new Fisherman(8));
+
         addIfWorth(SolvingTechnique.BivalueUniversalGrave, indirectHintProducers, new BivalueUniversalGrave());
 //      addIfWorth(SolvingTechnique.AlignedPairExclusion, indirectHintProducers, new AlignedPairExclusion());
         chainingHintProducers = new ArrayList<IndirectHintProducer>();
@@ -206,30 +213,30 @@ public class Solver {
         cancelBy(Grid.Column.class);
     }
 
-    /**
-     * Lower the current thread's priority.
-     * @return the previous thread's priority
-     */
-    private int lowerPriority() {
-        try {
-            int result = Thread.currentThread().getPriority();
-            Thread.currentThread().setPriority((Thread.NORM_PRIORITY + Thread.MIN_PRIORITY * 2) / 3);
-            return result;
-        } catch (AccessControlException ex) {}
-        return 0;
-    }
-
-    /**
-     * Reset the current thread's priority to the given value.
-     * Typically, the given value is the value returned by
-     * {@link #lowerPriority()}.
-     * @param priority the new priority
-     */
-    private void normalPriority(int priority) {
-        try {
-            Thread.currentThread().setPriority(priority);
-        } catch (AccessControlException ex) {}
-    }
+//  /**
+//   * Lower the current thread's priority.
+//   * @return the previous thread's priority
+//   */
+//  private int lowerPriority() {
+//      try {
+//          int result = Thread.currentThread().getPriority();
+//          Thread.currentThread().setPriority((Thread.NORM_PRIORITY + Thread.MIN_PRIORITY * 2) / 3);
+//          return result;
+//      } catch (AccessControlException ex) {}
+//      return 0;
+//  }
+//
+//  /**
+//   * Reset the current thread's priority to the given value.
+//   * Typically, the given value is the value returned by
+//   * {@link #lowerPriority()}.
+//   * @param priority the new priority
+//   */
+//  private void normalPriority(int priority) {
+//      try {
+//          Thread.currentThread().setPriority(priority);
+//      } catch (AccessControlException ex) {}
+//  }
 
     /**
      * Get the first available validity warning hint.

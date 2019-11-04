@@ -168,6 +168,12 @@ public class HiddenSet implements IndirectHintProducer {
             } else {
                 return "Hidden Septuplets";
             }
+        } else if (degree == 8) {
+            if (isDirect) {
+                return "Direct Hidden Octuplets";
+            } else {
+                return "Hidden Octuplets";
+            }
         }
         return "Hidden Sets " + degree;
     }

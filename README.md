@@ -28,8 +28,18 @@ A puzzle converter to the A-P format used by Sudoku16Explainer is [here](https:/
 - added Fishes: Starfishes, Whales, Leviathans, all with same rating as for Jellyfish (5.2).
 - added Hidden Quintuplets, Sextuplets, Septuplets, all with same rating as for Hidden Quad (5.4).
 - added parallel processing, based on code from [SukakuExplainer](https://github.com/SudokuMonster/SukakuExplainer).
-- added Difficulty total, based on code from [NewerSudokuExplainer](https://github.com/Sunnie-Shine/NewerSudokuExplainer)
+- added Difficulty total, based on code from [NewerSudokuExplainer](https://github.com/Sunnie-Shine/NewerSudokuExplainer).
 - added hints.java
+
+## Changes 1.2.1.3-191104 release
+- disabled changing thread priority in Solver.
+- made Full Symmetry only initial option in GenerateDialog.
+- changed ratings Naked and Hidden: Quintuplets, Sextuplets, Septuplets (5.4) - septuplets are disabled.
+- changed ratings Fishes: Starfishes, Whales, Leviathans (5.5).
+- added support for 0-9A-F, 1-9A-G, 1-16 puzzle formats, in GUI only.
+- added Naked Octuplet, Hidden Octuplet, Loch Ness Monster (5.6) - all are elusive, and disabled.
+- slightly improved SolvingTechnique, NakedSingle, Chaining, Grid.
+- fixed parallel processing threads finishing order
 
 ## Usage - GUI
 

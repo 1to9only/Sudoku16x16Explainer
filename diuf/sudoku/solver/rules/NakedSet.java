@@ -120,6 +120,8 @@ public class NakedSet implements IndirectHintProducer {
             return "Naked Sextuplets";
         else if (degree == 7)
             return "Naked Septuplets";
+        else if (degree == 8)
+            return "Naked Octuplets";
         return "Naked Sets " + degree;
     }
 

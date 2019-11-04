@@ -69,12 +69,14 @@ public class HiddenSetHint extends IndirectHint implements Rule, HasParentPotent
             return 3.4;
         else if (degree == 3)
             return 4.0;
-        else
+        else if (degree <= 7)
             return 5.4;
+        else
+            return 5.6;
     }
 
     public String getName() {
-        final String[] groupNames = new String[] {"Pair", "Triplet", "Quad", "Quintuplet", "Sextuplet", "Septuplet"};
+        final String[] groupNames = new String[] {"Pair", "Triplet", "Quad", "Quintuplet", "Sextuplet", "Septuplet", "Octuplet"};
         int degree = values.length;
         return "Hidden " + groupNames[degree - 2];
     }
@@ -112,7 +114,7 @@ public class HiddenSetHint extends IndirectHint implements Rule, HasParentPotent
         StringBuilder builder = new StringBuilder();
         builder.append(getName());
         builder.append(": ");
-        if (cells.length <= 7)
+        if (cells.length <= 8)
             builder.append(Cell.toFullString(this.cells));
         else
             builder.append("Cells [...]");
@@ -129,7 +131,7 @@ public class HiddenSetHint extends IndirectHint implements Rule, HasParentPotent
 
     @Override
     public String toHtml() {
-        final String[] numberNames = new String[] {"two", "three", "four", "five", "six", "seven"};
+        final String[] numberNames = new String[] {"two", "three", "four", "five", "six", "seven", "eight"};
         String result = HtmlLoader.loadHtml(this, "HiddenSetHint.html");
         String counter = numberNames[values.length - 2];
         String cellList = HtmlLoader.formatList(cells);

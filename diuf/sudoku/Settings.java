@@ -25,6 +25,7 @@ public class Settings {
     private boolean isShowingCandidates = true;
     private boolean isShowingCandidateMasks = true;
     private String lookAndFeelClassName = null;
+    private int iPuzzleFormat = 4;
 
     private EnumSet<SolvingTechnique> techniques;
 
@@ -47,6 +48,15 @@ public class Settings {
 
     public boolean isRCNotation() {
         return isRCNotation;
+    }
+
+    public void setPuzzleFormat(int format) {
+        this.iPuzzleFormat = format;
+        save();
+    }
+
+    public int getPuzzleFormat() {
+        return iPuzzleFormat;
     }
 
     public void setAntialiasing(boolean isAntialiasing) {
@@ -139,6 +149,7 @@ public class Settings {
             isShowingCandidates = prefs.getBoolean("isShowingCandidates", isShowingCandidates);
             isShowingCandidateMasks = prefs.getBoolean("isShowingCandidateMasks", isShowingCandidateMasks);
             lookAndFeelClassName = prefs.get("lookAndFeelClassName", lookAndFeelClassName);
+            iPuzzleFormat = prefs.getInt("iPuzzleFormat", iPuzzleFormat);
         } catch (SecurityException ex) {
             // Maybe we are running from an applet. Do nothing
         }
@@ -155,6 +166,7 @@ public class Settings {
             prefs.putBoolean("isShowingCandidateMasks", isShowingCandidateMasks);
             if (lookAndFeelClassName != null)
                 prefs.put("lookAndFeelClassName", lookAndFeelClassName);
+            prefs.putInt("iPuzzleFormat", iPuzzleFormat);
             try {
                 prefs.flush();
             } catch (BackingStoreException ex) {

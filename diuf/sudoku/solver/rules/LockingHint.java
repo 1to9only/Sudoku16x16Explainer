@@ -73,8 +73,12 @@ public class LockingHint extends IndirectHint implements Rule, HasParentPotentia
             return 3.2; // X-Wing
         else if (degree == 3)
             return 3.8; // Swordfish
-        else
+        else if (degree == 4)
             return 5.2; // Jellyfish
+        else if (degree <= 7)
+            return 5.5; // Starfish, Whale, Leviathan
+        else
+            return 5.6; // Loch Ness Monster, an elusive fish
     }
 
     public String getName() {
@@ -99,6 +103,8 @@ public class LockingHint extends IndirectHint implements Rule, HasParentPotentia
             return "Whale";
         } else if (degree == 7) {
             return "Leviathan";
+        } else if (degree == 8) {
+            return "Loch Ness Monster";
         }
         return null;
     }

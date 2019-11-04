@@ -67,12 +67,16 @@ public class NakedSetHint extends IndirectHint implements Rule, HasParentPotenti
             return 3.0;
         else if (degree == 3)
             return 3.6;
-        else
+        else if (degree == 4)
             return 5.0;
+        else if (degree <= 7)
+            return 5.4;
+        else
+            return 5.6;
     }
 
     public String getName() {
-        final String[] groupNames = new String[] {"Pair", "Triplet", "Quad", "Quintuplet", "Sextuplet", "Septuplet"};
+        final String[] groupNames = new String[] {"Pair", "Triplet", "Quad", "Quintuplet", "Sextuplet", "Septuplet", "Octuplet"};
         return "Naked " + groupNames[values.length - 2];
     }
 
@@ -106,7 +110,7 @@ public class NakedSetHint extends IndirectHint implements Rule, HasParentPotenti
         StringBuilder builder = new StringBuilder();
         builder.append(getName());
         builder.append(": ");
-        if (cells.length <= 7)
+        if (cells.length <= 8)
             builder.append(Cell.toFullString(this.cells));
         else
             builder.append("Cells [...]");
@@ -123,7 +127,7 @@ public class NakedSetHint extends IndirectHint implements Rule, HasParentPotenti
 
     @Override
     public String toHtml() {
-        final String[] numberNames = new String[] {"two", "three", "four", "five", "six", "seven"};
+        final String[] numberNames = new String[] {"two", "three", "four", "five", "six", "seven", "eight"};
         String result = HtmlLoader.loadHtml(this, "NakedSetHint.html");
         String counter = numberNames[values.length - 2];
         String cellList = HtmlLoader.formatList(cells);

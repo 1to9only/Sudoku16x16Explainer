@@ -95,6 +95,11 @@ public class SudokuFrame extends JFrame implements Asker {
     private JCheckBoxMenuItem mitFilter = null;
     private JRadioButtonMenuItem mitMathMode = null;
     private JRadioButtonMenuItem mitChessMode = null;
+    private JRadioButtonMenuItem mit09AFFormat = null;
+    private JRadioButtonMenuItem mit19AGFormat = null;
+    private JRadioButtonMenuItem mit116Format = null;
+    private JRadioButtonMenuItem mitAPFormat = null;
+    private JRadioButtonMenuItem mitRandomFormat = null;
     private JCheckBoxMenuItem mitAntiAliasing = null;
     private JMenu helpMenu = null;
     private JMenuItem mitAbout = null;
@@ -1239,11 +1244,23 @@ public class SudokuFrame extends JFrame implements Asker {
             optionsMenu.add(getMitChessMode());
             optionsMenu.add(getMitMathMode());
             optionsMenu.addSeparator();
+            optionsMenu.add(getMit09AFFormat());
+            optionsMenu.add(getMit19AGFormat());
+            optionsMenu.add(getMit116Format());
+            optionsMenu.add(getMitAPFormat());
+//          optionsMenu.add(getMitRandomFormat());
+            optionsMenu.addSeparator();
             optionsMenu.add(getMitLookAndFeel());
             optionsMenu.add(getMitAntiAliasing());
             ButtonGroup group = new ButtonGroup();
             group.add(getMitChessMode());
             group.add(getMitMathMode());
+            ButtonGroup format = new ButtonGroup();
+            format.add(getMit09AFFormat());
+            format.add(getMit19AGFormat());
+            format.add(getMit116Format());
+            format.add(getMitAPFormat());
+//          format.add(getMitRandomFormat());
         }
         return optionsMenu;
     }
@@ -1299,6 +1316,96 @@ public class SudokuFrame extends JFrame implements Asker {
             });
         }
         return mitChessMode;
+    }
+
+    private JRadioButtonMenuItem getMit09AFFormat() {
+        if (mit09AFFormat == null) {
+            mit09AFFormat = new JRadioButtonMenuItem();
+            mit09AFFormat.setText("0-9A-F puzzle format");
+//          mit09AFFormat.setMnemonic(KeyEvent.VK_X);
+            mit09AFFormat.setSelected(Settings.getInstance().getPuzzleFormat()==1);
+            mit09AFFormat.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent e) {
+                    if (mit09AFFormat.isSelected()) {
+                        Settings.getInstance().setPuzzleFormat(1);
+                        repaint();
+                    }
+                }
+            });
+        }
+        return mit09AFFormat;
+    }
+
+    private JRadioButtonMenuItem getMit19AGFormat() {
+        if (mit19AGFormat == null) {
+            mit19AGFormat = new JRadioButtonMenuItem();
+            mit19AGFormat.setText("1-9A-G puzzle format");
+//          mit19AGFormat.setMnemonic(KeyEvent.VK_X);
+            mit19AGFormat.setSelected(Settings.getInstance().getPuzzleFormat()==2);
+            mit19AGFormat.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent e) {
+                    if (mit19AGFormat.isSelected()) {
+                        Settings.getInstance().setPuzzleFormat(2);
+                        repaint();
+                    }
+                }
+            });
+        }
+        return mit19AGFormat;
+    }
+
+    private JRadioButtonMenuItem getMit116Format() {
+        if (mit116Format == null) {
+            mit116Format = new JRadioButtonMenuItem();
+            mit116Format.setText("1-16 puzzle format");
+//          mit116Format.setMnemonic(KeyEvent.VK_X);
+            mit116Format.setSelected(Settings.getInstance().getPuzzleFormat()==3);
+            mit116Format.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent e) {
+                    if (mit116Format.isSelected()) {
+                        Settings.getInstance().setPuzzleFormat(3);
+                        repaint();
+                    }
+                }
+            });
+        }
+        return mit116Format;
+    }
+
+    private JRadioButtonMenuItem getMitAPFormat() {
+        if (mitAPFormat == null) {
+            mitAPFormat = new JRadioButtonMenuItem();
+            mitAPFormat.setText("A-P puzzle format");
+//          mitAPFormat.setMnemonic(KeyEvent.VK_X);
+            mitAPFormat.setSelected(Settings.getInstance().getPuzzleFormat()==4);
+            mitAPFormat.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent e) {
+                    if (mitAPFormat.isSelected()) {
+                        Settings.getInstance().setPuzzleFormat(4);
+                        repaint();
+                    }
+                }
+            });
+        }
+        return mitAPFormat;
+    }
+
+    private JRadioButtonMenuItem getMitRandomFormat() {
+        if (mitRandomFormat == null) {
+            mitRandomFormat = new JRadioButtonMenuItem();
+            mitRandomFormat.setText("Random format (Save/Copy only)");
+//          mitRandomFormat.setMnemonic(KeyEvent.VK_X);
+            mitRandomFormat.setSelected(Settings.getInstance().getPuzzleFormat()==5);
+            mitRandomFormat.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent e) {
+                    if (mitRandomFormat.isSelected()) {
+                        Settings.getInstance().setPuzzleFormat(5);
+                        repaint();
+                    }
+                }
+            });
+        }
+        return mitRandomFormat;
     }
 
     private JCheckBoxMenuItem getMitAntiAliasing() {

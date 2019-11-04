@@ -74,18 +74,38 @@ public class SudokuIO {
         int cluenum = 0;
         int linelen = line.length();
         char ch = 0;
-
+        int pformat = Settings.getInstance().getPuzzleFormat();
         int ispad = 0;
         int grpcnt = 0;
         int grpmax = 0;
         int cluecount = 0;
         while ( cluenum < linelen ) {
             ch = line.charAt(cluenum++);
-            if (ch >= 'A' && ch <= 'P') { cluecount++; ispad = 0; grpcnt++; }
-            else
-            if (ch == '.' || ch == '0') { cluecount++; ispad = 0; grpcnt++; }
-            else
-            if ( ispad == 0 ) { ispad = 1; if ( grpcnt > grpmax ) { grpmax = grpcnt; } grpcnt = 0; }
+            switch ( pformat ) {
+            case 1:
+                if (ch >= '0' && ch <= '9') { cluecount++; ispad = 0; grpcnt++; }
+           else if (ch >= 'A' && ch <= 'F') { cluecount++; ispad = 0; grpcnt++; }
+           else if (ch == '.'             ) { cluecount++; ispad = 0; grpcnt++; }
+           else if ( ispad == 0 ) { ispad = 1; if ( grpcnt > grpmax ) { grpmax = grpcnt; } grpcnt = 0; }
+                break;
+            case 2:
+                if (ch >= '1' && ch <= '9') { cluecount++; ispad = 0; grpcnt++; }
+           else if (ch >= 'A' && ch <= 'G') { cluecount++; ispad = 0; grpcnt++; }
+           else if (ch == '.' || ch == '0') { cluecount++; ispad = 0; grpcnt++; }
+           else if ( ispad == 0 ) { ispad = 1; if ( grpcnt > grpmax ) { grpmax = grpcnt; } grpcnt = 0; }
+                break;
+            case 3:
+                if (ch >= '0' && ch <= '9') { cluecount++; ispad = 0; grpcnt++; }
+           else if (ch == '.'             ) { cluecount++; ispad = 0; grpcnt++; }
+           else if ( ispad == 0 ) { ispad = 1; if ( grpcnt > grpmax ) { grpmax = grpcnt; } grpcnt = 0; }
+                break;
+            case 4:
+            default:
+                if (ch >= 'A' && ch <= 'P') { cluecount++; ispad = 0; grpcnt++; }
+           else if (ch == '.' || ch == '0') { cluecount++; ispad = 0; grpcnt++; }
+           else if ( ispad == 0 ) { ispad = 1; if ( grpcnt > grpmax ) { grpmax = grpcnt; } grpcnt = 0; }
+                break;
+            }
         }
 
         cellnum = 0;
@@ -94,14 +114,28 @@ public class SudokuIO {
         if ( cluecount >= 256 ) { // sudoku
             while ( cellnum < 256 && cluenum < linelen ) {
                 ch = line.charAt(cluenum++);
-                if (ch >= 'A' && ch <= 'P') {
-                    int value = ch - 'A'+1;
-                    grid.setCellValue(cellnum % 16, cellnum / 16, value);
-                    cellnum++;
-                }
-                else
-                if (ch == '.' || ch == '0') {
-                    cellnum++;
+                switch ( pformat ) {
+                case 1:
+                    if (ch >= '0' && ch <= '9') { int value = ch - '0'+1; grid.setCellValue(cellnum % 16, cellnum / 16, value); cellnum++; }
+               else if (ch >= 'A' && ch <= 'F') { int value = ch - 'A'+11; grid.setCellValue(cellnum % 16, cellnum / 16, value); cellnum++; }
+               else if (ch == '.'             ) { cellnum++; }
+                    break;
+                case 2:
+                    if (ch >= '1' && ch <= '9') { int value = ch - '1'+1; grid.setCellValue(cellnum % 16, cellnum / 16, value); cellnum++; }
+               else if (ch >= 'A' && ch <= 'G') { int value = ch - 'A'+10; grid.setCellValue(cellnum % 16, cellnum / 16, value); cellnum++; }
+               else if (ch == '.' || ch == '0') { cellnum++; }
+                    break;
+                case 3:
+                    char ch2 = line.charAt(cluenum);
+       if (ch == '1' && ch2>= '0' && ch2<= '6') { int value = ch2 - '0'+10; grid.setCellValue(cellnum % 16, cellnum / 16, value); cellnum++; cluenum++; }
+               else if (ch >= '1' && ch <= '9') { int value = ch - '1'+1; grid.setCellValue(cellnum % 16, cellnum / 16, value); cellnum++; }
+               else if (ch == '.'             ) { cellnum++; }
+                    break;
+                case 4:
+                default:
+                    if (ch >= 'A' && ch <= 'P') { int value = ch - 'A'+1; grid.setCellValue(cellnum % 16, cellnum / 16, value); cellnum++; }
+               else if (ch == '.' || ch == '0') { cellnum++; }
+                    break;
                 }
             }
             return ( cellnum==256 ? RES_OK : RES_WARN);
@@ -111,12 +145,37 @@ public class SudokuIO {
     }
 
     private static void saveToWriter(Grid grid, Writer writer) throws IOException {
+        int pformat = Settings.getInstance().getPuzzleFormat();
+        String text = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // abcdefghijklmnopqrstuvwxyz";
+        if ( pformat == 5 ) {
+            char[] characters = text.toCharArray();
+            for (int i=0; i <256; i++) { int n1 = (int)( Math.random() * characters.length); int n2 = (int)( Math.random() * characters.length); char temp = characters[n1]; characters[n1] = characters[n2]; characters[n2] = temp; }
+            text = new String( characters);
+        }
         for (int y = 0; y < 16; y++) {
             for (int x = 0; x < 16; x++) {
                 int value = grid.getCellValue(x, y);
-                int ch = '.';
-                if (value > 0)
-                    ch = 'A'-1 + value;
+                String ch = ".";
+                switch ( pformat ) {
+                case 1:
+                    if (value > 0) ch = ".0123456789ABCDEF".substring(value,value+1);
+                    break;
+                case 2:
+                    if (value > 0) ch = ".123456789ABCDEFG".substring(value,value+1);
+                    break;
+                case 3:
+                    if (value > 0)        ch = ""  + value;
+                    if (ch.length() == 1) ch = " " + ch;
+                    if (ch.length() == 2) ch = " " + ch;
+                    break;
+                case 5:
+                    ch = text.substring(value,value+1);
+                    break;
+                case 4:
+                default:
+                    if (value > 0) ch = ".ABCDEFGHIJKLMNOP".substring(value,value+1);
+                    break;
+                }
                 writer.write(ch);
             }
             writer.write("\r\n");
