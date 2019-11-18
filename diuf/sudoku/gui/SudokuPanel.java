@@ -66,9 +66,9 @@ public class SudokuPanel extends JPanel {
             rescale();
         initialize();
         super.setOpaque(false);
-        smallFont = new Font(FONT_NAME, Font.BOLD, FONT_SIZE_SMALL);
-        bigFont = new Font(FONT_NAME, Font.BOLD, FONT_SIZE_BIG);
-        legendFont = new Font(FONT_NAME, Font.BOLD, FONT_SIZE_LEGEND);
+        smallFont = new Font(FONT_NAME, Font.PLAIN, FONT_SIZE_SMALL);
+        bigFont = new Font(FONT_NAME, Font.PLAIN, FONT_SIZE_BIG);
+        legendFont = new Font(FONT_NAME, Font.PLAIN, FONT_SIZE_LEGEND);
     }
 
     private void rescale() {
@@ -474,7 +474,7 @@ public class SudokuPanel extends JPanel {
     }
 
     private void initValueColor(Graphics g, Cell cell) {
-        Color col = Color.black;
+        Color col = cell.isGiven() ? Color.black : Color.blue;
     //  if (cell == selectedCell)
     //      col = new Color(
     //              (col.getRed() + Color.orange.getRed()) / 2,

@@ -123,6 +123,7 @@ public class Grid {
      */
     public void setCellValue(int x, int y, int value) {
         this.cells[y][x].setValue(value);
+        this.cells[y][x].setGiven();
     }
 
     /**

@@ -24,54 +24,6 @@ public class GenerateDialog extends JDialog {
     private static final long serialVersionUID = 8620081149465721387L;
 
     private enum Difficulty {
-//      Easy {
-//
-//          @Override
-//          public double getMinDifficulty() {
-//              return 1.0;
-//          }
-//
-//          @Override
-//          public double getMaxDifficulty() {
-//              return 1.2;
-//          }
-//      },
-//      Medium {
-//
-//          @Override
-//          public double getMinDifficulty() {
-//              return 1.3;
-//          }
-//
-//          @Override
-//          public double getMaxDifficulty() {
-//              return 1.5;
-//          }
-//      },
-//      Hard {
-//
-//          @Override
-//          public double getMinDifficulty() {
-//              return 1.6;
-//          }
-//
-//          @Override
-//          public double getMaxDifficulty() {
-//              return 2.5;
-//          }
-//      },
-//      Fiendish {
-//
-//          @Override
-//          public double getMinDifficulty() {
-//              return 2.6;
-//          }
-//
-//          @Override
-//          public double getMaxDifficulty() {
-//              return 6.0;
-//          }
-//      },
         Diabolical {
 
             @Override
@@ -81,7 +33,55 @@ public class GenerateDialog extends JDialog {
 
             @Override
             public double getMaxDifficulty() {
-                return 11.0;
+                return 12.0;
+            }
+        },
+        Fiendish {
+
+            @Override
+            public double getMinDifficulty() {
+                return 2.6;
+            }
+
+            @Override
+            public double getMaxDifficulty() {
+                return 6.0;
+            }
+        },
+        Hard {
+
+            @Override
+            public double getMinDifficulty() {
+                return 1.6;
+            }
+
+            @Override
+            public double getMaxDifficulty() {
+                return 2.5;
+            }
+        },
+        Medium {
+
+            @Override
+            public double getMinDifficulty() {
+                return 1.3;
+            }
+
+            @Override
+            public double getMaxDifficulty() {
+                return 1.5;
+            }
+        },
+        Easy {
+
+            @Override
+            public double getMinDifficulty() {
+                return 1.0;
+            }
+
+            @Override
+            public double getMaxDifficulty() {
+                return 1.2;
             }
         };
 

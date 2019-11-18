@@ -110,7 +110,7 @@ public class Solver {
         addIfWorth(SolvingTechnique.XYWing, indirectHintProducers, new XYWing(false));
         addIfWorth(SolvingTechnique.DirectHiddenQuad, indirectHintProducers, new HiddenSet(4, true));
         addIfWorth(SolvingTechnique.XYZWing, indirectHintProducers, new XYWing(true));
-//      addIfWorth(SolvingTechnique.UniqueLoop, indirectHintProducers, new UniqueLoops());
+        addIfWorth(SolvingTechnique.UniqueLoop, indirectHintProducers, new UniqueLoops());
         addIfWorth(SolvingTechnique.NakedQuad, indirectHintProducers, new NakedSet(4));
         addIfWorth(SolvingTechnique.Jellyfish, indirectHintProducers, new Fisherman(4));
         addIfWorth(SolvingTechnique.HiddenQuad, indirectHintProducers, new HiddenSet(4, false));
@@ -119,22 +119,22 @@ public class Solver {
         addIfWorth(SolvingTechnique.HiddenQuintuplet, indirectHintProducers, new HiddenSet(5, false));
         addIfWorth(SolvingTechnique.NakedSextuplet, indirectHintProducers, new NakedSet(6));
         addIfWorth(SolvingTechnique.HiddenSextuplet, indirectHintProducers, new HiddenSet(6, false));
-//      addIfWorth(SolvingTechnique.NakedSeptuplet, indirectHintProducers, new NakedSet(7));
-//      addIfWorth(SolvingTechnique.HiddenSeptuplet, indirectHintProducers, new HiddenSet(7, false));
+        addIfWorth(SolvingTechnique.NakedSeptuplet, indirectHintProducers, new NakedSet(7));
+        addIfWorth(SolvingTechnique.HiddenSeptuplet, indirectHintProducers, new HiddenSet(7, false));
 
         addIfWorth(SolvingTechnique.Starfish, indirectHintProducers, new Fisherman(5));
         addIfWorth(SolvingTechnique.Whale, indirectHintProducers, new Fisherman(6));
         addIfWorth(SolvingTechnique.Leviathan, indirectHintProducers, new Fisherman(7));
 
-//      addIfWorth(SolvingTechnique.NakedOctuplet, indirectHintProducers, new NakedSet(8));
-//      addIfWorth(SolvingTechnique.HiddenOctuplet, indirectHintProducers, new HiddenSet(8, false));
-//      addIfWorth(SolvingTechnique.LochNessMonster, indirectHintProducers, new Fisherman(8));
+        addIfWorth(SolvingTechnique.NakedOctuplet, indirectHintProducers, new NakedSet(8));
+        addIfWorth(SolvingTechnique.HiddenOctuplet, indirectHintProducers, new HiddenSet(8, false));
+        addIfWorth(SolvingTechnique.LochNessMonster, indirectHintProducers, new Fisherman(8));
 
         addIfWorth(SolvingTechnique.BivalueUniversalGrave, indirectHintProducers, new BivalueUniversalGrave());
-//      addIfWorth(SolvingTechnique.AlignedPairExclusion, indirectHintProducers, new AlignedPairExclusion());
+        addIfWorth(SolvingTechnique.AlignedPairExclusion, indirectHintProducers, new AlignedPairExclusion());
         chainingHintProducers = new ArrayList<IndirectHintProducer>();
         addIfWorth(SolvingTechnique.ForcingChainCycle, chainingHintProducers, new Chaining(false, false, false, 0, true, 0));
-//      addIfWorth(SolvingTechnique.AlignedTripletExclusion, chainingHintProducers, new AlignedExclusion(3));
+        addIfWorth(SolvingTechnique.AlignedTripletExclusion, chainingHintProducers, new AlignedExclusion(3));
         addIfWorth(SolvingTechnique.NishioForcingChain, chainingHintProducers, new Chaining(false, true, true, 0, true, 0));
         addIfWorth(SolvingTechnique.MultipleForcingChain, chainingHintProducers, new Chaining(true, false, false, 0, true, 0));
         addIfWorth(SolvingTechnique.DynamicForcingChain, chainingHintProducers, new Chaining(true, true, false, 0, true, 0));
@@ -187,6 +187,7 @@ public class Solver {
             for (int x = 0; x < 16; x++) {
                 Cell cell = grid.getCell(x, y);
                 if (cell.getValue() == 0) {
+                    cell.resetGiven();
                     for (int value = 1; value <= 16; value++)
                         cell.addPotentialValue(value);
                 }
@@ -469,6 +470,10 @@ public class Solver {
                     for (IndirectHintProducer producer : chainingHintProducers2)
                         producer.getHints(grid, accu);
                     // Only used for generator. Ignore advanced/experimental techniques
+                    for (IndirectHintProducer producer : advancedHintProducers)
+                        producer.getHints(grid, accu);
+                    for (IndirectHintProducer producer : experimentalHintProducers)
+                        producer.getHints(grid, accu);
                 } catch (InterruptedException willHappen) {}
                 Hint hint = accu.getHint();
                 if (hint == null) {
@@ -480,7 +485,7 @@ public class Solver {
                 double ruleDiff = rule.getDifficulty();
                 if (ruleDiff > difficulty)
                     difficulty = ruleDiff;
-                if (difficulty >= min && max >= 11.0)
+                if (difficulty >= min && max >= 12.0)
                     break;
                 if (difficulty > max)
                     break;

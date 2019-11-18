@@ -41,6 +41,10 @@ A puzzle converter to the A-P format used by Sudoku16Explainer is [here](https:/
 - slightly improved SolvingTechnique, NakedSingle, Chaining, Grid.
 - fixed parallel processing threads finishing order
 
+## Changes 20191118
+- re-enabled commented out techniques, 8 solving techniques are disabled
+- changed to PLAIN font for GUI grid, black given cells, blue solved cells
+
 ## Usage - GUI
 
 java.exe -jar Sudoku16Explainer.jar

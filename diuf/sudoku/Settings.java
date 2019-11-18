@@ -137,6 +137,17 @@ public class Settings {
 
     private void init() {
         techniques = EnumSet.allOf(SolvingTechnique.class);
+        // these are problematic
+        techniques.remove(SolvingTechnique.UniqueLoop);
+        techniques.remove(SolvingTechnique.AlignedPairExclusion);
+        techniques.remove(SolvingTechnique.AlignedTripletExclusion);
+        // these are rare
+        techniques.remove(SolvingTechnique.NakedSeptuplet);
+        techniques.remove(SolvingTechnique.HiddenSeptuplet);
+        // these are elusive
+        techniques.remove(SolvingTechnique.NakedOctuplet);
+        techniques.remove(SolvingTechnique.HiddenOctuplet);
+        techniques.remove(SolvingTechnique.LochNessMonster);
     }
 
     public void load() {

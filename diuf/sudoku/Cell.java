@@ -25,7 +25,7 @@ public class Cell {
     private final int y;
     private int value = 0;
     private BitSet potentialValues = new BitSet(16);
-
+    private boolean isGiven;
 
     /**
      * Create a new cell
@@ -37,6 +37,16 @@ public class Cell {
         this.grid = grid;
         this.x = x;
         this.y = y;
+    }
+
+    public void setGiven() {
+        this.isGiven = true;
+    }
+    public void resetGiven() {
+        this.isGiven = false;
+    }
+    public boolean isGiven() {
+        return this.isGiven;
     }
 
     /**
@@ -268,6 +278,7 @@ public class Cell {
 //a     assert this.x == other.x && this.y == other.y;
         other.value = this.value;
         other.potentialValues = (BitSet)this.potentialValues.clone();
+        other.isGiven = this.isGiven;
     }
 
 }
