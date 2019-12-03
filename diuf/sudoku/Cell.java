@@ -37,6 +37,7 @@ public class Cell {
         this.grid = grid;
         this.x = x;
         this.y = y;
+        this.isGiven = false;
     }
 
     public void setGiven() {
