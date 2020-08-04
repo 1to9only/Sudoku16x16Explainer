@@ -456,11 +456,15 @@ public class SudokuExplainer {
     }
 
     public void applySelectedHints() {
+     if ( !solver.isSolved() ) {
+      if ( selectedHints.size() >= 1 ) {
         pushGrid();
         for (Hint hint : selectedHints)
             hint.apply(grid);
         clearHints();
         repaintAll();
+      }
+     }
     }
 
     public void applySelectedHintsAndContinue() {

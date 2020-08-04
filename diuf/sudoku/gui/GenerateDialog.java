@@ -25,64 +25,24 @@ public class GenerateDialog extends JDialog {
 
     private enum Difficulty {
         Diabolical {
-
-            @Override
-            public double getMinDifficulty() {
-                return 6.1;
-            }
-
-            @Override
-            public double getMaxDifficulty() {
-                return 12.0;
-            }
+            @Override public double getMinDifficulty() { return 6.1; }
+            @Override public double getMaxDifficulty() { return 12.0; }
         },
         Fiendish {
-
-            @Override
-            public double getMinDifficulty() {
-                return 2.6;
-            }
-
-            @Override
-            public double getMaxDifficulty() {
-                return 6.0;
-            }
+            @Override public double getMinDifficulty() { return 2.6; }
+            @Override public double getMaxDifficulty() { return 6.0; }
         },
         Hard {
-
-            @Override
-            public double getMinDifficulty() {
-                return 1.6;
-            }
-
-            @Override
-            public double getMaxDifficulty() {
-                return 2.5;
-            }
+            @Override public double getMinDifficulty() { return 1.6; }
+            @Override public double getMaxDifficulty() { return 2.5; }
         },
         Medium {
-
-            @Override
-            public double getMinDifficulty() {
-                return 1.3;
-            }
-
-            @Override
-            public double getMaxDifficulty() {
-                return 1.5;
-            }
+            @Override public double getMinDifficulty() { return 1.3; }
+            @Override public double getMaxDifficulty() { return 1.5; }
         },
         Easy {
-
-            @Override
-            public double getMinDifficulty() {
-                return 1.0;
-            }
-
-            @Override
-            public double getMaxDifficulty() {
-                return 1.2;
-            }
+            @Override public double getMinDifficulty() { return 1.0; }
+            @Override public double getMaxDifficulty() { return 1.2; }
         };
 
         public abstract double getMinDifficulty();
