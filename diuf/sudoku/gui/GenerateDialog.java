@@ -84,7 +84,7 @@ public class GenerateDialog extends JDialog {
 //      symmetries.add(Symmetry.BiDiagonal);
 //      symmetries.add(Symmetry.Rotational180);
 //      symmetries.add(Symmetry.Rotational90);
-        symmetries.add(Symmetry.Full);
+        symmetries.add(Symmetry.None);
 
         sudokuList.add(engine.getGrid());
     }
@@ -296,7 +296,7 @@ public class GenerateDialog extends JDialog {
             }
         });
         optionPanel.add(chkAnalysis);
-        chkAnalysis.setSelected(true);
+        chkAnalysis.setSelected(false);
     }
 
     private void generate() {
