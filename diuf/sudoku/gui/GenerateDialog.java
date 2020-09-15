@@ -84,7 +84,7 @@ public class GenerateDialog extends JDialog {
 //      symmetries.add(Symmetry.BiDiagonal);
 //      symmetries.add(Symmetry.Rotational180);
 //      symmetries.add(Symmetry.Rotational90);
-        symmetries.add(Symmetry.None);
+        symmetries.add(Symmetry.Full);
 
         sudokuList.add(engine.getGrid());
     }

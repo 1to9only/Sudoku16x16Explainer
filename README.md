@@ -45,6 +45,9 @@ A puzzle converter to the A-P format used by Sudoku16Explainer is [here](https:/
 - re-enabled commented out techniques, 8 solving techniques are disabled
 - changed to PLAIN font for GUI grid, black given cells, blue solved cells
 
+## Changes 20200915
+- fixed one old bug, and other small changes
+
 ## Usage - GUI
 
 java.exe -jar Sudoku16Explainer.jar

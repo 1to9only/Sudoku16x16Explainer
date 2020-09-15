@@ -499,7 +499,7 @@ public class SudokuExplainer {
             copy.copyTo(grid);
         }
         if (message != null)
-            JOptionPane.showMessageDialog(frame, message.toString(), "Paste",
+            JOptionPane.showMessageDialog(frame, message.toString(), "Paste Grid",
                     (message.isFatal() ? JOptionPane.ERROR_MESSAGE : JOptionPane.WARNING_MESSAGE));
     }
 
@@ -520,14 +520,14 @@ public class SudokuExplainer {
             copy.copyTo(grid);
         }
         if (message != null)
-            JOptionPane.showMessageDialog(frame, message.toString(), "Paste",
+            JOptionPane.showMessageDialog(frame, message.toString(), "Load Grid",
                     (message.isFatal() ? JOptionPane.ERROR_MESSAGE : JOptionPane.WARNING_MESSAGE));
     }
 
     public void saveGrid(File file) {
         ErrorMessage message = SudokuIO.saveToFile(grid, file);
         if (message != null)
-            JOptionPane.showMessageDialog(frame, message.toString(), "Paste",
+            JOptionPane.showMessageDialog(frame, message.toString(), "Save Grid",
                     JOptionPane.ERROR_MESSAGE);
     }
 

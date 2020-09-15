@@ -223,8 +223,8 @@ public class Chaining implements IndirectHintProducer {
         List<ChainingHint> result = new ArrayList<ChainingHint>();
         List<Cell> cellsToProcess = new ArrayList<Cell>();
         // Iterate on all empty cells
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 Cell cell = grid.getCell(x, y);
 //              int cardinality = cell.getPotentialValues().cardinality();
                 if (cell.getValue() == 0) { // the cell is empty
