@@ -597,6 +597,211 @@ public class Solver {
                 w /= 10;
                 s += w + "." + p;
                 s += ", " + hint.toString();
+                if (hint instanceof IndirectHint) {
+                    IndirectHint iHint = (IndirectHint)hint;
+                    if ( iHint.isWorth() ) {
+                        int countCells = 0;
+                        Map<Cell, BitSet> remPots = iHint.getRemovablePotentials();
+                        for (Cell cell : remPots.keySet()) {
+                            BitSet cellPots = remPots.get(cell);
+                            if ( countCells == 0 ) { s += ":"; }
+                            if ( countCells > 0 ) { s += ","; }
+                            s += " -";
+                            for (int pv=1; pv<=16; pv++ ) {
+                                if ( cellPots.get( pv) ) { s += pv; }
+                            }
+                            s += "r" + (cell.getY()+1) + "c" + (cell.getX()+1);
+                            countCells++;
+                        }
+                        Cell cell = iHint.getCell();
+                        if (cell != null) {
+                            s += ": r" + (cell.getY()+1) + "c" + (cell.getX()+1) + "=" + iHint.getValue();
+                        }
+                    }
+                }
+                System.out.println(s);
+                System.out.flush();
+
+                if (pearl == 0.0) {
+                    if (diamond == 0.0)
+                        diamond = difficulty;
+                    if (hint.getCell() != null) {
+                        if (want == 'd' && difficulty > diamond) {
+                            difficulty = 20.0;
+                            break;
+                        }
+                        pearl = difficulty;
+                    }
+                }
+                else if (want != 0 && difficulty > pearl) {
+                    difficulty = 20.0;
+                    break;
+                }
+            }
+        } finally {
+            backup.copyTo(grid);
+        }
+    }
+
+    public void getPencilMarks( int puzzleformat) {
+        Grid backup = new Grid();
+        grid.copyTo(backup);
+        try {
+            difficulty = Double.NEGATIVE_INFINITY;
+            pearl = 0.0;
+            diamond = 0.0;
+            while (!isSolved()) {
+                String s = "";
+
+                int crd = 1;
+                for (int i = 0; i < 256; i++) {
+                    int n = grid.getCell(i % 16, i / 16).getPotentialValues().cardinality();
+                    if ( n > crd ) { crd = n; }
+                }
+                if ( crd > 1 )
+                {
+                    for (int i=0; i<4; i++ ) {
+                        s = "+";
+                        for (int j=0; j<4; j++ ) {
+                            for (int k=0; k<4; k++ ) { s += "-";
+                                for (int l=0; l<crd; l++ ) { s += "-";
+                                }
+                            }
+                            s += "-+";
+                        }
+                        System.out.println(s);
+                        System.out.flush();
+
+                        for (int j=0; j<4; j++ ) {
+                            s = "|";
+                            for (int k=0; k<4; k++ ) {
+                                for (int l=0; l<4; l++ ) {
+                                    s += " ";
+                                    int cnt = 0;
+                                    int c = ((((i*4)+j)*4)+k)*4+l;
+                                    Cell cell = grid.getCell(c % 16, c / 16);
+                                    int n = cell.getValue();
+                                    if ( n != 0 ) {
+                                        if ( puzzleformat == 1 ) {
+                                            s += ".0123456789ABCDEF".substring(n,n+1);
+                                        }
+                                        else
+                                        if ( puzzleformat == 2 ) {
+                                            s += ".123456789ABCDEFG".substring(n,n+1);
+                                        }
+                                        else {
+                                            s += ".ABCDEFGHIJKLMNOP".substring(n,n+1);
+                                        }
+                                        cnt += 1;
+                                    }
+                                    if ( n == 0 ) {
+                                        for (int pv=1; pv<=16; pv++ ) {
+                                            if ( cell.hasPotentialValue( pv) ) {
+                                                if ( puzzleformat == 1 ) {
+                                                    s += ".0123456789ABCDEF".substring(pv,pv+1);
+                                                }
+                                                else
+                                                if ( puzzleformat == 2 ) {
+                                                    s += ".123456789ABCDEFG".substring(pv,pv+1);
+                                                }
+                                                else {
+                                                    s += ".ABCDEFGHIJKLMNOP".substring(pv,pv+1);
+                                                }
+                                                cnt += 1;
+                                            }
+                                        }
+                                    }
+                                    for (int pad=cnt; pad<crd; pad++ ) { s += " ";
+                                    }
+                                }
+                                s += " |";
+                            }
+                            System.out.println(s);
+                            System.out.flush();
+                        }
+                    }
+
+                    s = "+";
+                    for (int j=0; j<4; j++ ) {
+                        for (int k=0; k<4; k++ ) { s += "-";
+                            for (int l=0; l<crd; l++ ) { s += "-";
+                            }
+                        }
+                        s += "-+";
+                    }
+                    System.out.println(s);
+                    System.out.flush();
+                }
+
+                SingleHintAccumulator accu = new SingleHintAccumulator();
+                try {
+                    for (HintProducer producer : directHintProducers)
+                        producer.getHints(grid, accu);
+                    for (IndirectHintProducer producer : indirectHintProducers)
+                        producer.getHints(grid, accu);
+                    for (IndirectHintProducer producer : chainingHintProducers)
+                        producer.getHints(grid, accu);
+                    for (IndirectHintProducer producer : chainingHintProducers2)
+                        producer.getHints(grid, accu);
+                    for (IndirectHintProducer producer : advancedHintProducers)
+                        producer.getHints(grid, accu);
+                    for (IndirectHintProducer producer : experimentalHintProducers)
+                        producer.getHints(grid, accu);
+                } catch (InterruptedException willHappen) {}
+                Hint hint = accu.getHint();
+                if (hint == null) {
+                    difficulty = 20.0;
+                    break;
+                }
+//a             assert hint instanceof Rule;
+                Rule rule = (Rule)hint;
+                double ruleDiff = rule.getDifficulty();
+                if (ruleDiff > difficulty)
+                    difficulty = ruleDiff;
+                hint.apply(grid);
+
+                s = "";
+                for (int i = 0; i < 256; i++) {
+                    int n = grid.getCellValue(i % 16, i / 16);
+                    if ( puzzleformat == 1 ) {
+                        s += ".0123456789ABCDEF".substring(n,n+1);
+                    }
+                    else
+                    if ( puzzleformat == 2 ) {
+                        s += ".123456789ABCDEFG".substring(n,n+1);
+                    }
+                    else {
+                        s += ".ABCDEFGHIJKLMNOP".substring(n,n+1);
+                    }
+                }
+                s += " ";
+                int w = (int)((ruleDiff + 0.05) * 10);
+                int p = w % 10;
+                w /= 10;
+                s += w + "." + p;
+                s += ", " + hint.toString();
+                if (hint instanceof IndirectHint) {
+                    IndirectHint iHint = (IndirectHint)hint;
+                    if ( iHint.isWorth() ) {
+                        int countCells = 0;
+                        Map<Cell, BitSet> remPots = iHint.getRemovablePotentials();
+                        for (Cell cell : remPots.keySet()) {
+                            BitSet cellPots = remPots.get(cell);
+                            if ( countCells == 0 ) { s += ":"; }
+                            if ( countCells > 0 ) { s += ","; }
+                            s += " -";
+                            for (int pv=1; pv<=16; pv++ ) {
+                                if ( cellPots.get( pv) ) { s += pv; }
+                            }
+                            s += "r" + (cell.getY()+1) + "c" + (cell.getX()+1);
+                            countCells++;
+                        }
+                        Cell cell = iHint.getCell();
+                        if (cell != null) {
+                            s += ": r" + (cell.getY()+1) + "c" + (cell.getX()+1) + "=" + iHint.getValue();
+                        }
+                    }
+                }
                 System.out.println(s);
                 System.out.flush();
 
