@@ -26,7 +26,7 @@ public class GenerateDialog extends JDialog {
     private enum Difficulty {
         Diabolical {
             @Override public double getMinDifficulty() { return 6.1; }
-            @Override public double getMaxDifficulty() { return 12.0; }
+            @Override public double getMaxDifficulty() { return 11.0; }
         },
         Fiendish {
             @Override public double getMinDifficulty() { return 2.6; }
@@ -82,9 +82,9 @@ public class GenerateDialog extends JDialog {
     private void initParameters() {
 //      symmetries.add(Symmetry.Orthogonal);
 //      symmetries.add(Symmetry.BiDiagonal);
-//      symmetries.add(Symmetry.Rotational180);
+        symmetries.add(Symmetry.Rotational180);
 //      symmetries.add(Symmetry.Rotational90);
-        symmetries.add(Symmetry.Full);
+//      symmetries.add(Symmetry.Full);
 
         sudokuList.add(engine.getGrid());
     }
@@ -233,16 +233,16 @@ public class GenerateDialog extends JDialog {
             }
         });
         diffChooserPanel.add(selDifficulty);
-//      final JRadioButton chkExactDifficulty = new JRadioButton("Exact difficulty");
-//      chkExactDifficulty.setToolTipText("Generate a Sudoku with exactly the chosen difficulty");
-//      chkExactDifficulty.setMnemonic(KeyEvent.VK_E);
-//      chkExactDifficulty.addActionListener(new ActionListener() {
-//          public void actionPerformed(ActionEvent e) {
-//              if (chkExactDifficulty.isSelected())
-//                  isExact = true;
-//          }
-//      });
-//      diffChooserPanel.add(chkExactDifficulty);
+        final JRadioButton chkExactDifficulty = new JRadioButton("Exact difficulty");
+        chkExactDifficulty.setToolTipText("Generate a Sudoku with exactly the chosen difficulty");
+        chkExactDifficulty.setMnemonic(KeyEvent.VK_E);
+        chkExactDifficulty.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (chkExactDifficulty.isSelected())
+                    isExact = true;
+            }
+        });
+        diffChooserPanel.add(chkExactDifficulty);
         final JRadioButton chkMaximumDifficulty = new JRadioButton("Maximum difficulty");
         chkMaximumDifficulty.setToolTipText("Generate a Sudoku with at most the chosen difficulty");
         chkMaximumDifficulty.setMnemonic(KeyEvent.VK_M);
@@ -254,7 +254,7 @@ public class GenerateDialog extends JDialog {
         });
         diffChooserPanel.add(chkMaximumDifficulty);
         ButtonGroup group = new ButtonGroup();
-//      group.add(chkExactDifficulty);
+        group.add(chkExactDifficulty);
         group.add(chkMaximumDifficulty);
         chkMaximumDifficulty.setSelected(true);
 

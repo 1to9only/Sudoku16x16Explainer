@@ -48,6 +48,17 @@ public class Grid {
         }
     }
 
+    public void fixGivens() {
+        for (int i = 0; i < 256; i++) {
+            if ( getCellValue(i%16,i/16) != 0 ) {
+                getCell(i%16,i/16).setGiven();
+            }
+            else {
+                getCell(i%16,i/16).resetGiven();
+            }
+        }
+    }
+
     /**
      * Get the cell at the given coordinates
      * @param x the x coordinate (0=leftmost, 15=rightmost)

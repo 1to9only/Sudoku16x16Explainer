@@ -6,7 +6,19 @@
 package diuf.sudoku;
 
 import java.util.*;
-import java.util.prefs.*;
+//port java.util.prefs.*;
+
+import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import javax.swing.UIManager;
 
 /**
  * Global settings of the application.
@@ -20,15 +32,18 @@ public class Settings {
 
     private static Settings instance = null;
 
-    private boolean isRCNotation = false;
+    private static String jsonFilename = "Sudoku16Explainer.json";
+
+    private boolean isRCNotation = true;
     private boolean isAntialiasing = true;
     private boolean isShowingCandidates = true;
     private boolean isShowingCandidateMasks = true;
-    private String lookAndFeelClassName = null;
+    private String  lookAndFeelClassName = null;
     private int iPuzzleFormat = 4;
 
     private EnumSet<SolvingTechnique> techniques;
 
+    private int LoadError = 0;          // =1 if settings load error, a save is done
 
     private Settings() {
         init();
@@ -42,26 +57,21 @@ public class Settings {
     }
 
     public void setRCNotation(boolean isRCNotation) {
+      if ( this.isRCNotation != isRCNotation ) {
         this.isRCNotation = isRCNotation;
         save();
+      }
     }
 
     public boolean isRCNotation() {
         return isRCNotation;
     }
 
-    public void setPuzzleFormat(int format) {
-        this.iPuzzleFormat = format;
-        save();
-    }
-
-    public int getPuzzleFormat() {
-        return iPuzzleFormat;
-    }
-
     public void setAntialiasing(boolean isAntialiasing) {
+      if ( this.isAntialiasing != isAntialiasing ) {
         this.isAntialiasing = isAntialiasing;
         save();
+      }
     }
 
     public boolean isAntialiasing() {
@@ -69,8 +79,10 @@ public class Settings {
     }
 
     public void setShowingCandidates(boolean value) {
+      if ( this.isShowingCandidates != value ) {
         this.isShowingCandidates = value;
         save();
+      }
     }
 
     public boolean isShowingCandidates() {
@@ -78,8 +90,10 @@ public class Settings {
     }
 
     public void setShowingCandidateMasks(boolean value) {
+      if ( this.isShowingCandidateMasks != value ) {
         this.isShowingCandidateMasks = value;
         save();
+      }
     }
 
     public boolean isShowingCandidateMasks() {
@@ -91,8 +105,21 @@ public class Settings {
     }
 
     public void setLookAndFeelClassName(String lookAndFeelClassName) {
+      if ( !(this.lookAndFeelClassName.equals(lookAndFeelClassName)) ) {
         this.lookAndFeelClassName = lookAndFeelClassName;
         save();
+      }
+    }
+
+    public void setPuzzleFormat(int format) {
+      if ( this.iPuzzleFormat != format ) {
+        this.iPuzzleFormat = format;
+        save();
+      }
+    }
+
+    public int getPuzzleFormat() {
+        return iPuzzleFormat;
     }
 
     public EnumSet<SolvingTechnique> getTechniques() {
@@ -150,41 +177,88 @@ public class Settings {
         techniques.remove(SolvingTechnique.LochNessMonster);
     }
 
+    @SuppressWarnings("unchecked")
     public void load() {
-        try {
-            Preferences prefs = Preferences.userNodeForPackage(Settings.class);
-            if (prefs == null)
-                return; // What can I do there ?
-            isRCNotation = prefs.getBoolean("isRCNotation", isRCNotation);
-            isAntialiasing = prefs.getBoolean("isAntialiasing", isAntialiasing);
-            isShowingCandidates = prefs.getBoolean("isShowingCandidates", isShowingCandidates);
-            isShowingCandidateMasks = prefs.getBoolean("isShowingCandidateMasks", isShowingCandidateMasks);
-            lookAndFeelClassName = prefs.get("lookAndFeelClassName", lookAndFeelClassName);
-            iPuzzleFormat = prefs.getInt("iPuzzleFormat", iPuzzleFormat);
-        } catch (SecurityException ex) {
-            // Maybe we are running from an applet. Do nothing
+        LoadError = 0;
+        JSONParser jsonParser = new JSONParser();
+        try (FileReader reader = new FileReader(jsonFilename)) {
+            Object obj = jsonParser.parse(reader);
+            JSONArray jSettings = (JSONArray)obj;
+            jSettings.forEach( Item -> {
+                JSONObject stgObject = (JSONObject)Item;
+                JSONObject stgDetails = (JSONObject)stgObject.get("Settings");
+                String s = "";
+
+                try {
+                    s = (String)stgDetails.get("isRCNotation");
+                    isRCNotation = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isAntialiasing");
+                    isAntialiasing = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isShowingCandidates");
+                    isShowingCandidates = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isShowingCandidateMasks");
+                    isShowingCandidateMasks = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+
+                try {
+                    lookAndFeelClassName = (String)stgDetails.get("lookAndFeelClassName");
+                }
+                catch (NullPointerException e) { LoadError = 1;
+                    lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+                }
+
+                try {
+                    s = (String)stgDetails.get("iPuzzleFormat");
+                    iPuzzleFormat = s.charAt(0) - '0';
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+
+            });
+            if ( LoadError == 1 ) {
+                save();
+            }
+        } catch (FileNotFoundException e) {
+        //  create new json file
+            lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+            save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void save() {
-        try {
-            Preferences prefs = Preferences.userNodeForPackage(Settings.class);
-            if (prefs == null)
-                return;
-            prefs.putBoolean("isRCNotation", isRCNotation);
-            prefs.putBoolean("isAntialiasing", isAntialiasing);
-            prefs.putBoolean("isShowingCandidates", isShowingCandidates);
-            prefs.putBoolean("isShowingCandidateMasks", isShowingCandidateMasks);
-            if (lookAndFeelClassName != null)
-                prefs.put("lookAndFeelClassName", lookAndFeelClassName);
-            prefs.putInt("iPuzzleFormat", iPuzzleFormat);
-            try {
-                prefs.flush();
-            } catch (BackingStoreException ex) {
-                ex.printStackTrace();
-            }
-        } catch (SecurityException ex) {
-            // Maybe we are running from an applet. Do nothing
+        JSONObject stgDetails = new JSONObject();
+        stgDetails.put("isRCNotation", isRCNotation?"true":"false");
+        stgDetails.put("isAntialiasing", isAntialiasing?"true":"false");
+        stgDetails.put("isShowingCandidates", isShowingCandidates?"true":"false");
+        stgDetails.put("isShowingCandidateMasks", isShowingCandidateMasks?"true":"false");
+        stgDetails.put("lookAndFeelClassName", lookAndFeelClassName);
+        stgDetails.put("iPuzzleFormat", ""+iPuzzleFormat);
+
+        JSONObject stgObject = new JSONObject();
+        stgObject.put("Settings", stgDetails);
+
+        JSONArray jSettings = new JSONArray();
+        jSettings.add(stgObject);
+
+        try (FileWriter file = new FileWriter(jsonFilename)) {
+            file.write(jSettings.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

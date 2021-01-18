@@ -9,6 +9,8 @@ import java.io.*;
 import java.util.*;
 
 import javax.swing.*;
+import javax.swing.UIManager.*;
+import com.formdev.flatlaf.*;
 
 import diuf.sudoku.*;
 import diuf.sudoku.io.*;
@@ -30,6 +32,7 @@ import diuf.sudoku.tools.*;
 public class SudokuExplainer {
 
     private Grid grid; // The Sudoku grid
+    private Grid savedgrid; // The saved Sudoku grid
     private Solver solver; // The Sudoku solver
     private SudokuFrame frame; // The main gui frame
     private SudokuPanel panel; // The sudoku grid panel
@@ -47,6 +50,7 @@ public class SudokuExplainer {
 
     public SudokuExplainer() {
         grid = new Grid();
+        savedgrid = new Grid();
         gridStack = new Stack<Grid>();
         solver = new Solver(grid);
         solver.rebuildPotentialValues();
@@ -291,6 +295,7 @@ public class SudokuExplainer {
 
     public void clearGrid() {
         grid = new Grid();
+        savedgrid = new Grid();
         gridStack = new Stack<Grid>();
         solver = new Solver(grid);
         solver.rebuildPotentialValues();
@@ -299,12 +304,39 @@ public class SudokuExplainer {
         frame.showWelcomeText();
     }
 
+    public void restartGrid() {
+        if ( this.gridStack.isEmpty() ) {
+            if ( isGridEmpty() ) {
+                JOptionPane.showMessageDialog(frame, "Cannot restart, no puzzle!", "Restart", JOptionPane.WARNING_MESSAGE);
+            }
+            else {
+                JOptionPane.showMessageDialog(frame, "Cannot restart, not started!", "Restart", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        else {
+            if ( solver.isSolved() ||
+                JOptionPane.showConfirmDialog(frame, "Restart, Are you sure?", "Restart", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION ) {
+                savedgrid.copyTo(grid);
+                gridStack = new Stack<Grid>();
+
+                solver = new Solver(grid);
+            //  solver.rebuildPotentialValues();
+                panel.setSudokuGrid(grid);
+                panel.clearSelection();
+                clearHints();
+                frame.showWelcomeText();
+
+            }
+        }
+    }
+
     public void setGrid(Grid grid) {
         this.grid = grid;
         gridStack = new Stack<Grid>();
         solver = new Solver(grid);
         solver.rebuildPotentialValues();
         panel.setSudokuGrid(grid);
+        grid.copyTo(savedgrid);
         panel.clearSelection();
         clearHints();
         frame.setExplanations("");
@@ -321,6 +353,15 @@ public class SudokuExplainer {
         selectedHints.clear();
         panel.clearSelection();
         repaintAll();
+    }
+
+    public void clearHintsOnly() {
+        unfilteredHints = null;
+        resetFilterCache();
+        filterHints();
+        selectedHints.clear();
+    //  panel.clearSelection();
+    //  repaintAll();
     }
 
     public void clearHints0() {
@@ -421,6 +462,70 @@ public class SudokuExplainer {
         }
     }
 
+    private boolean isGridEmpty() {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
+                if (grid.getCellValue(x, y) != 0)
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isGridSolved() {
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
+                if (grid.getCellValue(x, y) == 0)
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public void ApplySingles() {
+     if ( isGridEmpty() ) {
+        JOptionPane.showMessageDialog(frame, "Cannot apply singles, no puzzle!", "Apply Singles", JOptionPane.WARNING_MESSAGE);
+        return;
+     }
+     boolean solved = isGridSolved();
+     if ( solved ) {
+        frame.setExplanations("<html><body><h2>The Sudoku has been solved !</h2></body></html>");
+        return;
+     }
+     int basics = 1;
+     while ( basics == 1 ) {
+      clearHintsOnly();
+      if ( !solved ) {
+       getNextHint();
+       if ( selectedHints.size() >= 1 ) {
+        for (Hint hint : selectedHints) {
+          try {
+            Rule rule = (Rule)hint;
+            String rulename = rule.getName();
+            if ( rulename.equals("Hidden Single") || rulename.equals("Hidden Single (Block)") || rulename.equals("Hidden Single (Column)") || rulename.equals("Hidden Single (Row)") || rulename.equals("Naked Single") ) {
+                pushGrid(); hint.apply(grid);
+            }
+            else { basics = 0; }
+          } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, hint.toString(), "Apply Singles", JOptionPane.WARNING_MESSAGE);
+            basics = 2;
+          }
+        }
+       if ( basics != 2 ) {
+        clearHints();
+        repaintAll();
+       }
+        solved = isGridSolved();
+        if ( basics == 1 && solved ) { basics = 0; }
+       }
+       if ( basics == 1 && !solved ) { Thread.yield(); }
+      }
+     }
+     if ( solved ) {
+        frame.setExplanations("<html><body><h2>The Sudoku Jigsaw has been solved !</h2></body></html>");
+     }
+    }
+
     public void getAllHints() {
         try {
             unfilteredHints = solver.getAllHints(frame);
@@ -494,6 +599,7 @@ public class SudokuExplainer {
         if (message == null || !message.isFatal()) {
             solver.rebuildPotentialValues();
             gridStack = new Stack<Grid>();
+            grid.copyTo(savedgrid);
         }
         else {
             copy.copyTo(grid);
@@ -515,6 +621,7 @@ public class SudokuExplainer {
         if (message == null || !message.isFatal()) {
             solver.rebuildPotentialValues();
             gridStack = new Stack<Grid>();
+            grid.copyTo(savedgrid);
         }
         else {
             copy.copyTo(grid);
@@ -626,12 +733,14 @@ public class SudokuExplainer {
      */
     public static void main(String[] args) {
         try {
-            String lookAndFeelClassName = Settings.getInstance().getLookAndFeelClassName();
-            if (lookAndFeelClassName == null)
-                lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-            UIManager.setLookAndFeel(lookAndFeelClassName);
+//          String lookAndFeelClassName = Settings.getInstance().getLookAndFeelClassName();
+//          if (lookAndFeelClassName == null)
+//              lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+//          UIManager.setLookAndFeel(lookAndFeelClassName);
+            UIManager.setLookAndFeel( new FlatDarkLaf());
         } catch(Exception e) {
-            e.printStackTrace();
+//          e.printStackTrace();
+            System.err.println( "Failed to initialize new LookAndFeel");
         }
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {

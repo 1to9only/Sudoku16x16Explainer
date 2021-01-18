@@ -93,11 +93,13 @@ public class BruteForceAnalysis implements WarningHintProducer {
      * @param grid the sudoku grid
      * @return information about the number of solutions
      */
-    public int getCountSolutions(Grid grid) {
+    public int getCountSolutions(Grid solution, Grid grid) {
         new Solver(grid).rebuildPotentialValues();
         grid.copyTo(grid1);
         if (!analyse(grid1, false))
             return 0; // no solution
+        if (!(grid1.equals(solution)))
+            return 0; // not the solution
         grid.copyTo(grid2);
         analyse(grid2, true);
         if (grid1.equals(grid2))
@@ -251,7 +253,22 @@ public class BruteForceAnalysis implements WarningHintProducer {
         DirectHintProducer hiddenSingle = new HiddenSingle();
         DirectHintProducer nakedSingle = new NakedSingle();
         new Solver(grid).rebuildPotentialValues();
-        return analyse(grid, false, rnd, hiddenSingle, nakedSingle);
+        boolean result = false;
+        result = analyse(grid, false, rnd, hiddenSingle, nakedSingle);
+        if (!result) {
+            return false;
+        }
+        String s = ""; int cnt = 0;
+        for (int i = 0; i < 256; i++) {
+            int n = grid.getCellValue(i % 16, i / 16);
+            if ( n != 0 ) { cnt++; }
+        }
+        if ( cnt < 10 ) { s += " "; }
+        s += " " + cnt + " ";
+        s = s + "got solution grid";
+        System.err.println(s);
+        System.err.flush();
+        return result;
     }
 
     @Override

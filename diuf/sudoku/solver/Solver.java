@@ -456,7 +456,7 @@ public class Solver {
     public double analyseDifficulty(double min, double max) {
 //      int oldPriority = lowerPriority();
         try {
-            double difficulty = Double.NEGATIVE_INFINITY;
+            double difficulty = 0.0;
             while (!isSolved()) {
                 SingleHintAccumulator accu = new SingleHintAccumulator();
                 try {
@@ -469,22 +469,22 @@ public class Solver {
                     for (IndirectHintProducer producer : chainingHintProducers2)
                         producer.getHints(grid, accu);
                     // Only used for generator. Ignore advanced/experimental techniques
-                    for (IndirectHintProducer producer : advancedHintProducers)
-                        producer.getHints(grid, accu);
-                    for (IndirectHintProducer producer : experimentalHintProducers)
-                        producer.getHints(grid, accu);
+                //  for (IndirectHintProducer producer : advancedHintProducers)
+                //      producer.getHints(grid, accu);
+                //  for (IndirectHintProducer producer : experimentalHintProducers)
+                //      producer.getHints(grid, accu);
                 } catch (InterruptedException willHappen) {}
                 Hint hint = accu.getHint();
                 if (hint == null) {
                     System.err.println("Failed to solve:\n" + grid.toString());
-                    return Double.MAX_VALUE;
+                    return 20.0;
                 }
 //a             assert hint instanceof Rule;
                 Rule rule = (Rule)hint;
                 double ruleDiff = rule.getDifficulty();
                 if (ruleDiff > difficulty)
                     difficulty = ruleDiff;
-                if (difficulty >= min && max >  12.0)
+                if (difficulty >= min && max >= 12.0)
                     break;
                 if (difficulty > max)
                     break;
@@ -500,7 +500,7 @@ public class Solver {
         Grid backup = new Grid();
         grid.copyTo(backup);
         try {
-            difficulty = Double.NEGATIVE_INFINITY;
+            difficulty = 0.0;
             pearl = 0.0;
             diamond = 0.0;
             while (!isSolved()) {
@@ -555,7 +555,7 @@ public class Solver {
         Grid backup = new Grid();
         grid.copyTo(backup);
         try {
-            difficulty = Double.NEGATIVE_INFINITY;
+            difficulty = 0.0;
             pearl = 0.0;
             diamond = 0.0;
             while (!isSolved()) {
@@ -647,7 +647,7 @@ public class Solver {
         Grid backup = new Grid();
         grid.copyTo(backup);
         try {
-            difficulty = Double.NEGATIVE_INFINITY;
+            difficulty = 0.0;
             pearl = 0.0;
             diamond = 0.0;
             while (!isSolved()) {

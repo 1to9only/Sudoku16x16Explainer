@@ -60,6 +60,7 @@ public class SudokuFrame extends JFrame implements Asker {
     private JPanel hintsTreePanel = null;
     private JCheckBox chkFilter = null;
     private JButton btnCheckValidity = null;
+    private JButton btnApplySingles = null;
     private JButton btnApplyHint = null;
     private JComboBox<String> cmbViewSelector = null;
     private JPanel hintsSouthPanel = null;
@@ -70,9 +71,11 @@ public class SudokuFrame extends JFrame implements Asker {
     private JMenuBar jJMenuBar = null;
     private JMenu fileMenu = null;
     private JMenuItem mitNew = null;
+    private JMenuItem mitRestart = null;
     private JMenuItem mitQuit = null;
     private JMenuItem mitLoad = null;
     private JMenuItem mitSave = null;
+    private JMenuItem mitSaveAsImage = null;
     private JMenu editMenu = null;
     private JMenuItem mitCopy = null;
     private JMenuItem mitClear = null;
@@ -522,6 +525,11 @@ public class SudokuFrame extends JFrame implements Asker {
             gridBagConstraints3.weightx = 1.0D;
             gridBagConstraints3.gridy = 0;
 
+            GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+            gridBagConstraints4.gridx = 4;
+            gridBagConstraints4.weightx = 1.0D;
+            gridBagConstraints4.gridy = 0;
+
             GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
             gridBagConstraints5.gridx = 5;
             gridBagConstraints5.weightx = 1.0D;
@@ -539,15 +547,18 @@ public class SudokuFrame extends JFrame implements Asker {
 
             buttonsPane = new JPanel();
             buttonsPane.setLayout(new GridBagLayout());
-            buttonsPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-                    "Actions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-                    javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(
-                            "Dialog", java.awt.Font.BOLD, 12), null));
+            buttonsPane.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                    null, "Actions",
+                    javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+                    javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                    new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),    // null));
+                    new java.awt.Color(128, 128, 128)));
 
             buttonsPane.add(getBtnCheckValidity(),   gridBagConstraints0);
             buttonsPane.add(getBtnApplyHintAndGet(), gridBagConstraints1);
             buttonsPane.add(getBtnGetNextHint(),     gridBagConstraints2);
-            buttonsPane.add(getBtnApplyHint(),       gridBagConstraints3);
+            buttonsPane.add(getBtnApplySingles(),    gridBagConstraints3);
+            buttonsPane.add(getBtnApplyHint(),       gridBagConstraints4);
             buttonsPane.add(getBtnGetAllHints(),     gridBagConstraints5);
             buttonsPane.add(getBtnUndoStep(),        gridBagConstraints6);
             buttonsPane.add(getBtnQuit(),            gridBagConstraints7);
@@ -555,12 +566,45 @@ public class SudokuFrame extends JFrame implements Asker {
         return buttonsPane;
     }
 
+    private JButton getBtnCheckValidity() {
+        if (btnCheckValidity == null) {
+            btnCheckValidity = new JButton();
+            btnCheckValidity.setText("F2| Check validity");
+            btnCheckValidity.setToolTipText("Verify the validity of the entered Sudoku");
+            btnCheckValidity.setMnemonic(java.awt.event.KeyEvent.VK_F2);
+            btnCheckValidity.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    if (engine.checkValidity())
+                        setExplanations(HtmlLoader.loadHtml(this, "Valid.html"));
+                }
+            });
+        }
+        return btnCheckValidity;
+    }
+
+    JButton getBtnApplyHintAndGet() {
+        if (btnApplyHintAndGet == null) {
+            btnApplyHintAndGet = new JButton();
+            btnApplyHintAndGet.setText("F3| Solve step");
+            btnApplyHintAndGet.setMnemonic(java.awt.event.KeyEvent.VK_F3);
+            btnApplyHintAndGet.setToolTipText("Apply the current hint (if any is shown), and get an hint for the next step");
+            btnApplyHintAndGet.setFont(new java.awt.Font("Dialog", java.awt.Font.BOLD, 12));
+            btnApplyHintAndGet.addActionListener(new java.awt.event.ActionListener() {
+
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    engine.applySelectedHintsAndContinue();
+                }
+            });
+        }
+        return btnApplyHintAndGet;
+    }
+
     private JButton getBtnGetNextHint() {
         if (btnGetNextHint == null) {
             btnGetNextHint = new JButton();
-            btnGetNextHint.setText("Get next hint");
+            btnGetNextHint.setText("F4| Get next hint");
             btnGetNextHint.setToolTipText("Get another, different hint");
-            btnGetNextHint.setMnemonic(java.awt.event.KeyEvent.VK_N);
+            btnGetNextHint.setMnemonic(java.awt.event.KeyEvent.VK_F4);
             btnGetNextHint.addActionListener(new java.awt.event.ActionListener() {
 
                 public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -571,12 +615,42 @@ public class SudokuFrame extends JFrame implements Asker {
         return btnGetNextHint;
     }
 
+    private JButton getBtnApplySingles() {
+        if (btnApplySingles == null) {
+            btnApplySingles = new JButton();
+            btnApplySingles.setText("Apply Singles");
+            btnApplySingles.setToolTipText("Apply all (hidden and naked) singles");
+            btnApplySingles.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    engine.ApplySingles();
+                }
+            });
+        }
+        return btnApplySingles;
+    }
+
+    private JButton getBtnApplyHint() {
+        if (btnApplyHint == null) {
+            btnApplyHint = new JButton();
+            btnApplyHint.setText("F5| Apply hint");
+            btnApplyHint.setToolTipText("Apply the selected hint(s)");
+            btnApplyHint.setMnemonic(KeyEvent.VK_F5);
+            btnApplyHint.setEnabled(false);
+            btnApplyHint.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    engine.applySelectedHints();
+                }
+            });
+        }
+        return btnApplyHint;
+    }
+
     private JButton getBtnGetAllHints() {
         if (btnGetAllHints == null) {
             btnGetAllHints = new JButton();
-            btnGetAllHints.setText("Get all hints");
+            btnGetAllHints.setText("F6| Get all hints");
             btnGetAllHints.setToolTipText("Get all hints applicable on the current situation");
-            btnGetAllHints.setMnemonic(KeyEvent.VK_A);
+            btnGetAllHints.setMnemonic(KeyEvent.VK_F6);
             btnGetAllHints.addActionListener(new java.awt.event.ActionListener() {
 
                 public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -590,9 +664,9 @@ public class SudokuFrame extends JFrame implements Asker {
     private JButton getBtnUndoStep() {
         if (btnUndoStep == null) {
             btnUndoStep = new JButton();
-            btnUndoStep.setText("Undo step");
+            btnUndoStep.setText("Ctrl-Z| Undo step");
             btnUndoStep.setToolTipText("Undo previous solve step or value selection");
-            btnUndoStep.setMnemonic(KeyEvent.VK_N);
+            btnUndoStep.setMnemonic(KeyEvent.VK_Z);
             btnUndoStep.addActionListener(new java.awt.event.ActionListener() {
 
                 public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -603,27 +677,10 @@ public class SudokuFrame extends JFrame implements Asker {
         return btnUndoStep;
     }
 
-    JButton getBtnApplyHintAndGet() {
-        if (btnApplyHintAndGet == null) {
-            btnApplyHintAndGet = new JButton();
-            btnApplyHintAndGet.setText("Solve step");
-            btnApplyHintAndGet.setMnemonic(java.awt.event.KeyEvent.VK_S);
-            btnApplyHintAndGet.setToolTipText("Apply the current hint (if any is shown), and get an hint for the next step");
-            btnApplyHintAndGet.setFont(new java.awt.Font("Dialog", java.awt.Font.BOLD, 12));
-            btnApplyHintAndGet.addActionListener(new java.awt.event.ActionListener() {
-
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    engine.applySelectedHintsAndContinue();
-                }
-            });
-        }
-        return btnApplyHintAndGet;
-    }
-
     private JButton getBtnQuit() {
         if (btnQuit == null) {
             btnQuit = new JButton();
-            btnQuit.setText("Quit");
+            btnQuit.setText("Ctrl-Q| Quit");
             btnQuit.setToolTipText("Quit the application");
             btnQuit.setMnemonic(java.awt.event.KeyEvent.VK_Q);
             btnQuit.addActionListener(new java.awt.event.ActionListener() {
@@ -689,38 +746,6 @@ public class SudokuFrame extends JFrame implements Asker {
             });
         }
         return chkFilter;
-    }
-
-    private JButton getBtnCheckValidity() {
-        if (btnCheckValidity == null) {
-            btnCheckValidity = new JButton();
-            btnCheckValidity.setText("Check validity");
-            btnCheckValidity.setToolTipText("Verify the validity of the entered Sudoku");
-            btnCheckValidity.setMnemonic(java.awt.event.KeyEvent.VK_V);
-            btnCheckValidity.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    if (engine.checkValidity())
-                        setExplanations(HtmlLoader.loadHtml(this, "Valid.html"));
-                }
-            });
-        }
-        return btnCheckValidity;
-    }
-
-    private JButton getBtnApplyHint() {
-        if (btnApplyHint == null) {
-            btnApplyHint = new JButton();
-            btnApplyHint.setText("Apply hint");
-            btnApplyHint.setMnemonic(KeyEvent.VK_P);
-            btnApplyHint.setToolTipText("Apply the selected hint(s)");
-            btnApplyHint.setEnabled(false);
-            btnApplyHint.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    engine.applySelectedHints();
-                }
-            });
-        }
-        return btnApplyHint;
     }
 
     private JComboBox<String> getCmbViewSelector() {
@@ -830,11 +855,13 @@ public class SudokuFrame extends JFrame implements Asker {
             setCommand(getMitNew(), 'N');
             fileMenu.add(getMitGenerate());
             setCommand(getMitGenerate(), 'G');
+            fileMenu.add(getMitRestart());
             fileMenu.addSeparator();
             fileMenu.add(getMitLoad());
             setCommand(getMitLoad(), 'O');
             fileMenu.add(getMitSave());
             setCommand(getMitSave(), 'S');
+            fileMenu.add(getMitSaveAsImage());
             fileMenu.addSeparator();
             fileMenu.add(getMitQuit());
             setCommand(getMitQuit(), 'Q');
@@ -856,6 +883,20 @@ public class SudokuFrame extends JFrame implements Asker {
             });
         }
         return mitNew;
+    }
+
+    private JMenuItem getMitRestart() {
+        if (mitRestart == null) {
+            mitRestart = new JMenuItem();
+            mitRestart.setText("Restart...");
+            mitRestart.setToolTipText("Restart the grid");
+            mitRestart.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    engine.restartGrid();
+                }
+            });
+        }
+        return mitRestart;
     }
 
     private JMenuItem getMitQuit() {
@@ -965,6 +1006,63 @@ public class SudokuFrame extends JFrame implements Asker {
         return mitSave;
     }
 
+    private JMenuItem getMitSaveAsImage() {
+        if (mitSaveAsImage == null) {
+            mitSaveAsImage = new JMenuItem();
+            mitSaveAsImage.setText("Save as image...");
+            mitSaveAsImage.setToolTipText("Open the file selector to save grid as a png image to a file");
+            mitSaveAsImage.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    try {
+                        JFileChooser chooser = new JFileChooser();
+                        chooser.setFileFilter(new PngFileFilter());
+                        if (defaultDirectory != null)
+                            chooser.setCurrentDirectory(defaultDirectory);
+                        int result = chooser.showSaveDialog(SudokuFrame.this);
+                        defaultDirectory = chooser.getCurrentDirectory();
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            File file = chooser.getSelectedFile();
+                            try {
+                                if (!file.getName().endsWith(".png")) // &&
+                                    //  file.getName().indexOf('.') < 0)
+                                    file = new File(file.getCanonicalPath() + ".png");
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                            if (file.exists()) {
+                                if (JOptionPane.showConfirmDialog(SudokuFrame.this,
+                                        "The file \"" + file.getName() + "\" already exists.\n" +
+                                        "Do you want to replace the existing file ?",
+                                        "Save", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION)
+                                    return;
+                            }
+                            sudokuPanel.saveAsImage(file);
+                        }
+                    } catch (AccessControlException ex) {
+                        warnAccessError(ex);
+                    }
+                }
+            });
+        }
+        return mitSaveAsImage;
+    }
+
+    private class PngFileFilter extends javax.swing.filechooser.FileFilter {
+
+        @Override
+        public boolean accept(File f) {
+            if (f.isDirectory())
+                return true;
+            return f.getName().toLowerCase().endsWith(".png");
+        }
+
+        @Override
+        public String getDescription() {
+            return "PNG image files (*.png)";
+        }
+
+    }
+
     private JMenu getEditMenu() {
         if (editMenu == null) {
             editMenu = new JMenu();
@@ -1045,23 +1143,22 @@ public class SudokuFrame extends JFrame implements Asker {
             setCommand(getMitClearHints(), 'D');
             toolMenu.addSeparator();
             toolMenu.add(getMitCheckValidity());
-            getMitCheckValidity().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
+            getMitCheckValidity().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
             toolMenu.add(getMitSolveStep());
-            getMitSolveStep().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+            getMitSolveStep().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
             toolMenu.add(getMitGetNextHint());
-            getMitGetNextHint().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
+            getMitGetNextHint().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
             toolMenu.add(getMitApplyHint());
-            getMitApplyHint().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
+            getMitApplyHint().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
             toolMenu.add(getMitGetAllHints());
-            getMitGetAllHints().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+            getMitGetAllHints().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
             toolMenu.add(getMitUndoStep());
             setCommand(getMitUndoStep(), 'Z');
             toolMenu.addSeparator();
             toolMenu.add(getMitGetSmallClue());
-            getMitGetSmallClue().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
+            getMitGetSmallClue().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
             toolMenu.add(getMitGetBigClue());
-            getMitGetBigClue().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6,
-                    InputEvent.SHIFT_MASK));
+            getMitGetBigClue().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F7, InputEvent.SHIFT_MASK));
             toolMenu.addSeparator();
             toolMenu.add(getMitSolve());
             getMitSolve().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
@@ -1071,11 +1168,41 @@ public class SudokuFrame extends JFrame implements Asker {
         return toolMenu;
     }
 
+    private JMenuItem getMitResetPotentials() {
+        if (mitResetPotentials == null) {
+            mitResetPotentials = new JMenuItem();
+            mitResetPotentials.setText("Reset potential values");
+            mitResetPotentials.setToolTipText("Recompute the remaining possible values for the empty cells");
+            mitResetPotentials.setMnemonic(java.awt.event.KeyEvent.VK_R);
+            mitResetPotentials.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    engine.resetPotentials();
+                }
+            });
+        }
+        return mitResetPotentials;
+    }
+
+    private JMenuItem getMitClearHints() {
+        if (mitClearHints == null) {
+            mitClearHints = new JMenuItem();
+            mitClearHints.setText("Clear hint(s)");
+            mitClearHints.setMnemonic(KeyEvent.VK_D);
+            mitClearHints.setToolTipText("Clear the hint list");
+            mitClearHints.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    engine.clearHints();
+                }
+            });
+        }
+        return mitClearHints;
+    }
+
     private JMenuItem getMitCheckValidity() {
         if (mitCheckValidity == null) {
             mitCheckValidity = new JMenuItem();
             mitCheckValidity.setText("Check validity");
-            mitCheckValidity.setMnemonic(KeyEvent.VK_V);
+            mitCheckValidity.setMnemonic(KeyEvent.VK_F2);
             mitCheckValidity.setToolTipText("Check if the Sudoku has exactly one solution");
             mitCheckValidity.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -1087,34 +1214,11 @@ public class SudokuFrame extends JFrame implements Asker {
         return mitCheckValidity;
     }
 
-    private JMenuItem getMitAnalyse() {
-        if (mitAnalyse == null) {
-            mitAnalyse = new JMenuItem();
-            mitAnalyse.setText("Analyze");
-            mitAnalyse.setMnemonic(KeyEvent.VK_Y);
-            mitAnalyse.setToolTipText("List the rules required to solve the Sudoku " +
-            "and get its average difficulty");
-            mitAnalyse.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    try {
-                        engine.analyse();
-                    } catch (UnsupportedOperationException ex) {
-                        JOptionPane.showMessageDialog(SudokuFrame.this,
-                                "The Sudoku Explainer failed to solve this Sudoku\n" +
-                                "using the solving techniques that are currently enabled.",
-                                "Analysis", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            });
-        }
-        return mitAnalyse;
-    }
-
     private JMenuItem getMitSolveStep() {
         if (mitSolveStep == null) {
             mitSolveStep = new JMenuItem();
             mitSolveStep.setText("Solve step");
-            mitSolveStep.setMnemonic(KeyEvent.VK_S);
+            mitSolveStep.setMnemonic(KeyEvent.VK_F3);
             mitSolveStep.setToolTipText(getBtnApplyHintAndGet().getToolTipText());
             mitSolveStep.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -1129,7 +1233,7 @@ public class SudokuFrame extends JFrame implements Asker {
         if (mitGetNextHint == null) {
             mitGetNextHint = new JMenuItem();
             mitGetNextHint.setText("Get next hint");
-            mitGetNextHint.setMnemonic(KeyEvent.VK_N);
+            mitGetNextHint.setMnemonic(KeyEvent.VK_F4);
             mitGetNextHint.setToolTipText(getBtnGetNextHint().getToolTipText());
             mitGetNextHint.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -1145,7 +1249,7 @@ public class SudokuFrame extends JFrame implements Asker {
             mitApplyHint = new JMenuItem();
             mitApplyHint.setText("Apply hint");
             mitApplyHint.setEnabled(false);
-            mitApplyHint.setMnemonic(KeyEvent.VK_A);
+            mitApplyHint.setMnemonic(KeyEvent.VK_F5);
             mitApplyHint.setToolTipText(getBtnApplyHint().getToolTipText());
             mitApplyHint.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -1160,7 +1264,7 @@ public class SudokuFrame extends JFrame implements Asker {
         if (mitGetAllHints == null) {
             mitGetAllHints = new JMenuItem();
             mitGetAllHints.setText("Get all hints");
-            mitGetAllHints.setMnemonic(KeyEvent.VK_H);
+            mitGetAllHints.setMnemonic(KeyEvent.VK_F6);
             mitGetAllHints.setToolTipText(getBtnGetAllHints().getToolTipText());
             mitGetAllHints.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -1186,11 +1290,41 @@ public class SudokuFrame extends JFrame implements Asker {
         return mitUndoStep;
     }
 
+    private JMenuItem getMitGetSmallClue() {
+        if (mitGetSmallClue == null) {
+            mitGetSmallClue = new JMenuItem();
+            mitGetSmallClue.setText("Get a small clue");
+            mitGetSmallClue.setMnemonic(KeyEvent.VK_M);
+            mitGetSmallClue.setToolTipText("Get some information on the next solving step");
+            mitGetSmallClue.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    engine.getClue(false);
+                }
+            });
+        }
+        return mitGetSmallClue;
+    }
+
+    private JMenuItem getMitGetBigClue() {
+        if (mitGetBigClue == null) {
+            mitGetBigClue = new JMenuItem();
+            mitGetBigClue.setText("Get a big clue");
+            mitGetBigClue.setMnemonic(KeyEvent.VK_B);
+            mitGetBigClue.setToolTipText("Get more information on the next solving step");
+            mitGetBigClue.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    engine.getClue(true);
+                }
+            });
+        }
+        return mitGetBigClue;
+    }
+
     private JMenuItem getMitSolve() {
         if (mitSolve == null) {
             mitSolve = new JMenuItem();
             mitSolve.setText("Solve");
-            mitSolve.setMnemonic(KeyEvent.VK_O);
+            mitSolve.setMnemonic(KeyEvent.VK_F8);
             mitSolve.setToolTipText("Highlight the solution");
             mitSolve.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -1201,34 +1335,27 @@ public class SudokuFrame extends JFrame implements Asker {
         return mitSolve;
     }
 
-    private JMenuItem getMitResetPotentials() {
-        if (mitResetPotentials == null) {
-            mitResetPotentials = new JMenuItem();
-            mitResetPotentials.setText("Reset potential values");
-            mitResetPotentials.setToolTipText("Recompute the remaining possible values for the empty cells");
-            mitResetPotentials.setMnemonic(java.awt.event.KeyEvent.VK_R);
-            mitResetPotentials.addActionListener(new java.awt.event.ActionListener() {
+    private JMenuItem getMitAnalyse() {
+        if (mitAnalyse == null) {
+            mitAnalyse = new JMenuItem();
+            mitAnalyse.setText("Analyze");
+            mitAnalyse.setMnemonic(KeyEvent.VK_F9);
+            mitAnalyse.setToolTipText("List the rules required to solve the Sudoku " +
+            "and get its average difficulty");
+            mitAnalyse.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    engine.resetPotentials();
+                    try {
+                        engine.analyse();
+                    } catch (UnsupportedOperationException ex) {
+                        JOptionPane.showMessageDialog(SudokuFrame.this,
+                                "The Sudoku Explainer failed to solve this Sudoku\n" +
+                                "using the solving techniques that are currently enabled.",
+                                "Analysis", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             });
         }
-        return mitResetPotentials;
-    }
-
-    private JMenuItem getMitClearHints() {
-        if (mitClearHints == null) {
-            mitClearHints = new JMenuItem();
-            mitClearHints.setText("Clear hint(s)");
-            mitClearHints.setMnemonic(KeyEvent.VK_C);
-            mitClearHints.setToolTipText("Clear the hint list");
-            mitClearHints.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    engine.clearHints();
-                }
-            });
-        }
-        return mitClearHints;
+        return mitAnalyse;
     }
 
     private JMenu getOptionsMenu() {
@@ -1458,36 +1585,6 @@ public class SudokuFrame extends JFrame implements Asker {
             });
         }
         return mitAbout;
-    }
-
-    private JMenuItem getMitGetSmallClue() {
-        if (mitGetSmallClue == null) {
-            mitGetSmallClue = new JMenuItem();
-            mitGetSmallClue.setText("Get a small clue");
-            mitGetSmallClue.setMnemonic(KeyEvent.VK_M);
-            mitGetSmallClue.setToolTipText("Get some information on the next solving step");
-            mitGetSmallClue.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    engine.getClue(false);
-                }
-            });
-        }
-        return mitGetSmallClue;
-    }
-
-    private JMenuItem getMitGetBigClue() {
-        if (mitGetBigClue == null) {
-            mitGetBigClue = new JMenuItem();
-            mitGetBigClue.setText("Get a big clue");
-            mitGetBigClue.setMnemonic(KeyEvent.VK_B);
-            mitGetBigClue.setToolTipText("Get more information on the next solving step");
-            mitGetBigClue.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    engine.getClue(true);
-                }
-            });
-        }
-        return mitGetBigClue;
     }
 
     private JMenu getMitLookAndFeel() {
