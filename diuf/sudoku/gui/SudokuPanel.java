@@ -437,10 +437,7 @@ public class SudokuPanel extends JPanel {
             }
         }
         if (cell == selectedCell)
-            col = new Color(
-                    (col.getRed() + Color.orange.getRed()) / 2,
-                    (col.getGreen() + Color.orange.getGreen()) / 2,
-                    (col.getBlue() + Color.orange.getBlue()) / 2);
+            col = Color.darkGray;
         if (cell == selectedCell && value == focusedCandidate)
             col = Color.black;
         g.setColor(col);
@@ -478,10 +475,7 @@ public class SudokuPanel extends JPanel {
             }
         }
     //  if (cell == selectedCell)
-    //      col = new Color(
-    //              (col.getRed() + Color.orange.getRed()) / 2,
-    //              (col.getGreen() + Color.orange.getGreen()) / 2,
-    //              (col.getBlue() + Color.orange.getBlue()) / 2);
+    //      col = Color.darkGray;
     //  if (cell == selectedCell && value == focusedCandidate)
     //      col = Color.black;
         g.setColor(col);

@@ -60,7 +60,7 @@ public class BruteForceAnalysis implements WarningHintProducer {
                     message = new WarningMessage(this, "The Sudoku has no solution",
                     "NoSolution.html");
                 else
-                    message = new WarningMessage(this, "The Sudoku has no solution",
+                    message = new WarningMessage(this, "The Sudoku is not valid",
                     "MissingCandidates.html");
             }
             accu.add(message);

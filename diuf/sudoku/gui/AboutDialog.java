@@ -38,10 +38,10 @@ public class AboutDialog extends JDialog {
     }
 
     private void initialize() {
-        this.setSize(new java.awt.Dimension(255,203));
+        this.setSize(new java.awt.Dimension(315,203));
         this.setResizable(false);
         this.setContentPane(getJContentPane());
-        this.setTitle("Sudoku Explainer - About");
+        this.setTitle("Sudoku 16 Explainer - About");
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowDeactivated(java.awt.event.WindowEvent e) {
@@ -66,14 +66,14 @@ public class AboutDialog extends JDialog {
     private JPanel getPnlTop() {
         if (pnlTop == null) {
             lblCopyright = new JLabel();
-            lblCopyright.setText("(C) 2005-2007 Nicolas Juillerat");
+            lblCopyright.setText("(C) 2005-2007 Nicolas Juillerat, (C) 2019-2021 1to9only");
             lblCopyright.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             lblTitle = new JLabel();
-            lblTitle.setText("Sudoku Explainer");
-            lblTitle.setFont(new java.awt.Font("Comic Sans MS", java.awt.Font.BOLD, 24));
+            lblTitle.setText("Sudoku 16 Explainer");
+            lblTitle.setFont(new java.awt.Font("Comic Sans MS", java.awt.Font.BOLD, 16));
             lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             lblTitle.setHorizontalTextPosition(javax.swing.SwingConstants.TRAILING);
-            lblTitle.setPreferredSize(new java.awt.Dimension(234,48));
+            lblTitle.setPreferredSize(new java.awt.Dimension(284,48));
             lblTitle.setIcon(new ImageIcon(getClass().getResource("/diuf/sudoku/gui/Sudoku.gif")));
             pnlTop = new JPanel();
             pnlTop.setLayout(new BorderLayout());

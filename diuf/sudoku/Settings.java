@@ -37,13 +37,38 @@ public class Settings {
     private boolean isRCNotation = true;
     private boolean isAntialiasing = true;
     private boolean isShowingCandidates = true;
-    private boolean isShowingCandidateMasks = true;
+    private boolean isShowingCandidateMasks = false;
     private String  lookAndFeelClassName = null;
     private int iPuzzleFormat = 4;
 
     private EnumSet<SolvingTechnique> techniques;
 
+    private boolean isVertical = false;             // generate dialog
+    private boolean isHorizontal = false;
+    private boolean isDiagonal = false;
+    private boolean isAntiDiagonal = false;
+    private boolean isBiDiagonal = true;
+    private boolean isOrthogonal = true;
+    private boolean isRotational180 = true;
+    private boolean isRotational90 = true;
+    private boolean isNone = true;
+    private boolean isFull = true;
+
+    private boolean isEasy = false;
+    private boolean isMedium = false;
+    private boolean isHard = false;
+    private boolean isFiendish = true;
+    private boolean isDiabolical = false;
+
+    private boolean isExact = false;
+
+    private int isChanged = 0;          // =1 if a setting changed
+
     private int LoadError = 0;          // =1 if settings load error, a save is done
+
+    private boolean noSaves = false;    // =true no saves done, is set from command line utils
+
+    private String methods = null;      // techniques, 1=enabled, 0=disabled
 
     private Settings() {
         init();
@@ -54,6 +79,11 @@ public class Settings {
         if (instance == null)
             instance = new Settings();
         return instance;
+    }
+
+    public void setNoSaves() {      // call from command line utils, no saves done
+        noSaves = true;
+        init();                     // enable all solving techniques
     }
 
     public void setRCNotation(boolean isRCNotation) {
@@ -128,6 +158,7 @@ public class Settings {
 
     public void setTechniques(EnumSet<SolvingTechnique> techniques) {
         this.techniques = techniques;
+        packmethods();
     }
 
     public boolean isUsingAllTechniques() {
@@ -158,6 +189,197 @@ public class Settings {
                 return false;
         }
         return true;
+    }
+
+    private void packmethods() {
+        methods = "";
+        for (SolvingTechnique st : EnumSet.allOf(SolvingTechnique.class)) {
+            if (this.techniques.contains(st)) {
+                methods += "1";
+            } else {
+                methods += "0";
+            }
+        }
+        save();
+    }
+
+    public void unpackmethods() {
+      if ( methods != null ) {
+        if (EnumSet.allOf(SolvingTechnique.class).size() == methods.length()) {
+            int index = 0;
+            for (SolvingTechnique st : EnumSet.allOf(SolvingTechnique.class)) {
+                char c = methods.charAt(index++);
+                if (c == '1' && !this.techniques.contains(st)) {
+                    techniques.add(st);
+                }
+                if (c == '0' && this.techniques.contains(st)) {
+                    techniques.remove(st);
+                }
+            }
+        }
+      }
+    }
+
+    // generate dialog
+
+    public void setVertical(boolean isVertical) {
+      if ( this.isVertical != isVertical ) {
+        this.isVertical = isVertical;
+        save();
+      }
+    }
+    public boolean isVertical() {
+        return isVertical;
+    }
+
+    public void setHorizontal(boolean isHorizontal) {
+      if ( this.isHorizontal != isHorizontal ) {
+        this.isHorizontal = isHorizontal;
+        save();
+      }
+    }
+    public boolean isHorizontal() {
+        return isHorizontal;
+    }
+
+    public void setDiagonal(boolean isDiagonal) {
+      if ( this.isDiagonal != isDiagonal ) {
+        this.isDiagonal = isDiagonal;
+        save();
+      }
+    }
+    public boolean isDiagonal() {
+        return isDiagonal;
+    }
+
+    public void setAntiDiagonal(boolean isAntiDiagonal) {
+      if ( this.isAntiDiagonal != isAntiDiagonal ) {
+        this.isAntiDiagonal = isAntiDiagonal;
+        save();
+      }
+    }
+    public boolean isAntiDiagonal() {
+        return isAntiDiagonal;
+    }
+
+    public void setBiDiagonal(boolean isBiDiagonal) {
+      if ( this.isBiDiagonal != isBiDiagonal ) {
+        this.isBiDiagonal = isBiDiagonal;
+        save();
+      }
+    }
+    public boolean isBiDiagonal() {
+        return isBiDiagonal;
+    }
+
+    public void setOrthogonal(boolean isOrthogonal) {
+      if ( this.isOrthogonal != isOrthogonal ) {
+        this.isOrthogonal = isOrthogonal;
+        save();
+      }
+    }
+    public boolean isOrthogonal() {
+        return isOrthogonal;
+    }
+
+    public void setRotational180(boolean isRotational180) {
+      if ( this.isRotational180 != isRotational180 ) {
+        this.isRotational180 = isRotational180;
+        save();
+      }
+    }
+    public boolean isRotational180() {
+        return isRotational180;
+    }
+
+    public void setRotational90(boolean isRotational90) {
+      if ( this.isRotational90 != isRotational90 ) {
+        this.isRotational90 = isRotational90;
+        save();
+      }
+    }
+    public boolean isRotational90() {
+        return isRotational90;
+    }
+
+    public void setNone(boolean isNone) {
+      if ( this.isNone != isNone ) {
+        this.isNone = isNone;
+        save();
+      }
+    }
+    public boolean isNone() {
+        return isNone;
+    }
+
+    public void setFull(boolean isFull) {
+      if ( this.isFull != isFull ) {
+        this.isFull = isFull;
+        save();
+      }
+    }
+    public boolean isFull() {
+        return isFull;
+    }
+
+    public void setEasy(boolean isEasy) {
+      if ( this.isEasy != isEasy ) {
+        this.isEasy = isEasy;
+        isChanged = 1;
+      }
+    }
+    public boolean isEasy() {
+        return isEasy;
+    }
+
+    public void setMedium(boolean isMedium) {
+      if ( this.isMedium != isMedium ) {
+        this.isMedium = isMedium;
+        isChanged = 1;
+      }
+    }
+    public boolean isMedium() {
+        return isMedium;
+    }
+
+    public void setHard(boolean isHard) {
+      if ( this.isHard != isHard ) {
+        this.isHard = isHard;
+        isChanged = 1;
+      }
+    }
+    public boolean isHard() {
+        return isHard;
+    }
+
+    public void setFiendish(boolean isFiendish) {
+      if ( this.isFiendish != isFiendish ) {
+        this.isFiendish = isFiendish;
+        isChanged = 1;
+      }
+    }
+    public boolean isFiendish() {
+        return isFiendish;
+    }
+
+    public void setDiabolical(boolean isDiabolical) {
+      if ( this.isDiabolical != isDiabolical ) {
+        this.isDiabolical = isDiabolical;
+        isChanged = 1;
+      }
+    }
+    public boolean isDiabolical() {
+        return isDiabolical;
+    }
+
+    public void setExact(boolean isExact) {
+      if ( this.isExact != isExact ) {
+        this.isExact = isExact;
+        save();
+      }
+    }
+    public boolean isExact() {
+        return isExact;
     }
 
 //  Load / Save
@@ -217,12 +439,105 @@ public class Settings {
                     lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
                 }
 
+                //generate dialog
+
+                try {
+                    s = (String)stgDetails.get("isVertical");
+                    isVertical = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isHorizontal");
+                    isHorizontal = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isDiagonal");
+                    isDiagonal = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isAntiDiagonal");
+                    isAntiDiagonal = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isBiDiagonal");
+                    isBiDiagonal = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isOrthogonal");
+                    isOrthogonal = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isRotational180");
+                    isRotational180 = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isRotational90");
+                    isRotational90 = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isNone");
+                    isNone = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isFull");
+                    isFull = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isEasy");
+                    isEasy = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isMedium");
+                    isMedium = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isHard");
+                    isHard = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isFiendish");
+                    isFiendish = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isDiabolical");
+                    isDiabolical = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+                try {
+                    s = (String)stgDetails.get("isExact");
+                    isExact = s.equals("true")?true:false;
+                }
+                catch (NullPointerException e) { LoadError = 1; }
+
+                try {
+                    methods = (String)stgDetails.get("techniques");
+                    if ( methods.length() == techniques.size() ) {
+                        unpackmethods();
+                    } else {
+                        methods = null;     // causes reset!
+                        LoadError = 1;      // forced update!
+                    }
+                }
+                catch (NullPointerException e) { ; }
+
                 try {
                     s = (String)stgDetails.get("iPuzzleFormat");
                     iPuzzleFormat = s.charAt(0) - '0';
                 }
                 catch (NullPointerException e) { LoadError = 1; }
-
             });
             if ( LoadError == 1 ) {
                 save();
@@ -238,8 +553,16 @@ public class Settings {
         }
     }
 
+    public void saveChanged() {
+        if ( isChanged == 1 ) {
+            isChanged = 0;
+            save();
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public void save() {
+      if ( !noSaves ) {
         JSONObject stgDetails = new JSONObject();
         stgDetails.put("isRCNotation", isRCNotation?"true":"false");
         stgDetails.put("isAntialiasing", isAntialiasing?"true":"false");
@@ -247,6 +570,29 @@ public class Settings {
         stgDetails.put("isShowingCandidateMasks", isShowingCandidateMasks?"true":"false");
         stgDetails.put("lookAndFeelClassName", lookAndFeelClassName);
         stgDetails.put("iPuzzleFormat", ""+iPuzzleFormat);
+
+        // generate dialog
+
+        stgDetails.put("isVertical", isVertical?"true":"false");
+        stgDetails.put("isHorizontal", isHorizontal?"true":"false");
+        stgDetails.put("isDiagonal", isDiagonal?"true":"false");
+        stgDetails.put("isAntiDiagonal", isAntiDiagonal?"true":"false");
+        stgDetails.put("isBiDiagonal", isBiDiagonal?"true":"false");
+        stgDetails.put("isOrthogonal", isOrthogonal?"true":"false");
+        stgDetails.put("isRotational180", isRotational180?"true":"false");
+        stgDetails.put("isRotational90", isRotational90?"true":"false");
+        stgDetails.put("isNone", isNone?"true":"false");
+        stgDetails.put("isFull", isFull?"true":"false");
+        stgDetails.put("isEasy", isEasy?"true":"false");
+        stgDetails.put("isMedium", isMedium?"true":"false");
+        stgDetails.put("isHard", isHard?"true":"false");
+        stgDetails.put("isFiendish", isFiendish?"true":"false");
+        stgDetails.put("isDiabolical", isDiabolical?"true":"false");
+        stgDetails.put("isExact", isExact?"true":"false");
+
+        if ( methods != null ) {
+            stgDetails.put("techniques", methods);
+        }
 
         JSONObject stgObject = new JSONObject();
         stgObject.put("Settings", stgDetails);
@@ -257,9 +603,14 @@ public class Settings {
         try (FileWriter file = new FileWriter(jsonFilename)) {
             file.write(jSettings.toJSONString());
             file.flush();
+
+            if ( isChanged == 1 ) {
+                isChanged = 0;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+      }
     }
 
 }

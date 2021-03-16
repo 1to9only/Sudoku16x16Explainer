@@ -1338,7 +1338,7 @@ public class SudokuFrame extends JFrame implements Asker {
     private JMenuItem getMitAnalyse() {
         if (mitAnalyse == null) {
             mitAnalyse = new JMenuItem();
-            mitAnalyse.setText("Analyze");
+            mitAnalyse.setText("Analyze (and Copy)");
             mitAnalyse.setMnemonic(KeyEvent.VK_F9);
             mitAnalyse.setToolTipText("List the rules required to solve the Sudoku " +
             "and get its average difficulty");

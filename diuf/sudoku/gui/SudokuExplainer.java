@@ -335,11 +335,23 @@ public class SudokuExplainer {
         gridStack = new Stack<Grid>();
         solver = new Solver(grid);
         solver.rebuildPotentialValues();
-        panel.setSudokuGrid(grid);
         grid.copyTo(savedgrid);
+        panel.setSudokuGrid(grid);
         panel.clearSelection();
         clearHints();
-        frame.setExplanations("");
+        frame.setExplanations("<html><body><h2>Working...</h2></body></html>");
+    }
+
+    public void newGrid(Grid grid) {
+        this.grid = grid;
+        gridStack = new Stack<Grid>();
+        solver = new Solver(grid);
+        solver.rebuildPotentialValues();
+        grid.copyTo(savedgrid);
+        panel.setSudokuGrid(grid);
+        panel.clearSelection();
+        clearHints();
+        frame.setExplanations("<html><body><h2>Finished.</h2></body></html>");
     }
 
     public Grid getGrid() {
