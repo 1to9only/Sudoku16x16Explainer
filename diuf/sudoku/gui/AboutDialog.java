@@ -49,7 +49,7 @@ public class AboutDialog extends JDialog {
                 AboutDialog.this.dispose();
             }
         });
-        txtVersion.setText("" + VERSION + "." + REVISION + SUBREV);
+        txtVersion.setText("" + VERSION + "." + REVISION + "." + SUBREV);
     }
 
     private JPanel getJContentPane() {

@@ -191,6 +191,19 @@ public class Grid {
         return getRegionAt(regionType, cell.getX(), cell.getY());
     }
 
+    public int getRegionNum(Class<? extends Grid.Region> regionType, int x, int y) {
+        if (regionType.equals(Grid.Row.class))
+            return getRowAt(x, y).getRowNum();
+        else if (regionType.equals(Grid.Column.class))
+            return getColumnAt(x, y).getColumnNum();
+        else
+            return getBlockAt(x, y).getBlockNum();
+    }
+
+    public int getRegionNum(Class<? extends Grid.Region> regionType, Cell cell) {
+        return getRegionNum(regionType, cell.getX(), cell.getY());
+    }
+
     private List<Class<? extends Grid.Region>> _regionTypes = null;
 
     /**
@@ -478,6 +491,10 @@ public class Grid {
 
         public int getHIndex() {
             return this.hNum;
+        }
+
+        public int getBlockNum() {
+            return this.vNum * 4 + this.hNum;
         }
 
         @Override

@@ -26,9 +26,9 @@ import javax.swing.UIManager;
  */
 public class Settings {
 
-    public final static int VERSION = 1;
-    public final static int REVISION = 2;
-    public final static String SUBREV = ".1";
+    public final static int VERSION  = 2021;
+    public final static int REVISION = 3;
+    public final static int SUBREV   = 31;
 
     private static Settings instance = null;
 
@@ -70,6 +70,9 @@ public class Settings {
 
     private String methods = null;      // techniques, 1=enabled, 0=disabled
 
+    private boolean GenerateToClipboard = false;    // true= copy generated grid to clipboard
+    private boolean AnalyseToClipboard = false;     // true= copy analysis to clipboard
+
     private Settings() {
         init();
         load();
@@ -84,6 +87,20 @@ public class Settings {
     public void setNoSaves() {      // call from command line utils, no saves done
         noSaves = true;
         init();                     // enable all solving techniques
+    }
+
+    public void setGenerateToClipboard(boolean b) {
+        this.GenerateToClipboard = b;
+    }
+    public boolean getGenerateToClipboard() {
+        return GenerateToClipboard;
+    }
+
+    public void setAnalyseToClipboard(boolean b) {
+        this.AnalyseToClipboard = b;
+    }
+    public boolean getAnalyseToClipboard() {
+        return AnalyseToClipboard;
     }
 
     public void setRCNotation(boolean isRCNotation) {

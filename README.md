@@ -10,6 +10,9 @@ Sudoku16x16Explainer is my modifications to SudokuExplainer to solve 16x16 sudok
 
 A puzzle converter to the A-P format used by Sudoku16Explainer is [here](https://github.com/1to9only/convert16x16).
 
+## Changes 20210405
+- a few cosmetic changes
+
 ## Changes 20210316
 - a few fixes, and a few improvements
 

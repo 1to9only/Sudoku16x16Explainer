@@ -11,6 +11,8 @@ import java.util.*;
 import diuf.sudoku.Grid.*;
 import diuf.sudoku.solver.*;
 import diuf.sudoku.tools.*;
+import diuf.sudoku.*;
+import static diuf.sudoku.Settings.*;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
@@ -66,8 +68,10 @@ public class AnalysisInfo extends WarningHint {
           if ( minRuleDifficulty != maxRuleDifficulty ) {
             AnalysisResults += "" + Integer.toString(count) + " x " + ruleName + " ("+format.format(minRuleDifficulty)+"-"+format.format(maxRuleDifficulty)+")\r\n"; }
         }
+      if ( Settings.getInstance().getAnalyseToClipboard() ) {
         StringSelection data = new StringSelection(AnalysisResults);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(data, data);
+      }
         String result = HtmlLoader.loadHtml(this, "Analysis.html");
         result = HtmlLoader.format(result, format.format(difficulty), details);
         return result;
