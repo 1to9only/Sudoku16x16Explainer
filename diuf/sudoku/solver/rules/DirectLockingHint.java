@@ -25,7 +25,7 @@ public class DirectLockingHint extends IndirectHint implements Rule {
     public DirectLockingHint(IndirectHintProducer rule, Cell[] cells, Cell cell,
             int value, Map<Cell, BitSet> highlightPotentials,
             Map<Cell, BitSet> removePotentials, Grid.Region... regions) {
-        super(rule, getEmptyMap());
+        super(rule, removePotentials);
         this.cells = cells;
         this.cell = cell;
         this.value = value;

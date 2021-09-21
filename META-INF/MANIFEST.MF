@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Specification-Title: "Sudoku Explainer with serate entry point"
-Created-By: 1.8.0_221
+Created-By: 1.8.0_301
 Main-Class: diuf.sudoku.gui.SudokuExplainer
 Implementation-Title: "formatted rate entry point"
 Specification-Vendor: "Nicolas Juillerat"
