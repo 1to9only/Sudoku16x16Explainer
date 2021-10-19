@@ -417,9 +417,7 @@ public class SudokuFrame extends JFrame implements Asker {
                     TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
             hintsTree.setCellRenderer(new HintsTreeCellRenderer());
             hintsTree.setExpandsSelectedPaths(true);
-            hintsTree
-            .addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
-
+            hintsTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
                 public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
                     if (hintsTree.isEnabled()) {
                         Collection<HintNode> selection = new ArrayList<HintNode>();
@@ -477,8 +475,8 @@ public class SudokuFrame extends JFrame implements Asker {
         if (sudokuContainer == null) {
             sudokuContainer = new JPanel();
             sudokuContainer.setLayout(new BorderLayout());
-            sudokuContainer.setBorder(javax.swing.BorderFactory
-                    .createTitledBorder(null, "Sudoku Grid",
+            sudokuContainer.setBorder(
+                            javax.swing.BorderFactory.createTitledBorder(null, "Sudoku Grid",
                             javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                             javax.swing.border.TitledBorder.DEFAULT_POSITION,
                             new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
@@ -493,8 +491,8 @@ public class SudokuFrame extends JFrame implements Asker {
         if (hintDetailContainer == null) {
             hintDetailContainer = new JPanel();
             hintDetailContainer.setLayout(new BorderLayout());
-            hintDetailContainer.setBorder(javax.swing.BorderFactory
-                    .createTitledBorder(null, "Explanations",
+            hintDetailContainer.setBorder(
+                            javax.swing.BorderFactory.createTitledBorder(null, "Explanations",
                             javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                             javax.swing.border.TitledBorder.DEFAULT_POSITION,
                             new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),

@@ -689,10 +689,23 @@ public class SudokuPanel extends JPanel {
             } else {
                 lineWidth = 2;
                 g.setColor(Color.blue.darker());
-            }
             int offset = lineWidth / 2;
             g.fillRect(i * CELL_OUTER_SIZE - offset, 0 - offset, lineWidth, GRID_SIZE + lineWidth);
             g.fillRect(0 - offset, i * CELL_OUTER_SIZE - offset, GRID_SIZE + lineWidth, lineWidth);
+            }
+        }
+        for (int i = 0; i <= 16; i++) {
+            int lineWidth;
+            if (i % 4 == 0) {
+                lineWidth = 4;
+                g.setColor(Color.black);
+            int offset = lineWidth / 2;
+            g.fillRect(i * CELL_OUTER_SIZE - offset, 0 - offset, lineWidth, GRID_SIZE + lineWidth);
+            g.fillRect(0 - offset, i * CELL_OUTER_SIZE - offset, GRID_SIZE + lineWidth, lineWidth);
+            } else {
+                lineWidth = 2;
+                g.setColor(Color.blue.darker());
+            }
         }
     }
 
@@ -705,10 +718,23 @@ public class SudokuPanel extends JPanel {
             } else {
                 lineWidth = 2;
                 g.setColor(Color.blue.darker());
-            }
             int offset = lineWidth / 2;
             g.fillRect(i * CELL_OUTER_SIZE - offset+adj, 0 - offset+adj, lineWidth, GRID_SIZE + lineWidth);
             g.fillRect(0 - offset+adj, i * CELL_OUTER_SIZE - offset+adj, GRID_SIZE + lineWidth, lineWidth);
+            }
+        }
+        for (int i = 0; i <= 16; i++) {
+            int lineWidth;
+            if (i % 4 == 0) {
+                lineWidth = 4;
+                g.setColor(Color.black);
+            int offset = lineWidth / 2;
+            g.fillRect(i * CELL_OUTER_SIZE - offset+adj, 0 - offset+adj, lineWidth, GRID_SIZE + lineWidth);
+            g.fillRect(0 - offset+adj, i * CELL_OUTER_SIZE - offset+adj, GRID_SIZE + lineWidth, lineWidth);
+            } else {
+                lineWidth = 2;
+                g.setColor(Color.blue.darker());
+            }
         }
     }
 

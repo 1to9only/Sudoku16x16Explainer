@@ -18,16 +18,16 @@ import diuf.sudoku.tools.*;
  */
 public class UniqueLoops implements IndirectHintProducer {
 
-    private Grid lastGrid = new Grid();
-    private List<UniqueLoopHint> lastResult = null;
+//  private Grid lastGrid = new Grid();
+//  private List<UniqueLoopHint> lastResult = null;
 
     public void getHints(Grid grid, HintsAccumulator accu) throws InterruptedException {
         List<UniqueLoopHint> hints;
-        if (grid.equals(lastGrid))
-            hints = lastResult;
-        else {
+//      if (grid.equals(lastGrid))
+//          hints = lastResult;
+//      else {
             hints = getHints(grid);
-        }
+//      }
         // Sort the result
         Collections.sort(hints, new Comparator<UniqueLoopHint>() {
             public int compare(UniqueLoopHint h1, UniqueLoopHint h2) {
@@ -44,8 +44,8 @@ public class UniqueLoops implements IndirectHintProducer {
                 }
             }
         });
-        grid.copyTo(lastGrid);
-        lastResult = hints;
+//      grid.copyTo(lastGrid);
+//      lastResult = hints;
         for (UniqueLoopHint hint : hints)
             accu.add(hint);
     }

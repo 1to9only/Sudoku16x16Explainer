@@ -10,58 +10,6 @@ Sudoku16x16Explainer is my modifications to SudokuExplainer to solve 16x16 sudok
 
 A puzzle converter to the A-P format used by Sudoku16Explainer is [here](https://github.com/1to9only/convert16x16).
 
-## Changes 20210921
-- hints improvements
-- built using jdk-8u301
-
-## Changes 20210405
-- a few cosmetic changes
-
-## Changes 20210316
-- a few fixes, and a few improvements
-
-## Changes 20210118
-- some small fixes, changes, improvements:
-- Dark theme, 'Restart...' and 'Save as image...' options, 'Apply Singles' button
-
-## Changes 20200915
-- fixed one old bug, and other small changes
-
-## Changes 20191118
-- re-enabled commented out techniques, 8 solving techniques are disabled
-- changed to PLAIN font for GUI grid, black given cells, blue solved cells
-
-## Changes 20191104
-- disabled changing thread priority in Solver.
-- made Full Symmetry only initial option in GenerateDialog.
-- changed ratings Naked and Hidden: Quintuplets, Sextuplets, Septuplets (5.4) - septuplets are disabled.
-- changed ratings Fishes: Starfishes, Whales, Leviathans (5.5).
-- added support for 0-9A-F, 1-9A-G, 1-16 puzzle formats, in GUI only.
-- added Naked Octuplet, Hidden Octuplet, Loch Ness Monster (5.6) - all are elusive, and disabled.
-- slightly improved SolvingTechnique, NakedSingle, Chaining, Grid.
-- fixed parallel processing threads finishing order
-
-## Changes 20191015
-- modified to solve 16x16 sudokus: grid is A-P for given, . or 0 for empty cell
-- disabled Unique Loops (UL), Aligned Pair Exclusion (APE) and AlignedTripletExclusion (ATE) - this is because of software limitations in Permutations.java.
-- added Direct Hidden Quads, with rating of 4.3.
-- added Naked Quintuplets, Sextuplets, Septuplets, all with same rating as for Naked Quad (5.0).
-- added Fishes: Starfishes, Whales, Leviathans, all with same rating as for Jellyfish (5.2).
-- added Hidden Quintuplets, Sextuplets, Septuplets, all with same rating as for Hidden Quad (5.4).
-- added parallel processing, based on code from [SukakuExplainer](https://github.com/SudokuMonster/SukakuExplainer).
-- added Difficulty total, based on code from [NewerSudokuExplainer](https://github.com/Sunnie-Shine/NewerSudokuExplainer).
-- added hints.java
-
-## Source
-- 1.2.1 - Nicolas Juillerat's SudokuExplainer
-- 1.2.1.3 - gsf's (Glenn Fowler) serate modifications from [here](http://gsf.cococlyde.org/download/sudoku/serate.tgz) used to rate sudoku puzzles in the [Patterns Game](http://forum.enjoysudoku.com/patterns-game-t6290.html).
-- updated Reader code to handle most 9x9 grid formats: grid is 1-9 for given, . or 0 for empty cell
-- added **Undo** based on code from [here](https://github.com/Itsukara/SudokuExplainerPlus)
-- fixed mouse click issue in unsolved cell to select potential candidate
-- added **Candidate Masks** based on code from [here](https://github.com/blindlf/SudokuExplainer)
-- added Chaining.java changes from [here](http://forum.enjoysudoku.com/post280341.html)
-- commented out all assert statements
-
 ## Usage - GUI
 
 java.exe -jar Sudoku16Explainer.jar
