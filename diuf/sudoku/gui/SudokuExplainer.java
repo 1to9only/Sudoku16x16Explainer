@@ -514,7 +514,7 @@ public class SudokuExplainer {
           try {
             Rule rule = (Rule)hint;
             String rulename = rule.getName();
-            if ( rulename.equals("Hidden Single") || rulename.equals("Hidden Single (Block)") || rulename.equals("Hidden Single (Column)") || rulename.equals("Hidden Single (Row)") || rulename.equals("Naked Single") ) {
+            if ( rulename.equals("Hidden Single") || rulename.equals("Naked Single") ) {
                 pushGrid(); hint.apply(grid);
             }
             else { basics = 0; }
