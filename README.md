@@ -11,27 +11,33 @@ Sudoku16x16Explainer is my modifications to SudokuExplainer to solve 16x16 sudok
 A puzzle converter to the A-P format used by Sudoku16Explainer is [here](https://github.com/1to9only/convert16x16).
 
 ## Usage - GUI
-
+```
 java.exe -jar Sudoku16Explainer.jar
-
+```
 ![](/images/sample1.png)
 
 ## Usage - serate
+```
+java.exe -Xrs -Xmx1g -cp Sudoku16Explainer.jar diuf.sudoku.test.serate --input=puzzle(s).txt --output=output.txt
+```
+## Usage - hints, pencilmarks
+```
+java.exe -Xrs -Xmx1g -cp Sudoku16Explainer.jar diuf.sudoku.test.hints --input=puzzle(s).txt
 
-java.exe -Xrs -Xmx500m -cp Sudoku16Explainer.jar diuf.sudoku.test.serate --format="%g ED=%r/%p/%d" --input=puzzle(s).txt --output=output.txt
+java.exe -Xrs -Xmx1g -cp Sudoku16Explainer.jar diuf.sudoku.test.hints --input=puzzle(s).txt 1>output.txt
+java.exe -Xrs -Xmx1g -cp Sudoku16Explainer.jar diuf.sudoku.test.hints --input=puzzle(s).txt 1>output.txt 2>nul
+```
+STDOUT output (long hints) should (always) be redirected to a file.\
+STDERR output (short hints) is for debug, it shows progress on screen, if not needed redirect this to a file or to nul.
 
-## Usage - hints
-
-java.exe -Xrs -Xmx500m -cp Sudoku16Explainer.jar diuf.sudoku.test.hints --input=puzzle(s).txt
-
-## Usage - analyze
-
-java.exe -Xrs -Xmx500m -cp Sudoku16Explainer.jar diuf.sudoku.test.Tester --input=puzzle(s).txt
-
+## Usage - analyze (Tester)
+```
+java.exe -Xrs -Xmx1g -cp Sudoku16Explainer.jar diuf.sudoku.test.Tester puzzles.txt puzzles.log
+```
 ## Usage - manual
-
+```
 java.exe -cp Sudoku16Explainer.jar diuf.sudoku.test.serate -m
-
+```
 ## Testing
 
 The program is functional, and it had limited testing. The first two puzzles it was tested with (and solved) are below:
