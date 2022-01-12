@@ -280,7 +280,7 @@ public class UniqueLoops implements IndirectHintProducer {
         extra.clear(v1);
         extra.clear(v2);
         // Look for Naked and hidden Sets. Iterate on degree
-        for (int degree = extra.cardinality(); degree <= 7; degree++) {
+        for (int degree = extra.cardinality(); degree <= 14; degree++) {
             for (Class<? extends Grid.Region> regionType : grid.getRegionTypes()) {
                 Grid.Region region = grid.getRegionAt(regionType, c1);
                 if (region.equals(grid.getRegionAt(regionType, c2))) {
@@ -336,7 +336,7 @@ public class UniqueLoops implements IndirectHintProducer {
 
                     if (degree * 2 < nbEmptyCells) {
                         // Look for hidden sets
-                        int[] remValues = new int[7 - extra.cardinality()];
+                        int[] remValues = new int[14 - extra.cardinality()];
                         for (int value = 1, dstIndex = 0; value <= 16; value++) {
                             if (value != v1 && value != v2 && !extra.get(value))
                                 remValues[dstIndex++] = value;

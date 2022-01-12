@@ -599,7 +599,7 @@ public class Solver {
                 System.err.println(t);
                 System.err.flush();
                 s += w + "." + p;
-                s += ", " + hint.toString();
+                s += ", " + hint.toString2();
                 if (hint instanceof IndirectHint) {
                     IndirectHint iHint = (IndirectHint)hint;
                     if ( iHint.isWorth() ) {
@@ -796,7 +796,7 @@ public class Solver {
                 System.err.println(t);
                 System.err.flush();
                 s += w + "." + p;
-                s += ", " + hint.toString();
+                s += ", " + hint.toString2();
                 if (hint instanceof IndirectHint) {
                     IndirectHint iHint = (IndirectHint)hint;
                     if ( iHint.isWorth() ) {

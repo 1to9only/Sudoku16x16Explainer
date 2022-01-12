@@ -86,6 +86,13 @@ public class UniqueLoopType3NakedHint extends UniqueLoopHint {
     }
 
     @Override
+    public String getExtraInfo() {
+        final String[] setNames = new String[] {"Pair", "Triplet", "Quad", "Quintuplet", "Sextuplet", "Septuplet", "Octuplet"};
+        String setName = setNames[nakedValues.length - 2];
+        return " (w/Naked " +  setName + ")";
+    }
+
+    @Override
     public String toHtml() {
         String result = HtmlLoader.loadHtml(this, "UniqueLoopType3Naked.html");
         String type = getTypeName();
@@ -95,8 +102,7 @@ public class UniqueLoopType3NakedHint extends UniqueLoopHint {
         String cell1 = c1.toString();
         String cell2 = c2.toString();
         String valuesOrName = ValuesFormatter.formatValues(otherValues, " or ");
-        final String[] setNames = new String[] {"Pair", "Triplet", "Quad", "Set (5)",
-                "Set (6)", "Set (7)"};
+        final String[] setNames = new String[] {"Pair", "Triplet", "Quad", "Quintuplet", "Sextuplet", "Septuplet", "Octuplet"};
         String setName = setNames[nakedValues.length - 2];
         String otherCells = ValuesFormatter.formatCells(cells, " and ");
         String valuesAndName = ValuesFormatter.formatValues(nakedValues, " and ");

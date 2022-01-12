@@ -353,6 +353,8 @@ public class Grid {
         @Override
         public abstract String toString();
 
+        public abstract String toString2();
+
         /**
          * Get a string representation of this region
          * @return a string representation of this region
@@ -404,6 +406,11 @@ public class Grid {
         @Override
         public String toString() {
             return "row";
+        }
+
+        @Override
+        public String toString2() {
+            return "row" + " " + (rowNum + 1);
         }
 
         @Override
@@ -460,6 +467,11 @@ public class Grid {
         @Override
         public String toString() {
             return "column";
+        }
+
+        @Override
+        public String toString2() {
+            return "column" + " " + (columnNum + 1);
         }
 
         @Override
@@ -524,6 +536,11 @@ public class Grid {
         @Override
         public String toString() {
             return "block";
+        }
+
+        @Override
+        public String toString2() {
+            return "block" + " " + (vNum * 4 + hNum + 1);
         }
 
         @Override

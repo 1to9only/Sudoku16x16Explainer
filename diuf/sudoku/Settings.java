@@ -27,9 +27,9 @@ import javax.swing.UIManager;
  */
 public class Settings {
 
-    public final static int VERSION  = 2021;
-    public final static int REVISION = 11;
-    public final static int SUBREV   = 25;
+    public final static int VERSION  = 2022;
+    public final static int REVISION = 1;
+    public final static int SUBREV   = 12;
 
     private static Settings instance = null;
 

@@ -82,7 +82,7 @@ public abstract class DirectHint extends Hint {
     public String toString() {
         String result = cell.toString() + ": " + value;
         if (region != null)
-            result += " in " + region.toString();
+            result += " in " + region.toString2();
         return result;
     }
 
