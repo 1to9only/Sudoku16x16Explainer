@@ -28,8 +28,8 @@ import javax.swing.UIManager;
 public class Settings {
 
     public final static int VERSION  = 2022;
-    public final static int REVISION = 1;
-    public final static int SUBREV   = 12;
+    public final static int REVISION = 2;
+    public final static int SUBREV   = 2;
 
     private static Settings instance = null;
 
@@ -404,13 +404,13 @@ public class Settings {
 
     private void init() {
         techniques = EnumSet.allOf(SolvingTechnique.class);
-        // these are problematic
-        techniques.remove(SolvingTechnique.UniqueLoop);
-        techniques.remove(SolvingTechnique.AlignedPairExclusion);
-        techniques.remove(SolvingTechnique.AlignedTripletExclusion);
-        // these are rare
-        techniques.remove(SolvingTechnique.NakedSeptuplet);
-        techniques.remove(SolvingTechnique.HiddenSeptuplet);
+    //  // these are problematic
+    //  techniques.remove(SolvingTechnique.UniqueLoop);
+    //  techniques.remove(SolvingTechnique.AlignedPairExclusion);
+    //  techniques.remove(SolvingTechnique.AlignedTripletExclusion);
+    //  // these are rare
+    //  techniques.remove(SolvingTechnique.NakedSeptuplet);
+    //  techniques.remove(SolvingTechnique.HiddenSeptuplet);
         // these are elusive
         techniques.remove(SolvingTechnique.NakedOctuplet);
         techniques.remove(SolvingTechnique.HiddenOctuplet);

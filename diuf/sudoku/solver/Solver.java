@@ -5,7 +5,7 @@
  */
 package diuf.sudoku.solver;
 
-//port java.security.*;
+import java.security.*;
 import java.util.*;
 
 import diuf.sudoku.*;
@@ -213,30 +213,30 @@ public class Solver {
         cancelBy(Grid.Column.class);
     }
 
-//  /**
-//   * Lower the current thread's priority.
-//   * @return the previous thread's priority
-//   */
-//  private int lowerPriority() {
-//      try {
-//          int result = Thread.currentThread().getPriority();
-//          Thread.currentThread().setPriority((Thread.NORM_PRIORITY + Thread.MIN_PRIORITY * 2) / 3);
-//          return result;
-//      } catch (AccessControlException ex) {}
-//      return 0;
-//  }
-//
-//  /**
-//   * Reset the current thread's priority to the given value.
-//   * Typically, the given value is the value returned by
-//   * {@link #lowerPriority()}.
-//   * @param priority the new priority
-//   */
-//  private void normalPriority(int priority) {
-//      try {
-//          Thread.currentThread().setPriority(priority);
-//      } catch (AccessControlException ex) {}
-//  }
+    /**
+     * Lower the current thread's priority.
+     * @return the previous thread's priority
+     */
+    private int lowerPriority() {
+        try {
+            int result = Thread.currentThread().getPriority();
+            Thread.currentThread().setPriority((Thread.NORM_PRIORITY + Thread.MIN_PRIORITY * 2) / 3);
+            return result;
+        } catch (AccessControlException ex) {}
+        return 0;
+    }
+
+    /**
+     * Reset the current thread's priority to the given value.
+     * Typically, the given value is the value returned by
+     * {@link #lowerPriority()}.
+     * @param priority the new priority
+     */
+    private void normalPriority(int priority) {
+        try {
+            Thread.currentThread().setPriority(priority);
+        } catch (AccessControlException ex) {}
+    }
 
     /**
      * Get the first available validity warning hint.
@@ -247,7 +247,7 @@ public class Solver {
      * if the sudoku is valid.
      */
     public Hint checkValidity() {
-//      int oldPriority = lowerPriority();
+        int oldPriority = lowerPriority();
         SingleHintAccumulator accu = new SingleHintAccumulator();
         try {
             for (WarningHintProducer producer : validatorHintProducers)
@@ -255,7 +255,7 @@ public class Solver {
             for (WarningHintProducer producer : warningHintProducers)
                 producer.getHints(grid, accu);
         } catch (InterruptedException willProbablyHappen) {}
-//      normalPriority(oldPriority);
+        normalPriority(oldPriority);
         return accu.getHint();
     }
 
@@ -283,7 +283,7 @@ public class Solver {
     public void gatherHints(List<Hint> previousHints, final List<Hint> result,
             HintsAccumulator accu, Asker asker) {
 
-//      int oldPriority = lowerPriority();
+        int oldPriority = lowerPriority();
         boolean isAdvanced = false;
         try {
             for (HintProducer producer : directHintProducers)
@@ -321,11 +321,11 @@ public class Solver {
         } catch (InterruptedException willProbablyHappen) {}
         if (!isAdvanced)
             isUsingAdvanced = false;
-//      normalPriority(oldPriority);
+        normalPriority(oldPriority);
     }
 
     public List<Hint> getAllHints(Asker asker) {
-//      int oldPriority = lowerPriority();
+        int oldPriority = lowerPriority();
         List<Hint> result = new ArrayList<Hint>();
         HintsAccumulator accu = new DefaultHintsAccumulator(result);
         try {
@@ -361,7 +361,7 @@ public class Solver {
                 }
             }
         } catch (InterruptedException cannotHappen) {}
-//      normalPriority(oldPriority);
+        normalPriority(oldPriority);
         return result;
     }
 
@@ -400,7 +400,7 @@ public class Solver {
      * be solved without recursive guessing (brute-force).
      */
     public Map<Rule,Integer> solve(Asker asker) {
-//      int oldPriority = lowerPriority();
+        int oldPriority = lowerPriority();
         // rebuildPotentialValues();
         Map<Rule,Integer> usedRules = new TreeMap<Rule,Integer>(new RuleComparer());
         boolean isUsingAdvanced = false;
@@ -437,7 +437,7 @@ public class Solver {
                 usedRules.put(rule, 1);
             hint.apply(grid);
         }
-//      normalPriority(oldPriority);
+        normalPriority(oldPriority);
         return usedRules;
     }
 
@@ -454,7 +454,7 @@ public class Solver {
      * given bounds. An arbitrary out-of-bounds value else.
      */
     public double analyseDifficulty(double min, double max) {
-//      int oldPriority = lowerPriority();
+        int oldPriority = lowerPriority();
         try {
             double difficulty = 0.0;
             while (!isSolved()) {
@@ -492,14 +492,15 @@ public class Solver {
             }
             return difficulty;
         } finally {
-//          normalPriority(oldPriority);
+            normalPriority(oldPriority);
         }
     }
 
     public void getDifficulty() {
     //  Grid backup = new Grid();
     //  grid.copyTo(backup);
-    //  try {
+        int oldPriority = lowerPriority();
+        try {
             difficulty = 0.0;
             pearl = 0.0;
             diamond = 0.0;
@@ -546,15 +547,17 @@ public class Solver {
                     break;
                 }
             }
-    //  } finally {
+        } finally {
     //      backup.copyTo(grid);
-    //  }
+            normalPriority(oldPriority);
+        }
     }
 
     public void getHintsHint() {
     //  Grid backup = new Grid();
     //  grid.copyTo(backup);
-    //  try {
+        int oldPriority = lowerPriority();
+        try {
             difficulty = 0.0;
             pearl = 0.0;
             diamond = 0.0;
@@ -652,15 +655,17 @@ public class Solver {
                     break;
                 }
             }
-    //  } finally {
+        } finally {
     //      backup.copyTo(grid);
-    //  }
+            normalPriority(oldPriority);
+        }
     }
 
     public void getPencilMarks( int puzzleformat) {
     //  Grid backup = new Grid();
     //  grid.copyTo(backup);
-    //  try {
+        int oldPriority = lowerPriority();
+        try {
             difficulty = 0.0;
             pearl = 0.0;
             diamond = 0.0;
@@ -849,9 +854,10 @@ public class Solver {
                     break;
                 }
             }
-    //  } finally {
+        } finally {
     //      backup.copyTo(grid);
-    //  }
+            normalPriority(oldPriority);
+        }
     }
 
     public Map<String, Integer> toNamedList(Map<Rule, Integer> rules) {

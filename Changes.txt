@@ -1,5 +1,9 @@
 Changes:
 
+20220202
+- re-enable some solving techniques
+- re-enable thread priority in Solver
+
 20220112
 - add chains nodes in hints output
 
