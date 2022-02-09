@@ -57,6 +57,7 @@ public class Solver {
     private List<IndirectHintProducer> indirectHintProducers;
     private List<WarningHintProducer> validatorHintProducers;
     private List<WarningHintProducer> warningHintProducers;
+    private List<WarningHintProducer> UniqueSolutionHintProducers;
     private List<IndirectHintProducer> chainingHintProducers;
     private List<IndirectHintProducer> chainingHintProducers2;
     private List<IndirectHintProducer> advancedHintProducers;
@@ -147,6 +148,8 @@ public class Solver {
         warningHintProducers.add(new NumberOfFilledCells());
         warningHintProducers.add(new NumberOfValues());
         warningHintProducers.add(new BruteForceAnalysis(false));
+        UniqueSolutionHintProducers = new ArrayList<WarningHintProducer>();
+        UniqueSolutionHintProducers.add(new BruteForceAnalysis(false));
         // These are very slow. We add them only as "rescue"
         advancedHintProducers = new ArrayList<IndirectHintProducer>();
         addIfWorth(SolvingTechnique.NestedForcingChain, advancedHintProducers, new Chaining(true, true, false, 2, true, 0));
@@ -253,6 +256,17 @@ public class Solver {
             for (WarningHintProducer producer : validatorHintProducers)
                 producer.getHints(grid, accu);
             for (WarningHintProducer producer : warningHintProducers)
+                producer.getHints(grid, accu);
+        } catch (InterruptedException willProbablyHappen) {}
+        normalPriority(oldPriority);
+        return accu.getHint();
+    }
+
+    public Hint checkUniqueSolution() {
+        int oldPriority = lowerPriority();
+        SingleHintAccumulator accu = new SingleHintAccumulator();
+        try {
+            for (WarningHintProducer producer : UniqueSolutionHintProducers)
                 producer.getHints(grid, accu);
         } catch (InterruptedException willProbablyHappen) {}
         normalPriority(oldPriority);

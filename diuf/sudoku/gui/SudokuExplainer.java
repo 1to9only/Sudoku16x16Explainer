@@ -420,6 +420,19 @@ public class SudokuExplainer {
         return (hint == null);
     }
 
+    public boolean checkUniqueSolution() {
+        selectedHints.clear();
+        unfilteredHints = new ArrayList<Hint>();
+        Hint hint = solver.checkUniqueSolution();
+        if (hint != null) {
+            unfilteredHints.add(hint);
+            selectedHints.add(hint);
+        }
+        filterHints();
+        repaintAll();
+        return (hint == null);
+    }
+
     public void resetPotentials() {
         solver.rebuildPotentialValues();
         clearHints();

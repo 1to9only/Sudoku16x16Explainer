@@ -1,5 +1,8 @@
 Changes:
 
+20220209
+- add Check uniqueness only
+
 20220202
 - re-enable some solving techniques
 - re-enable thread priority in Solver
