@@ -67,9 +67,10 @@ public class Chaining implements IndirectHintProducer {
     }
 
     double getDifficulty() {
-        if (level >= 2)
-            return 9.5 + 0.5 * (level - 2);
-        else if (level > 0)
+    //  if (level >= 2)
+    //      return 9.5 + 0.5 * (level - 2);
+    //  else
+        if (level > 0)
             return 8.5 + 0.5 * level;
         else if (isNisho)
             return 7.5; // Nishio
@@ -112,15 +113,12 @@ public class Chaining implements IndirectHintProducer {
             public int compare(ChainingHint h1, ChainingHint h2) {
                 double d1 = h1.getDifficulty();
                 double d2 = h2.getDifficulty();
-                if (d1 < d2)
-                    return -1;
-                else if (d1 > d2)
-                    return 1;
+                if (d1 < d2) return -1;
+                if (d1 > d2) return 1;
                 int l1 = h1.getComplexity();
                 int l2 = h2.getComplexity();
-                if (l1 == l2)
-                    return h1.getSortKey() - h2.getSortKey();
-                return l1 - l2;
+                if (l1 != l2) return l1 - l2;
+                return h1.getSortKey() - h2.getSortKey();
             }
         });
         return result;
@@ -852,18 +850,16 @@ public class Chaining implements IndirectHintProducer {
             otherRules.add(new HiddenSet(2, false));
             otherRules.add(new NakedSet(2));
             otherRules.add(new Fisherman(2));
-            if (level < 4) {
-                if (level >= 2)
-                    otherRules.add(new Chaining(false, false, false, 0, false, 0)); // Forcing chains
-                if (level >= 3)
-                    otherRules.add(new Chaining(true, false, false, 0, false, 0)); // Multiple forcing chains
-            } else {
+            if (level == 2)
+                otherRules.add(new Chaining(false, false, false, 0, false, 0)); // Forcing chains
+            if (level == 3)
+                otherRules.add(new Chaining(true, false, false, 0, false, 0)); // Multiple forcing chains
+            if (level == 4)
                 // Dynamic Forcing Chains already cover Simple and Multiple Forcing Chains
                 otherRules.add(new Chaining(true, true, false, nestingLimit, false, 0)); // Dynamic FC
-            }
         }
         int index = 0;
-        while (index < otherRules.size() && result.isEmpty()) {
+        while (result.isEmpty() && index < otherRules.size()) {
             IndirectHintProducer rule = otherRules.get(index);
             try {
                 rule.getHints(grid, new HintsAccumulator() {
@@ -883,9 +879,9 @@ public class Chaining implements IndirectHintProducer {
 //a                         assert !removable.isEmpty();
                             for (Cell cell : removable.keySet()) {
                                 BitSet values = removable.get(cell);
-                                for (int value = values.nextSetBit(0); value != -1; value = values.nextSetBit(value + 1)) {
-                                    Potential.Cause cause = Potential.Cause.Advanced;
-                                    Potential toOff = new Potential(cell, value, false, cause,
+                                for (int value = values.nextSetBit(0); value >= 0; value = values.nextSetBit(value + 1)) {
+                                //  Potential.Cause cause = Potential.Cause.Advanced;
+                                    Potential toOff = new Potential(cell, value, false, Potential.Cause.Advanced,
                                             hint.toString(), nested);
                                     for (Potential p : parents) {
                                         Potential real = offPotentials.get(p);

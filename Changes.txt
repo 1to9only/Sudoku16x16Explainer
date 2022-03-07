@@ -1,5 +1,8 @@
 Changes:
 
+20220307
+- changes in Chaining.java, may affect some ratings!
+
 20220209
 - add Check uniqueness only
 
