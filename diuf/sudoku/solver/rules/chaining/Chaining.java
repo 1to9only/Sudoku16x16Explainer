@@ -604,8 +604,9 @@ public class Chaining implements IndirectHintProducer {
             return Potential.Cause.HiddenBlock;
         else if (region instanceof Column)
             return Potential.Cause.HiddenColumn;
-        else
+        else if (region instanceof Row)
             return Potential.Cause.HiddenRow;
+        return null;
     }
 
     /**
