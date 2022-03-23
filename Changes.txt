@@ -1,5 +1,8 @@
 Changes:
 
+20220323
+- add step timings in hints output
+
 20220316
 - small code tidy up
 
