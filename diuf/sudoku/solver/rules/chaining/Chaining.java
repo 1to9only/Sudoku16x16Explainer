@@ -484,8 +484,7 @@ public class Chaining implements IndirectHintProducer {
                     LinkedSet<Potential> regionToOff = new LinkedSet<Potential>();
 
                     // Iterate on potential positions within the region
-                    for (int pos = potentialPositions.nextSetBit(0); pos >= 0;
-                            pos = potentialPositions.nextSetBit(pos + 1)) {
+                    for (int pos = firstPos; pos >= 0; pos = potentialPositions.nextSetBit(pos+1)) {
                         Cell otherCell = region.getCell(pos);
                         if (otherCell.equals(cell)) {
                             posToOn.put(pos, onToOn);
@@ -588,7 +587,7 @@ public class Chaining implements IndirectHintProducer {
         BitSet srcPositions = srcRegion.copyPotentialPositions(p.value);
         // Get positions of the potential value that have been removed
         srcPositions.andNot(curPositions);
-        for (int i = srcPositions.nextSetBit(0); i >= 0; i = srcPositions.nextSetBit(i + 1)) {
+        for (int i = srcPositions.nextSetBit(0); i >= 0; i = srcPositions.nextSetBit(i+1)) {
             // Add a hidden parent
             Cell curCell = curRegion.getCell(i);
             Potential parent = new Potential(curCell, p.value, false);
@@ -628,7 +627,7 @@ public class Chaining implements IndirectHintProducer {
             if (potentialValues.cardinality() == 2) {
                 int otherValue = potentialValues.nextSetBit(0);
                 if (otherValue == p.value)
-                    otherValue = potentialValues.nextSetBit(otherValue + 1);
+                    otherValue = potentialValues.nextSetBit(otherValue+1);
                 Potential pOn = new Potential(p.cell, otherValue, true, p,
                         Potential.Cause.NakedSingle, "only remaining possible value in the cell");
                 addHiddenParentsOfCell(pOn, grid, source, offPotentials);
@@ -650,7 +649,7 @@ public class Chaining implements IndirectHintProducer {
                     int otherPosition = potentialPositions.nextSetBit(0);
                     Cell otherCell = region.getCell(otherPosition);
                     if (otherCell.equals(p.cell)) {
-                        otherPosition = potentialPositions.nextSetBit(otherPosition + 1);
+                        otherPosition = potentialPositions.nextSetBit(otherPosition+1);
                         otherCell = region.getCell(otherPosition);
                     }
                     Potential pOn = new Potential(otherCell, p.value, true, p,
@@ -878,9 +877,22 @@ public class Chaining implements IndirectHintProducer {
                                 nested = (ChainingHint)hint;
                             Map<Cell,BitSet> removable = hint.getRemovablePotentials();
 //a                         assert !removable.isEmpty();
-                            for (Cell cell : removable.keySet()) {
+                            List<Cell> sortedRemKeys=new ArrayList<Cell>(removable.keySet());
+                            Collections.sort(sortedRemKeys, new Comparator<Cell>() {
+                                public int compare(Cell c1, Cell c2) {
+                                    int y1 = c1.getY();
+                                    int y2 = c2.getY();
+                                    if (y1 != y2) return y1 - y2;
+                                    int x1 = c1.getX();
+                                    int x2 = c2.getX();
+                                    if (x1 != x2) return x1 - x2;
+                                    return removable.get(c1).nextSetBit(0) - removable.get(c2).nextSetBit(0);
+                                }
+                            });
+                            for (Cell cell : sortedRemKeys) {
+//                          for (Cell cell : removable.keySet()) {
                                 BitSet values = removable.get(cell);
-                                for (int value = values.nextSetBit(0); value >= 0; value = values.nextSetBit(value + 1)) {
+                                for (int value = values.nextSetBit(0); value >= 0; value = values.nextSetBit(value+1)) {
                                 //  Potential.Cause cause = Potential.Cause.Advanced;
                                     Potential toOff = new Potential(cell, value, false, Potential.Cause.Advanced,
                                             hint.toString(), nested);
