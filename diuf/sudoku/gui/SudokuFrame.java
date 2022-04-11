@@ -480,8 +480,7 @@ public class SudokuFrame extends JFrame implements Asker {
                             javax.swing.BorderFactory.createTitledBorder(null, "Sudoku Grid",
                             javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                             javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                            new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
-                            new java.awt.Color(51, 51, 51)));
+                            new java.awt.Font("Dialog", java.awt.Font.BOLD, 12), null));
             sudokuContainer.add(getSudokuPanel(), java.awt.BorderLayout.CENTER);
             sudokuContainer.add(getViewSelectionPanel(), java.awt.BorderLayout.SOUTH);
         }
@@ -496,8 +495,7 @@ public class SudokuFrame extends JFrame implements Asker {
                             javax.swing.BorderFactory.createTitledBorder(null, "Explanations",
                             javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                             javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                            new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
-                            new java.awt.Color(51, 51, 51)));
+                            new java.awt.Font("Dialog", java.awt.Font.BOLD, 12), null));
             hintDetailContainer.add(getHintsDetailScrollPane(), BorderLayout.CENTER);
         }
         return hintDetailContainer;
@@ -547,12 +545,11 @@ public class SudokuFrame extends JFrame implements Asker {
 
             buttonsPane = new JPanel();
             buttonsPane.setLayout(new GridBagLayout());
-            buttonsPane.setBorder(javax.swing.BorderFactory.createTitledBorder(
-                    null, "Actions",
+            buttonsPane.setBorder(
+                    javax.swing.BorderFactory.createTitledBorder( null, "Actions",
                     javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                     javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                    new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),    // null));
-                    new java.awt.Color(128, 128, 128)));
+                    new java.awt.Font("Dialog", java.awt.Font.BOLD, 12), null));
 
             buttonsPane.add(getBtnCheckValidity(),   gridBagConstraints0);
             buttonsPane.add(getBtnApplyHintAndGet(), gridBagConstraints1);
@@ -720,11 +717,11 @@ public class SudokuFrame extends JFrame implements Asker {
         if (hintsTreePanel == null) {
             hintsTreePanel = new JPanel();
             hintsTreePanel.setLayout(new BorderLayout());
-            hintsTreePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(
-                    null, "Hints classification",
+            hintsTreePanel.setBorder(
+                    javax.swing.BorderFactory.createTitledBorder(null, "Hints classification",
                     javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-                    javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(
-                            "Dialog", java.awt.Font.BOLD, 12), null));
+                    javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                    new java.awt.Font("Dialog", java.awt.Font.BOLD, 12), null));
             hintsTreePanel.add(getHintsTreeScrollPane(), java.awt.BorderLayout.CENTER);
             hintsTreePanel.add(getHintsSouthPanel(), java.awt.BorderLayout.SOUTH);
         }

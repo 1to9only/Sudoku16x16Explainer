@@ -5,7 +5,7 @@ Sudoku16x16Explainer is my modifications to SudokuExplainer to solve 16x16 sudok
 ## Puzzle Format
 
 - The GUI displays solved cells and candidates using numbers 1-16.
-- Load/Save and Copy/Paste use A-P for the numbers 1-16 - Other formats: 0-9A-F, 1-9A-G, 1-16 are not supported.
+- Load/Save and Copy/Paste use A-P for the numbers 1-16 - The other formats: 0-9A-F, 1-9A-G, 1-16 are supported via 'Options', select the format BEFORE Load/Save and Copy/Paste operations.
 - Candidate input via keyboard is through keys A-P/a-p for the numbers 1-16, and keys 1-9 for numbers 1-9 - it is a better experience to select candidates using the mouse (left-click to set a candidate, right-click to remove a candidate).
 
 A puzzle converter to the A-P format used by Sudoku16Explainer is [here](https://github.com/1to9only/convert16x16).

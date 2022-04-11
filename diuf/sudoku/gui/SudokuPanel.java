@@ -250,7 +250,7 @@ public class SudokuPanel extends JPanel {
     private Cell getCellAt(int x, int y) {
         int cx = (x - LEGEND_GAP_SIZE) / CELL_OUTER_SIZE;
         int cy = (y - GRID_GAP_SIZE) / CELL_OUTER_SIZE;
-        if (cx < 0 || cx >= 16 || cy < 0 || cy >= 16)
+        if (x < LEGEND_GAP_SIZE || cx < 0 || cx >= 16 || cy < 0 || cy >= 16)
             return null;
         return grid.getCell(cx, cy);
     }
@@ -259,7 +259,7 @@ public class SudokuPanel extends JPanel {
         // Get cell's corner
         int cx = (x - LEGEND_GAP_SIZE) / CELL_OUTER_SIZE;
         int cy = (y - GRID_GAP_SIZE) / CELL_OUTER_SIZE;
-        if (cx < 0 || cx >= 16 || cy < 0 || cy >= 16)
+        if (x < LEGEND_GAP_SIZE || cx < 0 || cx >= 16 || cy < 0 || cy >= 16)
             return 0;
         Cell cell = grid.getCell(cx, cy);
         if (!cell.equals(this.selectedCell))

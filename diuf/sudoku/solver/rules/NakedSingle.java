@@ -27,13 +27,15 @@ public class NakedSingle implements DirectHintProducer {
 
             for (int index = 0; index < 256; index++) {
                 Cell cell = grid.getCell(index%16,index/16);
+              if ( cell.getValue() == 0 ) {
                 // Get the cell's potential values
                 BitSet potentialValues = cell.getPotentialValues();
                 if (potentialValues.cardinality() == 1) {
                     // One potential value -> solution found
-                    int uniqueValue = potentialValues.nextSetBit(0);
-                    accu.add(new NakedSingleHint(this, null, cell, uniqueValue));
+                //  int uniqueValue = potentialValues.nextSetBit(0);
+                    accu.add(new NakedSingleHint(this, null, cell, potentialValues.nextSetBit(0)));
                 }
+              }
             }
 
     }
