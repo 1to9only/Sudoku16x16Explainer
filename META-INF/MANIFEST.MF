@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Specification-Title: "Sudoku Explainer with serate entry point"
-Created-By: 1.8.0_321
+Created-By: 1.8.0_331
 Main-Class: diuf.sudoku.gui.SudokuExplainer
 Implementation-Title: "formatted rate entry point"
 Specification-Vendor: "Nicolas Juillerat"
-Specification-Version: "2022.4.11"
-Implementation-Version: "2022.4.11"
+Specification-Version: "2022.5.10"
+Implementation-Version: "2022.5.10"
 Name: SudokuExplainer+serate
 Implementation-Vendor: "gsf+1to9only"
 

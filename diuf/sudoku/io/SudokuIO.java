@@ -57,7 +57,7 @@ public class SudokuIO {
             String[] arrLines = new String[lines.size()];
             lines.toArray(arrLines);
             for (int i = 0; i < arrLines.length; i++)
-                allLines += arrLines[i];
+                allLines += arrLines[i] + " ";
             int result = loadFromSingleLine(grid, allLines);
             return result;
         } else

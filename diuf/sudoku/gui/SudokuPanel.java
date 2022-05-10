@@ -871,7 +871,7 @@ public class SudokuPanel extends JPanel {
     }
 
     private void paint2CellsPotentials(Graphics g, int adj) {
-      if (Settings.getInstance().isShowingCandidates()) {
+        boolean paintIt = Settings.getInstance().isShowingCandidates();
         for (int y = 0; y < 16; y++) {
             for (int x = 0; x < 16; x++) {
                     Cell cell = grid.getCell(x, y);
@@ -884,14 +884,16 @@ public class SudokuPanel extends JPanel {
                             + (index % 4) * (CELL_INNER_SIZE / 4) + CELL_INNER_SIZE / 8;
                             int cy = y * CELL_OUTER_SIZE + CELL_PAD
                             + (index / 4) * (CELL_INNER_SIZE / 4) + CELL_INNER_SIZE / 8;
-                            init2PotentialColor(g, cell, value);
-                            drawStringCentered(g, "" + value, cx+adj, cy+adj);
+                            boolean isHighlighted = init2PotentialColor(g, cell, value);
+                            if (isHighlighted)
+                                drawStringCentered3D(g, "" + value, cx+adj, cy+adj);
+                            else if (paintIt)
+                                drawStringCentered(g, "" + value, cx+adj, cy+adj);
                         }
                         index++;
                     }
             }
         }
-      }
     }
 
     private void paintCellsValues(Graphics g) {
