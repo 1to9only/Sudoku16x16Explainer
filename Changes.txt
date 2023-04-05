@@ -1,5 +1,8 @@
 Changes:
 
+20230405
+- change to showing candidate masks
+
 20220510
 - several small updates
 
